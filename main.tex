@@ -1,0 +1,94 @@
+\documentclass[12pt, a4paper]{article}
+
+% --- Packages ---
+\usepackage{mathptmx} % Times New Roman font
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=0.55in]{geometry} % Wider margins to guarantee 1 page with 1.5 spacing
+\usepackage{setspace} % For line spacing
+\usepackage{tikz} % For the page border
+\usepackage{eso-pic} % For the background picture (border)
+\usepackage{enumitem} % For list formatting
+\usepackage[colorlinks=true, urlcolor=blue, linkcolor=blue, citecolor=blue]{hyperref} % For clickable links
+\usepackage{xurl} % For URL formatting with better line breaks
+
+% --- Page Border Setup ---
+\AddToShipoutPictureBG{%
+\begin{tikzpicture}[remember picture,overlay]
+\draw[line width=1pt]
+    ([xshift=0.3in,yshift=-0.3in]current page.north west)
+    rectangle
+    ([xshift=-0.3in,yshift=0.3in]current page.south east);
+\end{tikzpicture}%
+}
+
+% --- Paragraph Formatting ---
+\setlength{\parindent}{0pt} % No paragraph indentation
+\setlength{\parskip}{0pt}   % Reduced space between paragraphs to save vertical space
+
+\begin{document}
+\thispagestyle{empty} % Remove page number
+
+% --- Header Section ---
+\begin{center}
+    \textbf{\fontsize{16pt}{19.2pt}\selectfont ABSTRACT} \\[4pt]
+    \textbf{\fontsize{14pt}{16.8pt}\selectfont Medical Specialty Classification using TF-IDF and Ensemble Machine Learning}
+\end{center}
+
+% --- Abstract Body ---
+\begin{spacing}{1.5}
+Manually categorizing medical transcription reports into clinical specialties is time-consuming, labor-intensive, and prone to human error. This project proposes the development of an automated Medical Specialty Classification system utilizing Natural Language Processing (NLP) and Machine Learning to streamline document organization.
+
+Preprocessing will involve lowercasing, punctuation removal, tokenization, stop-word removal, and lemmatization. Term Frequency--Inverse Document Frequency (TF-IDF) will be used to convert clinical text into numerical vectors. Multiple machine learning algorithms, including Logistic Regression, Support Vector Machine (SVM), Random Forest, and Multinomial Naïve Bayes, will be trained and evaluated. A Voting Ensemble Classifier will then combine these predictions to maximize classification performance.
+
+To ensure practical accessibility, a Flask-based web application will be developed, enabling users to submit medical transcription reports and instantly obtain the predicted medical specialty. The proposed system aims to improve the organization and retrieval of clinical documents, reduce manual classification effort, and demonstrate the effectiveness of TF-IDF with ensemble machine learning for accurate medical specialty classification.
+\end{spacing}
+
+% --- Dataset Source ---
+\vspace{6pt}
+\begin{spacing}{1.1}
+\noindent Dataset Source: Medical Transcriptions (MTSamples) Dataset, Kaggle \\
+\url{https://www.kaggle.com/datasets/tboyle10/medicaltranscriptions}
+\end{spacing}
+
+% --- Technology Stack ---
+\vspace{6pt}
+\begin{spacing}{1.1}
+\noindent Technology Stack: \\
+Frontend: HTML, CSS, Bootstrap \\
+Backend: Python, Flask \\
+Machine Learning \& NLP: TF-IDF, Logistic Regression, Support Vector Machine (SVM), Random Forest, Multinomial Naïve Bayes, Voting Ensemble Classifier \\
+Libraries: Scikit-learn, Pandas, NumPy, NLTK, Joblib \\
+IDE \& Tools: VS Code, Google Colab, Jupyter Notebook \\
+Database: Not required. The Medical Transcriptions dataset is maintained in CSV format and serves as the primary data source.
+\end{spacing}
+
+% --- References Section ---
+\vspace{8pt}
+\begin{spacing}{1.0}
+\noindent References:
+\begin{enumerate}[label={[\arabic*]}, leftmargin=*, itemsep=0pt, parsep=0pt, topsep=2pt]
+    \item Y. Wang et al., ``Medical Text Classification Based on the Discriminative Pre-training Model and Prompt-Tuning,'' \textit{Healthcare}, vol. 11, no. 4, 2023. (\url{https://journals.sagepub.com/doi/10.1177/20552076231193213})
+    \item A. M. Omar, M. Elhoseny, and A. M. Hassanien, ``Clinical Text Classification with Word Representation Features and Machine Learning Algorithms,'' \textit{International Journal of Online and Biomedical Engineering (iJOE)}, 2023. (\url{https://online-journals.org/index.php/i-joe/article/view/36099})
+    \item S. U. Amin, M. Alsulaiman, G. Muhammad, M. A. Mekhtiche, and M. S. Hossain, ``Medical Specialty Classification Based on Semiadversarial Data Augmentation,'' \textit{IEEE Access}, 2023. (\url{https://pubmed.ncbi.nlm.nih.gov/37881209/})
+\end{enumerate}
+\end{spacing}
+
+\vfill % Push the signature block to the bottom of the page
+
+% --- Signatures Section ---
+\begin{spacing}{1.0}
+\noindent
+\begin{minipage}[t]{0.5\textwidth}
+    Submitted by: \\
+    Jiphin George \\
+    Reg No: MAC25MCA-2033
+\end{minipage}%
+\begin{minipage}[t]{0.5\textwidth}
+    \raggedleft
+    Project Guide: \\
+    Prof. Biju Skaria
+\end{minipage}
+\end{spacing}
+
+\end{document}

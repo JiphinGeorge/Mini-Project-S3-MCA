@@ -1,0 +1,123 @@
+\documentclass[12pt,a4paper]{report}
+
+% Packages for fonts and formatting
+\usepackage{mathptmx} % Times New Roman
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\onehalfspacing
+
+% Packages for structure and styling
+\usepackage{titlesec}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows}
+\usepackage{etoolbox}
+\usepackage{enumitem}
+
+\makeatletter
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{}{}{}
+\patchcmd{\chapter}{\clearpage}{}{}{}
+\makeatother
+
+\setlist{itemsep=0.3em, topsep=0.3em, parsep=0.1em}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=black,      
+    urlcolor=black,
+    citecolor=black,
+}
+
+% Redefine chapter and section formatting to make it more compact and professional
+\titleformat{\chapter}[block]
+  {\normalfont\huge\bfseries}{\thechapter.}{1em}{}
+\titlespacing*{\chapter}{0pt}{20pt}{15pt}
+\titlespacing*{\section}{0pt}{10pt}{5pt}
+
+\begin{document}
+
+\begin{titlepage}
+    \begin{center}
+        \vspace*{1cm}
+        
+        \Huge
+        \textbf{Medical Specialty Classification using TF-IDF and Ensemble Machine Learning}
+        
+        \vspace{1.5cm}
+        
+        \Large
+        \textbf{Mini Project Proposal Report}
+        
+        \vspace{2.5cm}
+        
+        \large
+        \textbf{Submitted by:} \\
+        Jiphin George \\
+        Register No.: MAC25MCA-2033
+        
+        \vspace{1.5cm}
+        
+        \textbf{Submitted to:} \\
+        Prof. Biju Skaria \\
+        Project Guide
+    \end{center}
+    
+    \vfill
+    
+    \begin{center}
+        \Large
+        \textbf{Department of Computer Applications}
+        
+        \vspace{0.5cm}
+        
+        \textbf{Mar Athanasius College of Engineering} \\
+        Kothamangalam, Kerala
+        
+        \vspace{0.5cm}
+        
+        \large
+        \textbf{Master of Computer Applications (MCA)}
+        
+        \vspace{0.5cm}
+        
+        Academic Year: 2026--2027
+        \vspace*{1cm}
+    \end{center}
+\end{titlepage}
+
+\input{chapters/01_introduction}
+\par
+\input{chapters/02_objectives}
+\par
+\input{chapters/03_proposed_methodology}
+\par
+\input{chapters/04_expected_outcomes}
+\par
+\input{chapters/05_conclusion}
+
+\renewcommand\bibname{References}
+\begin{thebibliography}{10}
+
+\bibitem{Wang2023}
+Y. Wang \textit{et al.}, ``Medical Text Classification Based on the Discriminative Pre-training Model and Prompt-Tuning,'' \textit{DIGITAL HEALTH}, vol. 9, 2023, doi: 10.1177/20552076231193213.
+
+\bibitem{Almazaydeh2023}
+L. Almazaydeh \textit{et al.}, ``Clinical Text Classification with Word Representation Features and Machine Learning Algorithms,'' \textit{International Journal of Online and Biomedical Engineering (iJOE)}, vol. 19, no. 4, 2023, doi: 10.3991/ijoe.v19i04.36099.
+
+\bibitem{Zhang2023}
+H. Zhang \textit{et al.}, ``Medical Specialty Classification Based on Semiadversarial Data Augmentation,'' \textit{Computational Intelligence and Neuroscience}, 2023, Art. no. 4919371, doi: 10.1155/2023/4919371.
+
+\bibitem{Blanchard2022}
+A. E. Blanchard \textit{et al.}, ``A Keyword-Enhanced Approach to Handle Class Imbalance in Clinical Text Classification,'' \textit{IEEE Journal of Biomedical and Health Informatics}, vol. 26, no. 6, pp. 2796--2803, 2022, doi: 10.1109/JBHI.2022.3141976.
+
+\bibitem{Kesiku2022}
+C. Y. Kesiku \textit{et al.}, ``Natural Language Processing Techniques for Text Classification of Biomedical Documents: A Systematic Review,'' \textit{Information}, vol. 13, 2022, Art. no. 499, doi: 10.3390/info13100499.
+
+\bibitem{Mao2023}
+C. Mao \textit{et al.}, ``Automatic Medical Specialty Classification Based on Patients' Description of Their Symptoms,'' \textit{BMC Medical Informatics and Decision Making}, vol. 23, 2023, Art. no. 15, doi: 10.1186/s12911-023-02105-7.
+
+\end{thebibliography}
+
+\end{document}
