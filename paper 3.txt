@@ -1,0 +1,986 @@
+================================================================================
+A KEYWORD-ENHANCED APPROACH TO HANDLE CLASS IMBALANCE IN CLINICAL TEXT CLASSIFICATION
+IEEE JBHI Deep Page-by-Page Research Analysis, Pencil Marking Guide & Viva Guide
+================================================================================
+Reference Paper 3: Andrew E. Blanchard, Shang Gao, Hong-Jun Yoon et al. (Oak Ridge National Laboratory / SEER)
+Published in: IEEE Journal of Biomedical and Health Informatics (JBHI), Vol. 26, No. 6, June 2022
+Target MCA Project: Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+================================================================================
+
+==================================================
+PAGE 1
+==================================================
+
+1. Purpose of the Page
+• Why this page exists: Page 1 introduces the IEEE JBHI paper title, author list (Oak Ridge National Lab & NCI SEER Registries), abstract, index terms, and initiates Section I (Introduction). It defines the problem of class imbalance in automated extraction of cancer pathology reports and establishes why rare clinical classes cause deep neural models to overfit.
+• What the authors are trying to explain: The primary challenge in production clinical NLP is that common cancer sites (breast, lung) dominate training datasets while rare sites (larynx) have very few records. Long text sequences combined with scarce samples cause models to overfit. They propose a data-centric training strategy: adding class-associated keyword sequences directly into mini-batch training alongside raw text to constrain the loss function.
+• Importance in overall paper: Establishes the core problem statement, domain context (NCI SEER cancer surveillance), and the fundamental motivation for keyword-augmented mini-batch training.
+
+--------------------------------------------------
+2. Key Findings
+• Production Reliability Barrier: Deep learning models achieve high accuracy overall, but their deployment reliability in real-world production settings is severely hindered by imbalanced datasets where a few majority classes dominate.
+  - What it means: High micro-accuracy masks near-zero accuracy on rare medical conditions.
+  - Why important: Proves that standard overall accuracy is a deceptive metric for clinical AI systems.
+  - Why authors included it: To motivate the need for specialized class imbalance remedies.
+• Cause of Overfitting on Rare Classes: Rare classes combine two compounding vulnerabilities: long raw text documents (thousands of words) and very few training samples (fewer than 50). The model learns spurious token combinations unique to those few documents.
+  - What it means: The network memorizes specific long-text noise instead of learning true diagnostic signals.
+  - Why important: Identifies the root mechanism of model failure in clinical NLP.
+  - Why authors included it: To justify injecting short, idealized keyword sequences as model constraints.
+• Proposed Solution Overview: Assembling class-associated keywords (short phrases/concepts) and injecting them into mini-batches during training, creating a combined loss function $L = L_{docs} + \alpha L_{key}$.
+
+--------------------------------------------------
+3. PENCIL MARKING GUIDE ⭐ (MOST IMPORTANT)
+
+✓ Underline Title: "A Keyword-Enhanced Approach to Handle Class Imbalance in Clinical Text Classification"
+  - Why important: Identifies the core IEEE reference title.
+  - Useful for: Literature Review, Project Report, PPT.
+  - Memorize? Yes.
+✓ Underline Abstract Core Idea: "we present a strategy for incorporating short sequences of text (i.e. keywords) into training to boost model accuracy on rare classes."
+  - Why important: Summarizes the paper's exact technical contribution.
+  - Useful for: Literature Review, Viva, PPT.
+  - Memorize? Yes.
+✓ Box Problem Statement (Section I, Paragraph 2): "for rare classes, the compounding issues of long sequences of raw text along with few training samples can lead to over-fitting and subsequently poor model performance during testing or production"
+  - Why important: States the exact cause of model failure on imbalanced clinical text.
+  - Useful for: Viva, Project Report.
+  - Memorize? Yes (Key viva explanation).
+✓ Circle Index Terms: "Machine learning, natural language processing, medical information systems."
+  - Useful for: Report keywords section.
+✓ Star Section I Opening: "The National Cancer Institute's (NCI) Surveillance, Epidemiology, and End Results (SEER) program..."
+  - Useful for: Domain context background in presentation.
+
+--------------------------------------------------
+4. Important Technical Terms
+• Class Imbalance:
+  - Meaning: Severe disproportion in the number of training samples across target categories.
+  - Purpose: Describes dataset skewness where dominant classes shadow rare classes.
+  - Simple example: 10,000 breast cancer reports vs 20 larynx cancer reports.
+  - Relation to paper: The central problem tackled by the paper.
+  - Relation to MY project: Directly mirrors class imbalance in the Kaggle/MTSamples dataset (Surgery vs Podiatry).
+• Electronic Pathology Report:
+  - Meaning: Unstructured free-text narrative written by pathologists describing tissue biopsies.
+  - Purpose: Primary input text containing diagnostic codes, tumor site, subsite, and histology.
+  - Relation to paper: The target dataset domain.
+  - Relation to MY project: Same unstructured clinical text structure as medical transcriptions.
+• Oversampling / Undersampling:
+  - Meaning: Resampling techniques duplicating minority samples or deleting majority samples.
+  - Purpose: Traditional data-level remedies for class imbalance.
+  - Relation to paper: Cited as existing methods that fail to add token diversity.
+  - Relation to MY project: Contextual baseline knowledge.
+• Loss Function Constraints:
+  - Meaning: Adding mathematical penalty terms to the loss function to guide optimization.
+  - Purpose: Forces the neural network to satisfy domain rules during backpropagation.
+  - Relation to paper: Keywords act as additional constraints in the mini-batch loss.
+
+--------------------------------------------------
+5. Figures, Tables and Equations
+(Page 1 contains no figures or tables; Section I text).
+
+--------------------------------------------------
+6. Important Numbers
+• 2022: Publication year in *IEEE JBHI* (Vol. 26, No. 6, June 2022).
+• 10.1109/JBHI.2022.3141976: IEEE Digital Object Identifier (DOI).
+
+--------------------------------------------------
+7. Relation to MY PROJECT
+• Directly Used: Class imbalance problem statement and evaluation metrics (Micro vs Macro F1).
+• Partially Related: Concept of using keyword/n-gram features to boost rare class classification.
+• Only Background Knowledge: NCI SEER pathology registry processing.
+• Why: Both projects tackle imbalanced medical text classification. While this paper injects keywords into CNN mini-batch loss, your project uses TF-IDF n-gram feature weighting with an Ensemble Classifier.
+
+--------------------------------------------------
+8. Possible Viva Questions
+• Q1 (Basic): What is the main research problem addressed in this IEEE paper?
+  - Model Answer: Handling class imbalance in clinical text classification, specifically preventing neural models from overfitting on rare classes when training on long pathology reports.
+• Q2 (Technical): Why does class weighting fail to solve overfitting on rare text classes?
+  - Model Answer: Class weighting increases the loss penalty for misclassifying rare samples, but it cannot create token diversity or teach the model which specific short segments within a 1,000-word document actually define the rare class.
+• Q3 (Conceptual): What is the SEER program mentioned on Page 1?
+  - Model Answer: The NCI Surveillance, Epidemiology, and End Results program, which collects cancer incidence and survival data from population-based cancer registries across the United States.
+
+--------------------------------------------------
+9. One-Minute Revision Notes
+• IEEE JBHI 2022 paper by Blanchard et al. (Oak Ridge National Lab).
+• Target: Cancer pathology report classification across site, subsite, and histology.
+• Problem: Class imbalance + long raw text = severe overfitting on rare classes.
+• Existing fixes (oversampling, class weights) fail due to lack of token diversity.
+• Innovation: Inject short keyword sequences into mini-batch training to constrain loss ($L = L_{docs} + \alpha L_{key}$).
+
+==================================================
+PAGE 2
+==================================================
+
+1. Purpose of the Page
+• Why this page exists: Page 2 presents the detailed rationale against class weighting/sampling, introduces the 2 automated keyword extraction methods (UMLS CUIs vs NPMI), defines **Equation 1: Normalized Pointwise Mutual Information (NPMI)**, and details the 6-step mini-batch training algorithm.
+• What the authors are trying to explain: How to automatically extract keywords without manual labor (using external medical ontologies or corpus statistics) and how to blend keyword loss with document loss ($L = L_{docs} + \alpha L_{key}$) using hyperparameters $K=5$ and $\alpha=1.0$.
+• Importance in overall paper: The core algorithmic and mathematical methodology page detailing keyword generation and training integration.
+
+--------------------------------------------------
+2. Key Findings
+• Limitations of Class Weighting (CW): CW makes predictions of rare classes more likely, but does NOT improve the model's ability to selectively identify meaningful text segments out of long sequences.
+  - What it means: CW forces higher probability outputs without improving feature discrimination.
+  - Why important: Explains why CW boosts macro F1 only at the cost of destroying micro F1.
+• Two Automated Keyword Generation Approaches:
+  1. **Ontology-Based (CUIs):** Extract Concept Unique Identifiers (CUIs) from NCI Thesaurus (NCIt) and ICD-O-3 mapped to Unified Medical Language System (UMLS).
+  2. **Corpus-Based (NPMI):** Use Normalized Pointwise Mutual Information (NPMI) to rank top 10 unigrams/bigrams per class directly from raw training text.
+  - What it means: Keywords can be gathered automatically either from formal medical databases or purely from statistical text data!
+• NPMI Mathematical Formulation (Equation 1):
+  $$\text{NPMI} = \frac{-1}{\log(p(x,y))} \log\left(\frac{p(x,y)}{p(x)p(y)}\right)$$
+  - Normalizes standard PMI to $[-1, +1]$ scale, where $+1$ means token $x$ and class $y$ always co-occur.
+• Six-Step Keyword Mini-Batch Training Update:
+  1. Calculate document cross-entropy loss $L_{docs}$.
+  2. Sample $N_C$ classes.
+  3. Sample $K$ keyword segments per class.
+  4. Concatenate $K$ segments into $N_C$ keyword documents.
+  5. Calculate keyword loss $L_{key}$.
+  6. Backpropagate total combined loss: $L = L_{docs} + \alpha L_{key}$.
+• Optimal Hyperparameters: $K = 5$ keyword segments per class and loss weight $\alpha = 1.0$.
+
+--------------------------------------------------
+3. PENCIL MARKING GUIDE ⭐ (MOST IMPORTANT)
+
+✓ Underline Limitation of Class Weights (Column 1): "Class weights may make the prediction of the rare class more likely... but the change in weights does not improve the ability of the model to selectively identify meaningful segments"
+  - Why important: Excellent viva justification for why simple class weighting is insufficient.
+  - Useful for: Viva, Project Report.
+  - Memorize? Yes.
+✓ **MUST MARK EQUATION 1:** Box $\text{NPMI} = \frac{-1}{\log(p(x,y))} \log\left(\frac{p(x,y)}{p(x)p(y)}\right)$.
+  - Useful for: Report equations, Viva.
+  - Memorize? Yes (NPMI formula).
+✓ **BOX THE 6-STEP TRAINING ALGORITHM (Column 2):** Put a large bracket around steps 1) through 6) under Section II-A.
+  - Useful for: PPT, Report, Viva.
+  - Memorize? Yes (Core workflow).
+✓ Underline Hyperparameter Values: "$K=5$ and $\alpha=1$ are used for all reported results".
+  - Useful for: Report hyperparameter section.
+
+--------------------------------------------------
+4. Important Technical Terms
+• Concept Unique Identifier (CUI):
+  - Meaning: Standardized 8-character alphanumeric code assigned to a specific medical concept in the UMLS Metathesaurus.
+  - Purpose: Maps diverse clinical synonyms to a single canonical concept code.
+  - Simple example: C0018681 represents "Heart Failure".
+  - Relation to paper: Source of ontology keywords.
+  - Relation to MY project: Conceptually similar to mapping text to standardized ICD categories.
+• NPMI (Normalized Pointwise Mutual Information):
+  - Meaning: An association metric quantifying how much more often a word and a class occur together than expected by chance, normalized to $[-1, +1]$.
+  - Purpose: Extracts discriminative class keywords purely from statistical corpus occurrences.
+  - Simple example: "Cholecystectomy" has NPMI near $+1.0$ for class 'Gallbladder'.
+  - Relation to paper: Corpus-based keyword extraction algorithm.
+• Mini-Batch Training Loss ($L = L_{docs} + \alpha L_{key}$):
+  - Meaning: Combined objective function summing document loss and weighted keyword loss.
+  - Purpose: Forces backpropagation gradients to update weights based on both full notes and short keywords.
+  - Relation to paper: Core optimization equation.
+
+--------------------------------------------------
+5. Figures, Tables and Equations
+• **Equation 1: NPMI Formula**
+  - *What it represents:* Mathematical definition of Normalized Pointwise Mutual Information.
+  - *How to explain during presentation:*
+    "Equation 1 calculates NPMI between word $x$ and class $y$. By dividing Joint Probability $p(x,y)$ by independent probabilities $p(x)p(y)$ and normalizing via $\log p(x,y)$, we get a score from -1 to +1 highlighting top class keywords."
+
+--------------------------------------------------
+6. Important Numbers
+• $K = 5$: Optimal number of keyword segments sampled per class per mini-batch.
+• $\alpha = 1.0$: Optimal weighting factor balancing keyword loss $L_{key}$ and document loss $L_{docs}$.
+• $N_C = 128$: Mini-batch size (equal to 128 pathology reports).
+• 10: Top number of unigrams and bigrams retained by NPMI per class.
+
+--------------------------------------------------
+7. Relation to MY PROJECT
+• Directly Used: Concept of mutual information / TF-IDF for identifying top discriminative n-grams per class.
+• Partially Related: Blending short keyword signals with full document text.
+• Only Background Knowledge: UMLS CUI ontology mapping.
+• Why: Your project uses TF-IDF n-grams to rank top discriminative terms per specialty, which operates on the exact same statistical principle as NPMI.
+
+--------------------------------------------------
+8. Possible Viva Questions
+• Q1 (Basic): What are the two methods used to generate keywords in this paper?
+  - Model Answer: 1. Ontology-based extraction using UMLS Concept Unique Identifiers (CUIs) from NCIt/ICD-O-3, and 2. Corpus-based statistical extraction using Normalized Pointwise Mutual Information (NPMI).
+• Q2 (Technical): Write down the combined loss function used during mini-batch training.
+  - Model Answer: $L = L_{docs} + \alpha L_{key}$, where $L_{docs}$ is the cross-entropy loss from raw pathology reports, $L_{key}$ is cross-entropy loss from sampled keyword documents, and $\alpha=1.0$ is the weighting hyperparameter.
+• Q3 (Conceptual): What is the advantage of NPMI keywords over UMLS CUI keywords?
+  - Model Answer: NPMI is fully automated and corpus-driven, requiring no external medical ontologies or expert dictionaries. It can be applied to any text dataset where CUIs are unavailable.
+
+--------------------------------------------------
+9. One-Minute Revision Notes
+• Two keyword sources: External UMLS CUIs (ontological) vs NPMI (corpus statistics).
+• NPMI (Eq 1) ranks top 10 unigrams/bigrams per class on a $[-1, +1]$ scale.
+• Mini-batch loss $L = L_{docs} + \alpha L_{key}$ forces network to learn short key phrases.
+• Optimal hyperparameters: $K=5$ keyword segments per class, loss weight $\alpha=1.0$, batch size $N_C=128$.
+
+==================================================
+PAGE 3
+==================================================
+
+1. Purpose of the Page
+• Why this page exists: Page 3 details Section II-B (Class Weights baseline math), Section II-C (Datasets descriptions), **TABLE I: Development Dataset Descriptions**, **TABLE II: Production Dataset Descriptions**, Section II-D (Model Architecture: 1D CNN setup), and Section II-E (Performance Metrics: Equations 3–6).
+• What the authors are trying to explain: The experimental controls: class weighting baseline formula (Equation 2), the two pathology datasets (Development = 177k reports, Production = 4.4M reports across 5 SEER registries), the 1D CNN architecture parameters, and evaluation metrics (Micro vs Macro F1).
+• Importance in overall paper: Establishes dataset scale, model architecture parameters, and formal performance evaluation metrics.
+
+--------------------------------------------------
+2. Key Findings
+• Class Weights Baseline Formula (Equation 2):
+  $$w_i = \log\left(\frac{\mu \sum c_i}{c_i}\right)$$
+  - Inverse class frequency log-weighting with hyperparameter $\mu=0.15$.
+• Two Massive Cancer Datasets Evaluated:
+  - **Development Dataset (Table I):** 177,185 pathology reports from Kentucky (KCR) and Louisiana (LTR). Evaluates 3 tasks: Site (70 classes), Subsite (315 classes), Histology (534 classes).
+  - **Production Dataset (Table II):** **4,404,942 pathology reports** from all 5 SEER registries (LTR, KCR, UCR, NJSCR, SCR). Evaluates Site (70 classes), Subsite (328 classes), Histology (645 classes).
+  - IRB Protocol DOE000619 approval.
+• 1D CNN Model Architecture & Parameters (Section II-D):
+  - Trainable 300-dim word embeddings initialized with Word2Vec pretrained on train set.
+  - Three parallel 1D convolution layers with 300 filters each and window sizes of 3, 4, 5 words.
+  - Maxpool-over-time concatenated into a **900-dimensional document embedding**.
+  - Softmax classification layer. Batch size 128, Adam optimizer (lr=1E-4), early stopping 5 epochs on Tesla P100 GPU in PyTorch.
+• Performance Metrics (Equations 3–6):
+  - Defines Precision, Recall, Micro F1, and Macro F1 (Equation 6: $\text{Macro F1} = \frac{1}{|C|} \sum F1(C_i)$).
+  - **Macro F1 is the critical metric** because it treats rare classes equally with dominant classes.
+
+--------------------------------------------------
+3. PENCIL MARKING GUIDE ⭐ (MOST IMPORTANT)
+
+✓ **MUST BOX TABLE I & TABLE II:** Outline both dataset tables.
+  - Table I (Dev): 177,185 reports | Site: 70 labels | Subsite: 315 labels | Histology: 534 labels.
+  - Table II (Prod): 4,404,942 reports | Site: 70 labels | Subsite: 328 labels | Histology: 645 labels.
+  - Useful for: PPT, Report, Viva.
+  - Memorize? Yes (Dataset sizes).
+✓ Underline CNN Architecture Specs (Column 2): "300 filters each and window sizes of 3, 4, and 5... concatenated, resulting in a document embedding vector of size 900."
+  - Useful for: Report architecture section, Viva.
+  - Memorize? Yes.
+✓ **MUST MARK EQUATION 6:** Box Macro F1 formula $\text{Macro F1} = \frac{1}{|C|} \sum F1(C_i)$.
+  - Useful for: Viva, Report.
+  - Memorize? Yes.
+✓ Highlight Macro F1 Justification: "macro-averaged F1 is particularly useful for assessing severely imbalanced data corpus because it equally weighs the performance on each class including the rare classes."
+  - Useful for: Viva explanation of why Macro F1 matters.
+
+--------------------------------------------------
+4. Important Technical Terms
+• 1D Convolutional Neural Network (1D CNN):
+  - Meaning: Neural network applying 1D sliding filter kernels over word embedding sequences.
+  - Purpose: Captures local n-gram text patterns (3-gram, 4-gram, 5-gram phrases).
+  - Simple example: Sliding a 3-word window over "invasive ductal carcinoma".
+  - Relation to paper: Primary model architecture evaluated.
+  - Relation to MY project: Serves as a baseline deep learning model for text classification.
+• Maxpool-over-time:
+  - Meaning: Pooling operation taking the maximum scalar value across the entire sentence length for each feature filter.
+  - Purpose: Extracts the single most prominent n-gram feature regardless of position.
+  - Relation to paper: Reduces variable-length conv outputs to fixed 900-dim vector.
+• Macro F1 vs Micro F1:
+  - Meaning: Micro F1 aggregates all instances globally (dominated by large classes); Macro F1 averages F1 scores per class independently (equally weights rare classes).
+  - Purpose: Macro F1 detects whether rare classes are actually being learned.
+  - Relation to paper: Core evaluation criteria.
+
+--------------------------------------------------
+5. Figures, Tables and Equations
+• **Table I & Table II: Dataset Descriptions**
+  - *What they represent:* Breakdown of training, validation, test docs and unique class label counts for Dev (177k) and Production (4.4M) datasets.
+• **Equation 6: Macro F1**
+  - *What it represents:* Arithmetic mean of individual class F1 scores across all $|C|$ categories.
+
+--------------------------------------------------
+6. Important Numbers
+• 4,404,942: Production dataset size (pathology reports across 5 registries).
+• 177,185: Development dataset size (pathology reports across 2 registries).
+• 645: Maximum number of class labels evaluated (Histology task on production data).
+• 900: Dimension of concatenated document embedding vector ($300 \times 3$ conv layers).
+• 3, 4, 5: Convolutional filter window sizes (representing 3-grams, 4-grams, 5-grams).
+
+--------------------------------------------------
+7. Relation to MY PROJECT
+• Directly Used: Evaluation metric definitions (Micro F1 vs Macro F1) and multi-class target formulations.
+• Partially Related: CNN n-gram sliding window concepts (3, 4, 5 words match n-gram ranges in TF-IDF).
+• Only Background Knowledge: SEER cancer registry dataset scale (4.4M records).
+• Why: Understanding why Macro F1 is mandatory for imbalanced multi-class problems directly supports your project's evaluation setup.
+
+--------------------------------------------------
+8. Possible Viva Questions
+• Q1 (Basic): What is the difference between Micro F1 and Macro F1?
+  - Model Answer: Micro F1 pools all test instances together, giving equal weight to every *document* (dominated by majority classes). Macro F1 computes F1 independently per class and averages them, giving equal weight to every *class* regardless of size.
+• Q2 (Technical): Describe the CNN architecture used in Section II-D.
+  - Model Answer: It uses 300-dim pretrained Word2Vec word embeddings fed into three parallel 1D convolution layers with 300 filters each (window sizes 3, 4, 5). Maxpool-over-time concatenates filter outputs into a 900-dim document vector, passed to a Softmax layer.
+• Q3 (Conceptual): How many classes are evaluated in the Production Dataset Histology task?
+  - Model Answer: 645 unique histology classes across 4.4 million pathology reports.
+
+--------------------------------------------------
+9. One-Minute Revision Notes
+• Development Dataset = 177,185 reports; Production Dataset = 4,404,942 reports.
+• 3 Tasks: Site (70 classes), Subsite (315-328 classes), Histology (534-645 classes).
+• CNN Model: 300d Word2Vec -> 3 parallel 1D Conv (sizes 3, 4, 5) -> Maxpool -> 900d Doc Vector -> Softmax.
+• Macro F1 (Eq 6) is the key metric because it treats rare classes equally with majority classes.
+
+==================================================
+PAGE 4
+==================================================
+
+1. Purpose of the Page
+• Why this page exists: Page 4 displays **Figure 1: CNN model performance on development dataset**, **TABLE III: Test Micro and Macro F1 Scores for CNN on Development Dataset**, Section III (Results), Section III-A (Impact of Keywords on F1 Scores), and Section III-B (Impact of Keywords on Model Scores).
+• What the authors are trying to explain: Empirical proof that CNN + CUIs boosts BOTH Micro and Macro F1 on rare classes without degrading majority classes, whereas Class Weights (CW) boosts Macro F1 at the expense of dropping Micro F1.
+• Importance in overall paper: The primary comparative result page proving the superiority of keyword-enhanced training over class weighting.
+
+--------------------------------------------------
+2. Key Findings
+• Figure 1 Breakdown (Class Frequency vs Test Accuracy):
+  - Top row: Fraction of classes vs training sample bins ($0\text{--}50$, $50\text{--}500$, $500\text{--}5000$, $>5000$). Shows Histology has the highest fraction of rare classes ($<50$ samples).
+  - Bottom row: Test accuracy comparison across bins for Baseline CNN (blue), CNN + CUIs (green), and CNN + Class Weights (red).
+  - **Key Observation:** CNN + CUIs (green) significantly boosts accuracy on rare classes ($<50$ samples) while maintaining high performance on well-represented classes ($>5000$ samples). CNN + Class Weights (red) boosts rare classes but **hurts well-represented classes**!
+• Table III Results Summary (Development Dataset):
+  - **Site Task:** Baseline CNN (93.62 Micro / 69.81 Macro) -> **CNN + CUIs (93.67 Micro / 71.31 Macro)** -> CNN + CW (93.51 Micro / 72.07 Macro).
+  - **Subsite Task:** Baseline CNN (78.22 Micro / 36.74 Macro) -> **CNN + CUIs (78.46 Micro / 39.65 Macro)** -> CNN + CW (77.40 Micro / 38.35 Macro).
+  - **Histology Task (Most Imbalanced):** Baseline CNN (84.01 Micro / 37.52 Macro) -> **CNN + CUIs (84.53 Micro / 45.42 Macro - HUGE GAIN!)** -> CNN + CW (82.76 Micro / 41.21 Macro).
+• Critical Performance Takeaway: Keywords (CUIs) achieve a massive **+7.9% boost in Macro F1** on Histology while *increasing* Micro F1 by +0.52%. Class Weights drops Micro F1 by -1.25%!
+
+--------------------------------------------------
+3. PENCIL MARKING GUIDE ⭐ (MOST IMPORTANT)
+
+✓ **MUST DRAW A STAR BESIDE FIGURE 1:** Mark *Fig. 1. CNN model performance on the development dataset*.
+  - Why important: Graphically proves keywords boost rare classes without hurting majority classes.
+  - Useful for: PPT slide, Viva explanation.
+  - Memorize? Yes.
+✓ **MUST BOX TABLE III:** Outline *TABLE III: TEST MICRO AND MACRO F1 SCORES FOR CNN ON THE DEVELOPMENT DATASET*.
+  - Useful for: Report results section, PPT, Viva.
+  - Memorize? Yes (Histology numbers: 37.52 -> 45.42 Macro F1).
+✓ **HIGHLIGHT THE HISTOLOGY ROW IN TABLE III:** Circle **CNN + CUIs Histology -> Micro: 84.53 / Macro: 45.42** (+7.9% Macro F1 jump!).
+✓ Underline Class Weight Limitation (Column 2): "the increase in macro F1, is accompanied by a decrease in micro F1. Depending on the application, a drop in micro F1 may not be acceptable."
+  - Useful for: Viva defense.
+
+--------------------------------------------------
+4. Important Technical Terms
+• Bigram Output Probability Analysis:
+  - Meaning: Evaluating the trained model's softmax probability output when fed short 2-word sequences (bigrams).
+  - Purpose: Diagnoses whether the model learned meaningful clinical concepts or random text noise.
+  - Simple example: Scoring "cornea eye" vs "orbital eye" for rare subsite class C69.1.
+  - Relation to paper: Method used in Section III-B to inspect model decision mechanics.
+  - Relation to MY project: Similar to inspecting top feature weights in TF-IDF / Logistic Regression.
+• Data-Centric AI:
+  - Meaning: Improving ML system performance by systematically engineering and enriching training data rather than modifying neural network code.
+  - Purpose: Core modern paradigm in machine learning research.
+  - Relation to paper: Adding keywords is explicitly defined as a data-centric approach.
+
+--------------------------------------------------
+5. Figures, Tables and Equations
+• **Figure 1: CNN Performance vs Sample Bins**
+  - *What it represents:* 6-panel grid comparing class distributions (top) and test accuracy across sample size bins (bottom).
+  - *How to explain during presentation:*
+    "Figure 1 proves why keyword training is superior. The green bars (CNN + CUIs) increase accuracy for rare classes with under 50 samples while staying equal on majority classes. Red bars (Class Weights) increase rare class accuracy but drop accuracy on majority classes."
+• **Table III: Dev Dataset Results**
+  - *What it represents:* Micro and Macro F1 comparative results across Site, Subsite, and Histology tasks.
+
+--------------------------------------------------
+6. Important Numbers
+• 45.42: Macro F1 achieved by CNN + CUIs on Histology task (vs 37.52 baseline -> **+7.9% improvement**).
+• 84.53: Micro F1 achieved by CNN + CUIs on Histology task (vs 84.01 baseline -> **+0.52% improvement**).
+• <50: Threshold defining rare sample class bins in Figure 1.
+• >5000: Threshold defining majority sample class bins in Figure 1.
+
+--------------------------------------------------
+7. Relation to MY PROJECT
+• Directly Used: Benchmarking multi-class F1 improvements under class imbalance.
+• Partially Used: Analyzing top bigram feature scores per category.
+• Only Background Knowledge: 1D CNN maxpool scoring.
+• Why: Table III provides empirical proof that data-centric term enhancement boosts Macro F1 significantly, justifying your project's TF-IDF n-gram feature selection strategy.
+
+--------------------------------------------------
+8. Possible Viva Questions
+• Q1 (Basic): What is the main finding shown in Table III for the Histology task?
+  - Model Answer: Adding CUI keywords increased Macro F1 from 37.52 to 45.42 (+7.9% gain) while also improving Micro F1 from 84.01 to 84.53.
+• Q2 (Technical): Why does Class Weighting (CW) cause Micro F1 to decrease in Table III?
+  - Model Answer: Class weighting forces higher loss penalties on rare classes, causing the model to over-predict rare labels on majority class documents, generating false positives that degrade overall Micro F1.
+• Q3 (Conceptual): What is a 'data-centric' approach to machine learning?
+  - Model Answer: Focusing on systematically improving, augmenting, and structuring the training data rather than endlessly modifying neural network hyper-parameters or model architectures.
+
+--------------------------------------------------
+9. One-Minute Revision Notes
+• Figure 1: Keywords (CUIs) boost rare classes (<50 samples) WITHOUT hurting majority classes (>5000 samples).
+• Class Weights (CW) boost rare classes BUT hurt majority classes (dropping Micro F1).
+• Table III Histology: CNN + CUIs jumps Macro F1 from 37.52 to 45.42 (+7.9%) and Micro F1 from 84.01 to 84.53.
+• Keyword training is a **Data-Centric AI** approach.
+
+==================================================
+PAGE 5
+==================================================
+
+1. Page Purpose
+• Page 5 presents **Figure 2: Maximum model output probability for all bigrams in subsite task**, **TABLE IV: Example Bigram Scores for a Rare Subsite Class (C69.1)**, Section III-C (Production Applications), and text explaining why keyword training enables models to learn high-confidence diagnostic phrases.
+• What the authors are trying to explain: How keyword training fixes model decision mechanics quantitatively. For rare class C69.1 (Cornea), standard CNN assigns top bigrams a tiny max probability of 0.097 (unconfident), whereas CNN + CUI assigns relevant bigrams ("cornea eye") a high probability of 0.787!
+• Importance in overall paper: Provides qualitative visual and bigram score evidence explaining *why* keyword training works inside neural vector space.
+
+--------------------------------------------------
+2. Key Findings
+• Bigram Probability Distribution Shifts (Figure 2):
+  - Shows maximum output probability for all corpus bigrams plotted against sample counts.
+  - **Baseline CNN:** Rare classes have near-zero max bigram probabilities (points clustered near y=0). The model cannot identify any confident short phrase.
+  - **CNN + CUI:** Rare class bigrams shift vertically upwards toward y=1.0! The model learns confident, highly specific key phrases.
+  - **CNN + CW:** Points remain near y=0! Class weights do NOT fix bigram confidence.
+• Table IV Case Study (Rare Subsite C69.1 Cornea):
+  - **Baseline CNN Top Bigrams:** 'orbital eye' (0.097), 'carcinoma eye' (0.089) -> Generic eye terms, max prob < 0.10.
+  - **CNN + CW Top Bigrams:** 'carcinoma eye' (0.101), 'accompanied eye' (0.089) -> Still generic, max prob ~0.10.
+  - **CNN + CUI Top Bigrams:** **'cornea eye' (0.787)**, **'accompanied cornea' (0.652)**, **'mass cornea' (0.612)** -> Highly specific cornea terms, max prob near 0.80!
+• Extension to Production Scale (Section III-C): Introduces corpus-based NPMI keywords to scale the approach to 4.4 million production reports where external CUI dictionaries may be missing.
+
+--------------------------------------------------
+3. PENCIL MARKING GUIDE ⭐ (MOST IMPORTANT)
+
+✓ **MUST DRAW A STAR BESIDE FIGURE 2:** Mark *Fig. 2. For each class in the subsite task, the maximum model output probability...*
+  - Why important: Visually shows bigram scores shifting upward for CNN + CUI.
+  - Useful for: PPT slide, Viva demonstration.
+  - Memorize? Yes.
+✓ **MUST BOX TABLE IV:** Outline *TABLE IV: EXAMPLE BIGRAM SCORES FOR A RARE SUBSITE CLASS (C69.1)*.
+  - Useful for: PPT, Report, Viva.
+  - Memorize? Yes (Cornea eye probability jump: 0.097 -> 0.787).
+✓ Underline Key Insight (Column 1): "For the CNN model, classes with few training samples have a relatively low max bigram probability... The addition of keywords, however, enables the model to focus on specific bigrams without the need for many training samples."
+  - Useful for: Viva explanation of mechanism.
+  - Memorize? Yes.
+
+--------------------------------------------------
+4. Important Technical Terms
+• Diagnostic Bigram Score:
+  - Meaning: The maximum output probability assigned by a trained model to a 2-word phrase across all target classes.
+  - Purpose: Quantifies how confidently a model associates a specific phrase with a diagnosis.
+  - Simple example: Scoring "cornea eye" for subsite class C69.1 (Cornea).
+  - Relation to paper: Demonstrated in Table IV and Figure 2.
+• Production-Scale Corpus:
+  - Meaning: Massive real-world dataset containing millions of records (4.4M pathology reports).
+  - Purpose: Tests whether experimental findings scale to production deployment.
+  - Relation to paper: Section III-C tests NPMI keywords on production data.
+
+--------------------------------------------------
+5. Figures, Tables and Equations
+• **Figure 2: Max Bigram Probability vs Sample Count**
+  - *What it represents:* 3 scatter plots showing max bigram probabilities for CNN, CNN+CUI, and CNN+CW.
+  - *How to explain during presentation:*
+    "Figure 2 proves why keywords work. For rare classes with few samples, standard CNN has max bigram probabilities near 0. Adding CUI keywords pushes bigram probabilities up to 0.8, showing the model learned confident key terms. Class weights (red) fail to shift bigram probabilities."
+• **Table IV: Bigram Scores for Rare Class C69.1 (Cornea)**
+  - *What it represents:* Top 5 bigrams and model scores for rare subsite C69.1 under CNN, CNN+CUI, and CNN+CW.
+
+--------------------------------------------------
+6. Important Numbers
+• 0.097: Top bigram probability for rare class C69.1 under baseline CNN ('orbital eye').
+• 0.787: Top bigram probability for rare class C69.1 under CNN + CUI ('cornea eye' -> **8x confidence jump!**).
+• 4,000,000+: Number of pathology reports in production dataset.
+
+--------------------------------------------------
+7. Relation to MY PROJECT
+• Directly Used: Inspecting top n-gram feature coefficients per class to verify model learning.
+• Partially Related: Using corpus mutual information / frequency to find domain phrases.
+• Only Background Knowledge: Deep learning softmax probability outputs for 2-token inputs.
+• Why: Table IV demonstrates that inspecting top n-grams validates classifier quality, which matches how you inspect top TF-IDF feature weights in your MCA project.
+
+--------------------------------------------------
+8. Possible Viva Questions
+• Q1 (Basic): What does Table IV demonstrate for the rare subsite class C69.1 (Cornea)?
+  - Model Answer: It shows baseline CNN assigns generic eye bigrams unconfident scores (<0.10), while CNN + CUI assigns highly specific terms ('cornea eye') high confidence scores (0.787).
+• Q2 (Technical): Why do class weights fail to increase bigram confidence in Figure 2?
+  - Model Answer: Class weights alter the loss multiplier during backpropagation but do not provide explicit short keyword examples. The network still lacks the token diversity needed to isolate key bigrams from long documents.
+
+--------------------------------------------------
+9. One-Minute Revision Notes
+• Figure 2: CNN + CUI shifts rare class bigram probabilities from 0 to near 1.0.
+• Table IV Case Study (C69.1 Cornea): CNN top bigram = 'orbital eye' (0.097); CNN + CUI top bigram = 'cornea eye' (0.787).
+• Class weights do NOT improve bigram confidence.
+• NPMI enables scaling keyword extraction to 4.4 million production reports without manual dictionaries.
+
+==================================================
+PAGE 6
+==================================================
+
+1. Page Purpose
+• Page 6 displays **TABLE V: Example Bigram Scores for a Well-Represented Subsite Class (C75.1)**, **TABLE VI: Test Micro and Macro F1 Scores for CNN Trained on Production Dataset with Over 4M Pathology Reports**, Section IV (Discussion), Section V (Conclusion), and Appendix.
+• What the authors are trying to explain: Keywords do not alter probabilities for well-represented classes (Table V), NPMI keywords successfully boost Macro F1 on 4.4 million production reports (Table VI), model error debugging using bigrams, and overall conclusions.
+• Importance in overall paper: Validates production scalability on 4.4M reports and concludes the IEEE paper.
+
+--------------------------------------------------
+2. Key Findings
+• Table V Breakdown (Well-Represented Subsite C75.1 Pituitary Gland):
+  - Top bigram 'adenoma pituitary' gets high score across ALL models: CNN (0.912), CNN + CUI (0.961), CNN + CW (0.943).
+  - **Takeaway:** Keywords do NOT distort or disrupt predictions for well-represented classes!
+• Table VI Production Results (4.4 Million Pathology Reports):
+  - **Site Task:** CNN (92.82/70.79) -> **CNN + CUIs (92.82/71.46)** -> CNN + NPMI (92.79/71.04).
+  - **Subsite Task:** CNN (69.99/34.80) -> **CNN + CUIs (70.14/38.34)** -> CNN + NPMI (69.78/37.71).
+  - **Histology Task (645 Classes):** CNN (79.46/35.80) -> **CNN + CUIs (79.40/39.09)** -> **CNN + NPMI (79.30/38.67 - NPMI WIN!)**.
+  - **Takeaway:** Automated corpus-based NPMI keywords provide a substantial Macro F1 boost (+2.87% on Histology) on 4.4M reports without needing external medical dictionaries!
+• Model Error Debugging (Section IV): Tracking top bigrams provides a quantitative mechanism to debug model errors in production. If top bigrams are generic, keywords can be introduced to guide model focus.
+• Bayesian Interpretation: Keyword training acts as a Bayesian prior distribution for conditional class probabilities.
+
+--------------------------------------------------
+3. PENCIL MARKING GUIDE ⭐ (MOST IMPORTANT)
+
+✓ Mark Table V: Shows keywords do not distort majority class predictions ('adenoma pituitary' ~0.91-0.96).
+✓ **MUST BOX TABLE VI:** Outline *TABLE VI: TEST MICRO AND MACRO F1 SCORES FOR CNN TRAINED ON PRODUCTION DATASET WITH OVER 4M PATHOLOGY REPORTS*.
+  - Useful for: PPT, Report, Viva.
+  - Memorize? Yes (Production scale results).
+✓ **HIGHLIGHT NPMI RESULT IN TABLE VI:** Circle **CNN + NPMI Histology -> 79.30 Micro / 38.67 Macro** (proves automated NPMI works on 4.4M reports).
+✓ Underline Debugging Benefit (Section IV, Paragraph 2): "the keywords and short phrases can also serve as a mechanism to debug model errors. By determining the top bigrams... a quick inspection can show if appropriate patterns are being mined"
+  - Useful for: Viva explanation of practical software engineering benefits.
+✓ **MUST MARK CONCLUSION (Section V):** Underline *"Using a CNN model for text classification, we have shown that model performance on rare classes can be substantially improved by introducing keywords and short phrases for each class into the training set."*
+
+--------------------------------------------------
+4. Important Technical Terms
+• Model Debugging via Bigrams:
+  - Meaning: Inspecting the highest scoring 2-word phrases assigned by a classifier to verify if it learned valid domain rules.
+  - Purpose: Software engineering technique for auditing black-box AI models.
+  - Relation to paper: Proposed in Section IV as a production debugging workflow.
+  - Relation to MY project: Directly aligns with inspecting top TF-IDF n-gram features in your web app backend.
+• Bayesian Prior Distribution:
+  - Meaning: Pre-existing background probability distribution incorporated before observing new data ($P(\theta|X) \propto P(X|\theta) P(\theta)$).
+  - Purpose: Incorporates prior domain knowledge into statistical learning.
+  - Relation to paper: Section IV interprets keyword injection as providing a prior distribution for class conditional probabilities.
+
+--------------------------------------------------
+5. Figures, Tables and Equations
+• **Table V: Bigram Scores for Majority Class C75.1 (Pituitary Gland)**
+  - *What it represents:* Top 5 bigrams and scores for a well-represented class showing stability across models.
+• **Table VI: Production Scale Results (4.4M Reports)**
+  - *What it represents:* Micro and Macro F1 results across 3 tasks comparing CNN, CNN+CUI, CNN+CW, and CNN+NPMI on 4.4M reports.
+
+--------------------------------------------------
+6. Important Numbers
+• 4,404,942: Total production dataset reports evaluated in Table VI.
+• +3.54%: Macro F1 gain on Production Subsite task using CUI keywords (34.80 -> 38.34).
+• +2.87%: Macro F1 gain on Production Histology task using automated NPMI keywords (35.80 -> 38.67).
+
+--------------------------------------------------
+7. Relation to MY PROJECT
+• Directly Used: Using n-gram keyword inspection for model auditing and debugging.
+• Partially Used: Comparing automated corpus statistics (NPMI/TF-IDF) vs predefined dictionaries.
+• Only Background Knowledge: Bayesian prior interpretations of neural loss functions.
+• Why: Table VI proves that corpus-based statistical term selection (NPMI) works at scale, validating your project's use of corpus-based TF-IDF feature selection.
+
+--------------------------------------------------
+8. Possible Viva Questions
+• Q1 (Basic): What do the results in Table VI prove about NPMI keywords on production data?
+  - Model Answer: They prove that automated, corpus-based NPMI keywords boost Macro F1 across all 3 tasks on 4.4 million reports without requiring any manual or external medical ontology dictionaries.
+• Q2 (Technical): How can bigram probability scoring be used to debug machine learning models in production?
+  - Model Answer: By scoring all corpus bigrams, engineers can inspect if the top-ranked phrases for a class represent true medical concepts or irrelevant noise, allowing targeted keyword introduction to fix errors.
+• Q3 (Conceptual): How does the paper relate keyword training to Bayesian statistical modeling?
+  - Model Answer: Supplying known class keywords acts as an informative prior distribution for conditional class probabilities $P(\text{Text}|\text{Class})$, guiding neural network optimization toward valid decision spaces.
+
+--------------------------------------------------
+9. One-Minute Revision Notes
+• Table V: Keywords do NOT disrupt well-represented classes ('adenoma pituitary' stays >0.91).
+• Table VI (4.4M reports): Automated NPMI keywords boost Histology Macro F1 from 35.80 to 38.67 without external dictionaries.
+• Bigram scoring provides a quantitative method to **debug model errors** in production.
+• Keyword injection acts as a **Bayesian prior** for conditional class probabilities.
+
+==================================================
+PAGE 7
+==================================================
+
+1. Page Purpose
+• Page 7 presents **Figure 3: Max bigram probability for Site task**, **Figure 4: Max bigram probability for Histology task**, **TABLE VII: Hyperparameter scan for $K$ (keyword count)**, and **TABLE VIII: Hyperparameter scan for $\alpha$ (loss weight)**.
+• What the authors are trying to explain: Supplementary max bigram probability plots for Site and Histology tasks, and empirical hyperparameter tuning sensitivity tables determining optimal values $K=5$ and $\alpha=1.0$.
+• Importance in overall paper: Provides complete hyperparameter sensitivity proof for reproducibility.
+
+--------------------------------------------------
+2. Key Findings
+• Figures 3 & 4 (Site and Histology Bigram Probability Distributions):
+  - Confirms the same trend observed in Figure 2: CNN + CUI shifts max bigram probabilities for rare classes significantly upward toward y=1.0 across both Site (Figure 3) and Histology (Figure 4) tasks.
+  - Histology shows the most dramatic shift because it contains the largest fraction of rare classes (534 to 645 categories).
+• Table VII Hyperparameter Sensitivity ($K$ = keyword segments per class):
+  - Evaluated $K \in \{1, 5, 10, 20\}$ with fixed $\alpha=1.0$.
+  - $K=1$: Subsite Macro F1 = 36.67.
+  - **$K=5$:** Subsite Macro F1 = **38.46 (PEAK SCORE)**.
+  - $K=10$: Subsite Macro F1 = 38.16.
+  - $K=20$: Subsite Macro F1 = 37.96.
+  - **Takeaway:** $K=5$ provides optimal keyword sampling per class per mini-batch.
+• Table VIII Hyperparameter Sensitivity ($\alpha$ = keyword loss weight):
+  - Evaluated $\alpha \in \{0.25, 0.5, 1.0, 2.0\}$ with fixed $K=5$.
+  - $\alpha=0.25$: Subsite Macro F1 = 38.10.
+  - $\alpha=0.5$: Subsite Macro F1 = 38.20.
+  - **$\alpha=1.0$:** Subsite Macro F1 = **38.46 (PEAK SCORE)**.
+  - $\alpha=2.0$: Subsite Macro F1 = 37.47.
+  - **Takeaway:** $\alpha=1.0$ perfectly balances document loss $L_{docs}$ and keyword loss $L_{key}$.
+
+--------------------------------------------------
+3. PENCIL MARKING GUIDE ⭐ (MOST IMPORTANT)
+
+✓ Mark Figures 3 & 4: Max bigram probability distributions for Site and Histology tasks.
+✓ **MUST BOX TABLE VII:** Outline *TABLE VII: TEST MICRO/MACRO F1 SCORES FOR VARYING K*.
+  - Circle row $K=5$ (optimal keyword count).
+✓ **MUST BOX TABLE VIII:** Outline *TABLE VIII: TEST MICRO/MACRO F1 SCORES FOR VARYING ALPHA*.
+  - Circle row $\alpha=1.0$ (optimal loss weight).
+✓ Underline Hyperparameter Summary: "K=5 and \alpha=1.0 give the best results across tasks".
+
+--------------------------------------------------
+4. Important Technical Terms
+• Hyperparameter Sensitivity Scan:
+  - Meaning: Grid search systematically varying hyperparameter values to identify optimal performance configurations.
+  - Purpose: Proves model stability and prevents arbitrary hyperparameter selection.
+  - Relation to paper: Detailed in Tables VII and VIII.
+
+--------------------------------------------------
+5. Figures, Tables and Equations
+• **Table VII: Sensitivity Scan for $K$**
+  - *What it represents:* Micro/Macro F1 metrics for $K \in \{1, 5, 10, 20\}$.
+• **Table VIII: Sensitivity Scan for $\alpha$**
+  - *What it represents:* Micro/Macro F1 metrics for $\alpha \in \{0.25, 0.5, 1.0, 2.0\}$.
+
+--------------------------------------------------
+6. Important Numbers
+• $K = 5$: Optimal keyword segments sampled per class.
+• $\alpha = 1.0$: Optimal loss weighting factor.
+
+--------------------------------------------------
+7. Relation to MY PROJECT
+• Directly Used: Hyperparameter grid search principles for model tuning.
+• Partially Related: Finding optimal n-gram range or feature count settings.
+• Only Background Knowledge: PyTorch loss weight tuning.
+
+--------------------------------------------------
+8. Possible Viva Questions
+• Q1 (Basic): What are the optimal hyperparameter values found in Tables VII and VIII?
+  - Model Answer: $K=5$ keyword segments per class and loss weight $\alpha=1.0$.
+• Q2 (Technical): What happens if keyword loss weight $\alpha$ is set too high ($\alpha=2.0$)?
+  - Model Answer: The model overemphasizes short keywords at the expense of full document context, causing Subsite Macro F1 to drop from 38.46 down to 37.47.
+
+--------------------------------------------------
+9. One-Minute Revision Notes
+• Figures 3 & 4 confirm keywords shift bigram probabilities upward for Site and Histology.
+• Table VII: $K=5$ keyword segments per class gives peak Macro F1.
+• Table VIII: $\alpha=1.0$ loss weight gives peak Macro F1.
+• Systematic grid scans prove hyperparameter stability.
+
+==================================================
+PAGE 8
+==================================================
+
+1. Page Purpose
+• Page 8 presents **TABLE IX: Test Micro/Macro F1 Scores for Class Weights with Different Values of $\mu$**, Acknowledgments, Authors' Affiliations (Oak Ridge National Lab), and Section VI (References [1] through [30]).
+• What the authors are trying to explain: Sensitivity analysis for class weights hyperparameter $\mu$, institutional funding declarations (US DOE & NCI SEER), author credentials, and bibliographic citations.
+• Importance in overall paper: Concludes the publication with sensitivity proofs and academic references.
+
+--------------------------------------------------
+2. Key Findings
+• Table IX Breakdown (Class Weights Hyperparameter $\mu$ Sensitivity):
+  - Evaluated $\mu \in \{0.05, 0.15, 1.0\}$.
+  - $\mu=0.05$: Subsite Micro/Macro = 77.17 / 37.74.
+  - **$\mu=0.15$:** Subsite Micro/Macro = **77.40 / 38.35 (BEST CW SCORE)**.
+  - $\mu=1.0$: Subsite Micro/Macro = 77.97 / 38.15.
+  - **Key Finding:** Even at its absolute best tuned setting ($\mu=0.15$), Class Weights achieves a Subsite Macro F1 of 38.35 with Micro F1 of 77.40, which is **inferior to CNN + CUIs** (Macro 39.65 / Micro 78.46)!
+• Author Affiliations:
+  - Lead Authors Andrew E. Blanchard, Shang Gao, Hong-Jun Yoon, Georgia D. Tourassi are with the **Computational Sciences and Engineering Division, Oak Ridge National Laboratory (ORNL)**.
+  - Co-authors from NCI SEER Registries (Kentucky, Louisiana, Rutgers, Utah, Fred Hutchinson Cancer Center).
+• Key Bibliographic Citations:
+  - [2] S. Gao et al. (2019): Hierarchical self-attention networks for cancer pathology.
+  - [12] Chawla et al. (2002): SMOTE synthetic minority over-sampling.
+  - [15] Y. Kim (EMNLP 2014): Convolutional Neural Networks for Sentence Classification.
+  - [18] O. Bodenreider (2004): UMLS Metathesaurus reference.
+  - [22] Kingma & Ba (2014): Adam optimizer reference.
+
+--------------------------------------------------
+3. PENCIL MARKING GUIDE ⭐ (MOST IMPORTANT)
+
+✓ Mark Table IX: Shows Class Weights tuned at $\mu=0.15$ is still inferior to CNN + CUIs.
+✓ Underline Lead Institution: *Oak Ridge National Laboratory, Oak Ridge, TN USA*.
+✓ Underline Reference [15]: *Y. Kim, "Convolutional neural networks for sentence classification," EMNLP 2014* (CNN baseline).
+✓ Underline Reference [18]: *O. Bodenreider, "The unified medical language system (UMLS)," 2004* (UMLS CUI reference).
+
+--------------------------------------------------
+4. Important Technical Terms
+• Oak Ridge National Laboratory (ORNL):
+  - Meaning: US Department of Energy national laboratory sponsoring computational science research.
+  - Relation to paper: Lead research institution.
+• Yoon/Gao SEER Lineage:
+  - Meaning: Research group at ORNL specializing in deep learning for automated cancer surveillance.
+  - Relation to paper: Authors' primary research domain.
+
+--------------------------------------------------
+5. Figures, Tables and Equations
+• **Table IX: Class Weights Sensitivity**
+  - *What it represents:* Micro/Macro F1 scores for class weights under $\mu \in \{0.05, 0.15, 1.0\}$.
+
+--------------------------------------------------
+6. Important Numbers
+• $\mu = 0.15$: Optimal hyperparameter value for class weights formula.
+• 30: Total number of academic references cited.
+• 2022: IEEE publication year.
+
+--------------------------------------------------
+7. Relation to MY PROJECT
+• Directly Used: Citing Yoon/Gao or Kim (2014) CNN baselines in your report literature review.
+• Partially Used: Hyperparameter sensitivity reporting.
+• Only Background Knowledge: ORNL organizational structure.
+
+--------------------------------------------------
+8. Possible Viva Questions
+• Q1 (Basic): What lead institution conducted this research study?
+  - Model Answer: Computational Sciences and Engineering Division at Oak Ridge National Laboratory (ORNL), in collaboration with NCI SEER cancer registries.
+• Q2 (Technical): How does tuned Class Weights ($\mu=0.15$) compare against CUI keywords on the Subsite task?
+  - Model Answer: Class Weights achieves 77.40 Micro / 38.35 Macro F1, whereas CUI keywords achieve higher scores on both metrics: 78.46 Micro / 39.65 Macro F1.
+
+--------------------------------------------------
+9. One-Minute Revision Notes
+• Table IX: Class Weights tuned at $\mu=0.15$ still underperforms CUI keywords.
+• Lead Institution: Oak Ridge National Laboratory (ORNL).
+• Reference [15] = Yoon Kim (CNN text classification, 2014).
+• Reference [18] = UMLS Metathesaurus.
+
+
+================================================================================
+AFTER COMPLETING ALL PAGES: FINAL ANALYSIS
+================================================================================
+
+1. Complete Paper Workflow
+--------------------------------------------------------------------------------
+[Raw Cancer Pathology Reports from 5 SEER Registries (Up to 4.4 Million Docs)]
+                                     │
+                                     ▼
+[Label Extraction via SEER*DMS CTC Database ──► 3 Tasks: Site, Subsite, Histology]
+                                     │
+                                     ▼
+[Automated Keyword Generation: (1) UMLS CUIs via NCIt/ICD-O-3 OR (2) Corpus NPMI Eq(1)]
+                                     │
+                                     ▼
+[1D CNN Architecture: 300d Word2Vec ──► Parallel Conv (3, 4, 5) ──► Maxpool ──► 900d Vector]
+                                     │
+                                     ▼
+[Keyword-Enhanced Mini-Batch Training: Sample N_C=128 classes, K=5 segments/class]
+                                     │
+                                     ▼
+[Combined Loss Function: L = L_docs + α L_key (α=1.0, Adam optimizer, Tesla P100 GPU)]
+                                     │
+                                     ▼
+[Evaluation & Bigram Probability Inspection ──► +7.9% Histology Macro F1 Boost!]
+--------------------------------------------------------------------------------
+
+2. Main Contribution
+• Proposed a novel, data-centric mini-batch training framework that incorporates short class-associated keyword sequences alongside raw documents into neural network loss functions ($L = L_{docs} + \alpha L_{key}$).
+• Demonstrated two automated keyword generation strategies: ontology-driven (UMLS CUIs) and corpus-driven statistical ranking (NPMI via Equation 1).
+• Solved the classic trade-off of class weighting, boosting rare class Macro F1 by **+7.9% on Histology** while *increasing* overall Micro F1.
+• Validated production scalability on **4.4 million pathology reports** across 645 histology categories.
+
+3. Novel Ideas
+• **Data-Centric Keyword Injection:** Constraining loss functions by sampling $K=5$ short keyword phrases per class during every training mini-batch.
+• **Bigram Probability Diagnostic Audit:** Using maximum model output probabilities on 2-word inputs to inspect and debug whether a model learned true clinical concepts or random noise.
+• **NPMI Corpus Keyword Extraction:** Automated formula (Equation 1) extracting discriminative keywords without requiring external medical dictionaries.
+
+4. Advantages
+• Boosts rare class performance without sacrificing majority class accuracy.
+• Provides an automated way (NPMI) to handle class imbalance when medical ontologies are missing.
+• Provides an explicit quantitative tool (bigram scoring) for software engineers to audit and debug black-box neural networks in production.
+• Model-agnostic; can be applied to any text classification neural network architecture.
+
+5. Limitations
+• Tested only on 1D CNN architectures; did not evaluate modern Transformer models like BioBERT or ClinicalBERT.
+• Requires extra forward/backward pass computations per mini-batch for keyword documents ($L_{key}$).
+• NPMI keywords require a sufficiently large training corpus to estimate co-occurrence probabilities accurately.
+
+6. Future Scope
+• Extending keyword mini-batch training to Transformer architectures (BERT, RoBERTa).
+• Integrating keyword inspection into active learning frameworks for guided human annotation.
+• Formulating continuous Bayesian prior distributions for keyword conditional probabilities.
+
+7. Dataset Summary
+• **Development Dataset:** 177,185 pathology reports from Kentucky (KCR) and Louisiana (LTR).
+  - Site: 70 labels | Subsite: 315 labels | Histology: 534 labels.
+• **Production Dataset:** 4,404,942 pathology reports from 5 SEER registries (LTR, KCR, UCR, NJSCR, SCR).
+  - Site: 70 labels | Subsite: 328 labels | Histology: 645 labels.
+• Ground truth labels extracted from SEER*DMS CTC database coded under ICD-O-3.
+
+8. Model Summary
+• **Word-level 1D CNN:** 300d Word2Vec embeddings pre-trained on train set.
+• 3 parallel 1D conv layers (300 filters each, window sizes 3, 4, 5 words).
+• Maxpool-over-time concatenated into a **900-dimensional document vector**.
+• Softmax classification layer trained via Adam optimizer (lr=1E-4, batch size 128, early stopping 5 epochs) on Tesla P100 GPU in PyTorch.
+
+9. Important Evaluation Metrics
+• **Micro F1:** Global metric pooling all document predictions (Equation 5).
+• **Macro F1:** Unweighted average of per-class F1 scores (Equation 6). **Primary metric for class imbalance.**
+• **Max Bigram Output Probability:** Maximum probability assigned by softmax to 2-word input phrases.
+
+10. Top 30 Most Important Things I Should Remember
+1. Authors: Blanchard, Gao, Yoon, Tourassi at Oak Ridge National Lab (IEEE JBHI 2022).
+2. Domain: Automated extraction of NCI SEER cancer pathology reports.
+3. Problem: Rare classes + long raw text = severe neural network overfitting.
+4. Class Weights Flaw: CW boosts Macro F1 but drops Micro F1 by over-predicting rare classes.
+5. Proposed Method: Inject short keyword sequences into mini-batch training ($L = L_{docs} + \alpha L_{key}$).
+6. Keyword Source 1: UMLS Concept Unique Identifiers (CUIs) from NCIt/ICD-O-3.
+7. Keyword Source 2: NPMI (Normalized Pointwise Mutual Information) via Equation 1.
+8. NPMI Scale: $[-1, +1]$ where $+1$ means word and class always co-occur.
+9. Combined Loss: $L = L_{docs} + \alpha L_{key}$.
+10. Optimal Hyperparameters: $K = 5$ keyword segments per class, loss weight $\alpha = 1.0$.
+11. Dev Dataset: 177,185 pathology reports across 2 registries.
+12. Production Dataset: 4,404,942 pathology reports across 5 registries.
+13. Three Tasks: Site (70 classes), Subsite (315–328 classes), Histology (534–645 classes).
+14. Model: 1D CNN with 300d Word2Vec embeddings.
+15. Conv Filters: 3 parallel 1D conv layers (sizes 3, 4, 5) with 300 filters each.
+16. Document Embedding Size: 900 dimensions ($300 \times 3$).
+17. Optimizer: Adam, learning rate 1E-4, batch size 128.
+18. Histology Macro F1 Gain (Dev): Jumps from 37.52 to 45.42 (+7.9% gain!).
+19. Histology Micro F1 Gain (Dev): Increases from 84.01 to 84.53 (+0.52%).
+20. Figure 1 Finding: Keywords boost rare classes (<50 samples) without hurting majority classes (>5000 samples).
+21. Figure 2 Finding: Keywords shift max bigram probabilities for rare classes from 0 up to 0.8.
+22. Rare Class C69.1 Case Study (Table IV): Baseline CNN top bigram = 'orbital eye' (0.097); CNN + CUI top bigram = 'cornea eye' (0.787).
+23. Table V Finding: Keywords do NOT disrupt predictions for majority classes ('adenoma pituitary' ~0.91–0.96).
+24. Production Result (Table VI): NPMI keywords boost Histology Macro F1 on 4.4M reports from 35.80 to 38.67.
+25. Data-Centric AI: Engineering training data (keywords) rather than changing model architecture.
+26. Model Debugging: Scoring bigrams audits whether a model learned real domain rules or text noise.
+27. Bayesian Interpretation: Keyword training acts as a prior distribution for conditional class probabilities.
+28. Primary Metric: Macro F1 is mandatory for evaluating imbalanced multi-class datasets.
+29. Hardware: PyTorch on NVIDIA Tesla P100 GPU.
+30. Relation to MCA Project: Validates TF-IDF n-gram feature selection as a data-centric term weighting strategy.
+
+11. Top 30 Viva Questions
+--------------------------------------------------------------------------------
+Q1: What is the main title and research objective of this IEEE paper?
+Answer: "A Keyword-Enhanced Approach to Handle Class Imbalance in Clinical Text Classification". Goal: Improve classification accuracy on rare clinical classes by incorporating short keyword sequences into mini-batch training.
+
+Q2: Why do deep learning models overfit on rare classes in clinical text?
+Answer: Because rare classes combine long raw text sequences (thousands of words) with very few training samples (fewer than 50), causing the model to memorize document-specific noise.
+
+Q3: Why is Class Weighting (CW) inferior to Keyword Training?
+Answer: Class weighting increases loss penalties but fails to teach the model which short text segments define a class, boosting Macro F1 only by over-predicting rare labels and dropping Micro F1.
+
+Q4: What are the two keyword generation approaches evaluated?
+Answer: 1. Ontology-driven extraction using UMLS CUIs, and 2. Corpus-driven statistical ranking using Normalized Pointwise Mutual Information (NPMI).
+
+Q5: Write down the NPMI formula from Equation 1.
+Answer: $\text{NPMI} = \frac{-1}{\log(p(x,y))} \log\left(\frac{p(x,y)}{p(x)p(y)}\right)$.
+
+Q6: What scale does NPMI operate on and what does $+1$ signify?
+Answer: Scale is $[-1, +1]$. A score of $+1$ means token $x$ and class $y$ always co-occur.
+
+Q7: Write down the combined mini-batch loss function.
+Answer: $L = L_{docs} + \alpha L_{key}$, where $L_{docs}$ is document loss, $L_{key}$ is keyword loss, and $\alpha=1.0$.
+
+Q8: What are the optimal values for hyperparameters $K$ and $\alpha$?
+Answer: $K=5$ keyword segments per class and loss weight $\alpha=1.0$.
+
+Q9: What datasets were evaluated in the paper?
+Answer: 1. Development dataset (177,185 pathology reports), and 2. Production dataset (4,404,942 pathology reports) from NCI SEER registries.
+
+Q10: What 3 clinical tasks were evaluated?
+Answer: Cancer site (70 classes), subsite (315-328 classes), and histology (534-645 classes).
+
+Q11: Describe the 1D CNN architecture used in Section II-D.
+Answer: 300d Word2Vec embeddings -> 3 parallel 1D conv layers (300 filters each, window sizes 3, 4, 5) -> Maxpool-over-time -> 900d document vector -> Softmax.
+
+Q12: What is the difference between Micro F1 and Macro F1?
+Answer: Micro F1 aggregates all document instances globally (dominated by majority classes). Macro F1 averages per-class F1 scores equally, making it essential for evaluating rare classes.
+
+Q13: What Macro F1 improvement was achieved on the Dev Histology task in Table III?
+Answer: CNN + CUIs increased Macro F1 from 37.52 to 45.42 (+7.9% gain) while also raising Micro F1 from 84.01 to 84.53.
+
+Q14: What does Figure 1 demonstrate regarding rare vs majority class accuracy?
+Answer: CNN + CUIs increases test accuracy on rare classes (<50 samples) while maintaining high accuracy on majority classes (>5000 samples).
+
+Q15: How did keyword training affect max bigram output probabilities in Figure 2?
+Answer: It shifted max bigram probabilities for rare classes upward from 0 to near 1.0, showing the model learned confident diagnostic key phrases.
+
+Q16: Compare top bigrams for rare subsite class C69.1 (Cornea) in Table IV.
+Answer: Baseline CNN top bigram = 'orbital eye' (score 0.097). CNN + CUI top bigram = 'cornea eye' (score 0.787 - 8x confidence jump!).
+
+Q17: Did keyword training distort predictions for majority classes in Table V?
+Answer: No. For class C75.1 (Pituitary gland), top bigram 'adenoma pituitary' scored ~0.91 to 0.96 across all models.
+
+Q18: What were the results on the 4.4 million Production Dataset in Table VI?
+Answer: Automated NPMI keywords boosted Histology Macro F1 from 35.80 to 38.67 without needing external medical dictionaries.
+
+Q19: How can bigram probability scoring be used for software engineering model debugging?
+Answer: Engineers can score corpus bigrams to audit whether a production classifier is mining valid domain concepts or uninformative text noise.
+
+Q20: How does keyword training relate to Bayesian statistical modeling?
+Answer: Keyword injection acts as an informative prior distribution for conditional class probabilities $P(\text{Text}|\text{Class})$.
+
+Q21: What is a 'Data-Centric' approach to AI?
+Answer: Improving ML performance by systematically engineering and augmenting training data rather than tweaking model architectures.
+
+Q22: Why were conv filter sizes 3, 4, and 5 selected?
+Answer: To capture 3-word, 4-word, and 5-word clinical phrases during 1D convolution.
+
+Q23: What optimizer and learning rate were used?
+Answer: Adam optimizer with learning rate 1E-4 and batch size 128.
+
+Q24: What GPU hardware was used?
+Answer: NVIDIA Tesla P100 GPU running PyTorch.
+
+Q25: What is ICD-O-3?
+Answer: International Classification of Diseases for Oncology, Third Edition, used for coding cancer site, subsite, and histology.
+
+Q26: What is the SEER*DMS CTC database?
+Answer: The Cancer/Tumor/Case database storing diagnostic data for reportable neoplasms in the SEER program.
+
+Q27: What happens if $K$ is set too high ($K=20$) in Table VII?
+Answer: Macro F1 drops slightly (from 38.46 to 37.96) as excessive keyword sampling dilutes raw document context.
+
+Q28: How does this paper support your MCA project on TF-IDF + Ensemble ML?
+Answer: It proves that data-centric term selection (keywords/n-grams) significantly boosts Macro F1 under class imbalance, supporting your project's TF-IDF n-gram feature selection.
+
+Q29: Why is TF-IDF preferred over heavy neural keyword loss in a lightweight web app?
+Answer: TF-IDF extracts discriminative n-gram weights in milliseconds on CPU, avoiding the heavy mini-batch retraining and GPU requirements of CNNs.
+
+Q30: Give a 10-second summary of Paper 3.
+Answer: "Blanchard et al. (IEEE JBHI 2022) proposed injecting UMLS/NPMI keywords into CNN mini-batch training loss, boosting cancer histology Macro F1 by +7.9% across 4.4 million pathology reports."
+
+12. Literature Review Paragraph (IEEE Style)
+--------------------------------------------------------------------------------
+"Blanchard et al. [IEEE JBHI 2022] proposed a novel data-centric mini-batch training framework to resolve severe class imbalance in automated clinical text classification across 4.4 million cancer pathology reports. Addressing the tendency of deep neural models to overfit on rare classes when processing long narrative documents, the authors incorporated short class-associated keyword sequences—derived either from UMLS Concept Unique Identifiers (CUIs) or corpus-based Normalized Pointwise Mutual Information (NPMI)—directly into the mini-batch loss function ($L = L_{docs} + \alpha L_{key}$). Evaluated on a 1D Convolutional Neural Network (CNN) across cancer site, subsite, and histology tasks, their approach boosted histology Macro F1 by +7.9% (increasing from 37.52 to 45.42) while simultaneously improving Micro F1, outperforming traditional class weighting methods which degrade overall micro-accuracy. Furthermore, the authors introduced bigram probability scoring as a quantitative model debugging tool to verify that classifiers learn true domain-specific key phrases. This study establishes that data-centric term enhancement effectively stabilizes decision boundaries for rare categories, providing strong theoretical backing for our MCA project's use of TF-IDF n-gram feature selection and Ensemble Machine Learning for medical specialty classification."
+
+13. Presentation Notes (5-Minute Seminar Speech Script)
+--------------------------------------------------------------------------------
+"Respected Guide and Panel Members, today I am presenting our review of Reference Paper 3, titled 'A Keyword-Enhanced Approach to Handle Class Imbalance in Clinical Text Classification', published in the IEEE Journal of Biomedical and Health Informatics (June 2022) by Blanchard et al. from Oak Ridge National Laboratory.
+
+The authors tackle a major barrier in production healthcare AI: severe class imbalance in electronic pathology reports. In datasets from the NCI SEER program, common cancer sites like lung or breast dominate, while rare classes like larynx have fewer than 50 samples. Long text reports combined with scarce training samples cause deep learning models to severely overfit. Traditional fixes like class weighting fail because they force high-confidence predictions without teaching the model *which* text segments define the rare class.
+
+To solve this, the authors introduce a Data-Centric training framework. They extract short class keywords using two automated methods: UMLS Concept Unique Identifiers from medical ontologies, and Normalized Pointwise Mutual Information (NPMI) from corpus statistics. During mini-batch training, short keyword documents are sampled alongside raw reports, creating a combined loss $L = L_{docs} + \alpha L_{key}$.
+
+Their results on 177,000 development reports and 4.4 million production reports are compelling. On the most imbalanced task—Histology with 645 classes—adding CUI keywords boosted Macro F1 by +7.9% while also raising Micro F1, whereas class weighting caused Micro F1 to drop.
+
+Furthermore, as shown in Figure 2 and Table IV, bigram probability scoring proved that keyword training enables the network to learn confident diagnostic key phrases—shifting top bigram probabilities for rare classes like Cornea from 0.097 up to 0.787.
+
+For our MCA project, this IEEE paper provides two vital validations: First, it proves that data-centric term enhancement is far superior to simple class weighting. Second, it demonstrates that statistical n-gram term ranking (NPMI/TF-IDF) effectively isolates domain concepts, supporting our TF-IDF Ensemble Web Application architecture. Thank you!"
+
+14. Final Revision Sheet
+--------------------------------------------------------------------------------
+================================================================================
+                               PAPER 3 CHEAT SHEET
+================================================================================
+Title: A Keyword-Enhanced Approach to Handle Class Imbalance in Clinical Text Classification
+Authors: Andrew E. Blanchard et al. (Oak Ridge National Lab / NCI SEER Registries)
+Journal: IEEE Journal of Biomedical and Health Informatics (Vol. 26, No. 6, June 2022)
+Core Problem: Class imbalance + long text = severe neural network overfitting on rare classes.
+--------------------------------------------------------------------------------
+KEY CONCEPTS & ALGORITHMS:
+• Keyword Mini-Batch Training: Inject short keywords alongside raw text into loss ($L = L_{docs} + \alpha L_{key}$).
+• NPMI (Equation 1): Normalized Pointwise Mutual Information ranking top 10 unigrams/bigrams per class.
+• CUI Keywords: Ontology-based Concept Unique Identifiers from UMLS / NCIt / ICD-O-3.
+• Bigram Probability Scoring: Quantitative audit inspecting model confidence on 2-word input phrases.
+--------------------------------------------------------------------------------
+MODEL & DATASET SPECS:
+• Development Data: 177,185 pathology reports (KCR & LTR).
+• Production Data: 4,404,942 pathology reports across 5 SEER registries (up to 645 classes!).
+• Architecture: 300d Word2Vec -> 3 parallel 1D Conv (sizes 3,4,5) -> Maxpool -> 900d Doc Vector -> Softmax.
+• Hyperparameters: $K=5$ keyword segments/class, loss weight $\alpha=1.0$, batch size $N_C=128$, Adam lr=1E-4.
+--------------------------------------------------------------------------------
+CORE RESULTS:
+• Dev Histology Task: CNN + CUIs jumps Macro F1 from 37.52 to 45.42 (+7.9% gain!) & Micro F1 from 84.01 to 84.53.
+• Class Weights Flaw: Boosts Macro F1 BUT drops Micro F1 (84.01 -> 82.76) by creating false positives.
+• Bigram Case Study (Cornea C69.1): Baseline CNN score = 0.097 ('orbital eye') -> CNN+CUI = 0.787 ('cornea eye').
+• Production Result (4.4M reports): Automated NPMI keywords boost Histology Macro F1 from 35.80 to 38.67.
+--------------------------------------------------------------------------------
+PROJECT RELEVANCE:
+Proves data-centric term enhancement (keywords/n-grams) outperforms class weighting,
+validating your MCA project's TF-IDF n-gram feature selection + Ensemble Web UI architecture!
+================================================================================
+
+
+================================================================================
+PENCIL MARKING CHECKLIST
+================================================================================
+Use this checklist to mark your printed IEEE paper in under 10 minutes before your viva:
+
+□ Page 1 - Title & Authors: Underline title & note "Oak Ridge National Laboratory / IEEE JBHI 2022".
+□ Page 1 - Abstract: Underline final sentence stating keyword training strategy.
+□ Page 1 - Section I: Box problem statement on rare class overfitting due to long text & few samples.
+□ Page 2 - Section II-A: Underline limitation of Class Weights (CW fails to identify key text segments).
+□ Page 2 - Equation 1: Draw a box around the NPMI formula.
+□ Page 2 - Mini-batch Steps: Put a large bracket around 6-step training algorithm (1 through 6).
+□ Page 2 - Hyperparameters: Underline K=5 and \alpha=1.0.
+□ Page 3 - Table I & Table II: Box both dataset tables (Dev 177k, Prod 4.4M reports).
+□ Page 3 - Section II-D: Underline CNN architecture specs (3 parallel 1D conv, sizes 3,4,5, 900d vector).
+□ Page 3 - Equation 6: Box Macro F1 formula.
+□ Page 4 - Figure 1: Draw a big STAR beside Figure 1 (green CUI bars boost rare classes without hurting majority).
+□ Page 4 - Table III: Box Table III & circle Histology CNN+CUIs Macro F1 jump (37.52 -> 45.42).
+□ Page 5 - Figure 2: Draw a STAR beside Figure 2 (shows bigram probabilities shifting upward to 0.8).
+□ Page 5 - Table IV: Box Table IV & circle Cornea bigram score jump (0.097 -> 0.787 for 'cornea eye').
+□ Page 6 - Table VI: Box Table VI & circle Production NPMI Histology Macro F1 result (38.67).
+□ Page 6 - Section IV: Underline "model debugging via bigrams" and "Bayesian prior distribution".
+□ Page 6 - Section V: Underline Conclusion summary sentence.
+□ Page 7 - Tables VII & VIII: Box hyperparameter scan tables confirming K=5 and \alpha=1.0.
+□ Page 8 - Reference [15]: Underline Y. Kim (2014) CNN text classification reference.
+================================================================================
