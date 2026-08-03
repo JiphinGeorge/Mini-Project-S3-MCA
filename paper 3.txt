@@ -984,3 +984,34 @@ Use this checklist to mark your printed IEEE paper in under 10 minutes before yo
 □ Page 7 - Tables VII & VIII: Box hyperparameter scan tables confirming K=5 and \alpha=1.0.
 □ Page 8 - Reference [15]: Underline Y. Kim (2014) CNN text classification reference.
 ================================================================================
+
+
+================================================================================
+SHORT SUMMARY FOR MCA PROJECT
+================================================================================
+
+1. THE CORE PROBLEM ADDRESSED
+• Class Imbalance in Clinical Text: In real-world medical datasets, a few majority classes (e.g., Surgery/Consultation) dominate, while rare medical categories have very few samples.
+• Overfitting on Rare Classes: Long unstructured clinical notes combined with scarce training samples cause deep learning models to overfit by memorizing document-specific noise rather than learning true diagnostic key terms.
+• Flaw of Traditional Class Weighting: Standard class weighting boosts rare class predictions artificially, but it destroys overall micro-accuracy by generating excessive false positives.
+
+2. PROPOSED SOLUTION (DATA-CENTRIC KEYWORD INJECTION)
+• Keyword-Enhanced Training: Instead of changing the model architecture, the authors introduced short class-associated keyword sequences directly into mini-batch training to constrain the loss function: L = L_docs + α L_key.
+• Automated Keyword Extraction:
+  1. Ontology-Based: Concept Unique Identifiers (CUIs) from UMLS / ICD-O-3.
+  2. Corpus-Based: Normalized Pointwise Mutual Information (NPMI) ranking top unigrams/bigrams per class from text statistics.
+
+3. KEY FINDINGS & RESULTS
+• Massive Boost on Rare Classes: On a dataset of 4.4 million pathology reports, keyword-enhanced training boosted Macro F1 by +7.9% on the most imbalanced task (Histology across 645 classes).
+• No Penalty on Majority Classes: Unlike class weighting, keyword injection boosted Macro F1 while increasing overall Micro F1.
+• Model Debugging via Bigram Scoring: Scoring model confidence on 2-word phrases proved that keyword training shifts rare-class term probabilities from 0.097 up to 0.787 (e.g., confidently identifying "cornea eye" for rare cornea cancer).
+
+4. DIRECT RELEVANCE TO YOUR MCA PROJECT
+• Class Imbalance Focus: Identifies class imbalance as the primary failure point in medical text classification, validating your evaluation focus on Macro F1.
+• Data-Centric Term Weighting: Proves that isolating discriminative key terms (n-grams) boosts rare class accuracy far better than simple class weighting.
+• NPMI Statistical Term Selection: Directly justifies your use of TF-IDF n-gram feature selection, as both methods use corpus-level statistics to weight key medical phrases.
+• Ensemble & Interpretability: Proves that inspecting top key phrases is vital for auditing medical models, supporting your project's Ensemble Voting Classifier with transparent TF-IDF feature inspection.
+
+5. 30-SECOND VIVA / SEMINAR SUMMARY SCRIPT
+"Blanchard et al. (IEEE JBHI 2022) addressed severe class imbalance across 4.4 million clinical reports. They proved that long text reports combined with few samples cause models to overfit. By injecting key diagnostic phrases into training, they boosted rare class Macro F1 by +7.9% without degrading overall accuracy. This paper validates our project's approach: using TF-IDF n-gram term weighting and Ensemble Machine Learning to isolate discriminative medical keywords and achieve high accuracy across imbalanced clinical specialties."
+================================================================================
