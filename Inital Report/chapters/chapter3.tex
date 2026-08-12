@@ -171,71 +171,73 @@ The \texttt{transcription} field is selected as the sole feature variable becaus
 The target variable \texttt{medical\_specialty} contains 40 categories. Class imbalance (Surgery = 1,103 vs Autopsy = 2) is addressed using class weighting in estimators and voting ensemble aggregation to maintain balanced predictive performance.
 
 \subsection{Data Visualization}
-Visualizations generated natively in TikZ illustrate key dataset statistics. Figure \ref{fig:missing_chart} displays missing values per column. Figure \ref{fig:class_dist_chart} shows top specialty distributions. Figure \ref{fig:length_dist_chart} displays document length ranges.
+
+Exploratory Data Analysis (EDA) was performed on the Kaggle Medical Transcriptions (MTSamples) dataset to analyze missing attribute distributions, class target distributions, document length characteristics, and clinical vocabulary frequency.
+
+\paragraph{Missing Value Analysis}
+Figure \ref{fig:eda_missing} illustrates the distribution of missing values across dataset attributes. As shown, the primary target attribute (\texttt{medical\_specialty}) contains zero missing values. The primary input text narrative (\texttt{transcription}) contains 33 missing records, while the auxiliary \texttt{keywords} attribute exhibits 1,068 missing records.
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}
-\begin{axis}[
-    ybar,
-    symbolic x coords={description, specialty, sample\_name, transcription, keywords},
-    xtick=data,
-    nodes near coords,
-    ymin=0, ymax=1300,
-    ylabel={Missing Records Count},
-    x tick label style={rotate=30, anchor=east},
-    bar width=18pt,
-    width=0.85\textwidth,
-    height=5.0cm
-]
-\addplot coordinates {(description,6) (specialty,0) (sample\_name,0) (transcription,33) (keywords,1149)};
-\end{axis}
-\end{tikzpicture}
-\caption{Missing Value Analysis Across Dataset Fields}
-\label{fig:missing_chart}
+\includegraphics[width=0.88\textwidth,keepaspectratio]{EDA_Diagrams/01_missing_values.png}
+\caption{Missing Values by Dataset Attribute}
+\label{fig:eda_missing}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    xbar,
-    symbolic y coords={Obstetrics, SOAP Notes, Neurology, Gastroenterology, General Med., Radiology, Orthopedic, Cardio/Pulm, Consult, Surgery},
-    ytick=data,
-    nodes near coords,
-    xmin=0, xmax=1250,
-    xlabel={Number of Records},
-    width=0.85\textwidth,
-    height=6.2cm,
-    bar width=11pt
-]
-\addplot coordinates {(160,Obstetrics) (166,SOAP Notes) (223,Neurology) (230,Gastroenterology) (259,General Med.) (273,Radiology) (355,Orthopedic) (372,Cardio/Pulm) (516,Consult) (1103,Surgery)};
-\end{axis}
-\end{tikzpicture}
-\caption{Class Distribution of Top 10 Medical Specialties}
-\label{fig:class_dist_chart}
-\end{figure}
+\paragraph{Top 10 Medical Specialties}
+Figure \ref{fig:eda_top10} displays the record counts for the top 10 medical specialties in the dataset. Surgery represents the single largest category with 1,103 clinical reports, followed by Consult - History and Phy. (516 reports), Cardiovascular / Pulmonary (372 reports), and Orthopedic (355 reports).
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}
-\begin{axis}[
-    ybar,
-    symbolic x coords={0-100, 101-300, 301-600, 601-1000, 1000+},
-    xtick=data,
-    nodes near coords,
-    ymin=0, ymax=2200,
-    xlabel={Document Length Ranges (Words)},
-    ylabel={Number of Transcriptions},
-    width=0.85\textwidth,
-    height=5.0cm,
-    bar width=20pt
-]
-\addplot coordinates {(0-100,320) (101-300,1450) (301-600,1980) (601-1000,890) (1000+,326)};
-\end{axis}
-\end{tikzpicture}
-\caption{Document Length Distribution across Medical Transcriptions}
-\label{fig:length_dist_chart}
+\includegraphics[width=0.88\textwidth,keepaspectratio]{EDA_Diagrams/02_top10_medical_specialties.png}
+\caption{Top 10 Medical Specialties by Number of Transcriptions}
+\label{fig:eda_top10}
+\end{figure}
+
+\clearpage
+
+\paragraph{Complete Specialty Distribution}
+Figure \ref{fig:eda_complete_specialty} illustrates the full class distribution across all 40 medical specialties in the MTSamples corpus. The chart demonstrates severe class imbalance, ranging from majority classes such as Surgery (1,103 records) down to highly specialized minority classes such as Hospice - Palliative Care, Allergy / Immunology, Lab Medicine - Pathology, and Autopsy with under 10 records each.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth,keepaspectratio]{EDA_Diagrams/03_complete_specialty_distribution.png}
+\caption{Distribution of Medical Specialties}
+\label{fig:eda_complete_specialty}
+\end{figure}
+
+\clearpage
+
+\paragraph{Transcription Length Distribution}
+Figure \ref{fig:eda_length_dist} displays the word count distribution for clinical narratives, fitted with a Kernel Density Estimate (KDE) curve. The majority of medical transcriptions range between 200 and 600 words, exhibiting a right-skewed distribution with extended narratives reaching up to 3,000 words.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth,keepaspectratio]{EDA_Diagrams/04_transcription_length_distribution.png}
+\caption{Distribution of Clinical Transcription Length}
+\label{fig:eda_length_dist}
+\end{figure}
+
+\paragraph{Transcription Length Across Top Specialties}
+Figure \ref{fig:eda_length_by_specialty} presents box plots comparing narrative word count distributions across the top 10 medical specialties. Specialties such as Radiology and Gastroenterology feature shorter median narrative lengths (~250 words), whereas Orthopedic, Surgery, and Consult - History and Phy. contain longer document narratives (median ~500 words) with multiple high-length outliers exceeding 1,500 to 2,500 words.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth,keepaspectratio]{EDA_Diagrams/05_transcription_length_by_specialty.png}
+\caption{Transcription Length Distribution Across Top 10 Medical Specialties}
+\label{fig:eda_length_by_specialty}
+\end{figure}
+
+\clearpage
+
+\paragraph{Medical Word Cloud Visualization}
+Figure \ref{fig:eda_wordcloud} displays a word cloud of the most frequent clinical terms extracted from the medical transcription corpus. High-frequency domain terms include "placed", "well", "used", "time", "patient", "incision", "removed", "normal", and "procedure", reflecting common clinical documentation vocabulary across specialties.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.88\textwidth,keepaspectratio]{EDA_Diagrams/06_medical_transcription_wordcloud.png}
+\caption{Common Terms in Medical Transcriptions}
+\label{fig:eda_wordcloud}
 \end{figure}
 
 \FloatBarrier
