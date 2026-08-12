@@ -461,7 +461,7 @@ Figure \ref{fig:project_pipeline} presents the engineering project pipeline diag
 The procedure starts with gathering raw clinical data from the Kaggle MTSamples dataset. Preprocessing actions such as addressing missing values, removing noise, and lemmatizing word tokens are implemented. After cleaning, EDA is performed to visualize distributions, identify category counts, and discover patterns for feature extraction.
 
 \paragraph{Model Building Phase}
-After data preparation, the processed TF-IDF feature matrix is used to train machine learning models (Logistic Regression, Support Vector Machine, Random Forest, Multinomial Naive Bayes). Predictions from candidate base models are aggregated into a Voting Ensemble Classifier to optimize precision, recall, and F1 score across all 40 medical specialties.
+After data preparation, the processed TF-IDF feature matrix will be used to train candidate machine learning models (Logistic Regression, Support Vector Machine, Random Forest, Multinomial Naive Bayes). Predictions from candidate base models will be aggregated into a Voting Ensemble Classifier, and standard classification metrics—precision, recall, and F1 score—will be evaluated to assess model performance across the 40 medical specialties.
 
 \paragraph{Deployment Phase}
 In the proposed system, the trained Voting Ensemble model will be serialized using Joblib and integrated into a Flask web application. Healthcare professionals will be able to paste or upload clinical notes through the user interface and receive real-time medical specialty predictions.
@@ -477,10 +477,10 @@ The system utilizes standard open-source Python frameworks (Scikit-learn, NLTK, 
 All development tools, libraries, and datasets are open-source with zero licensing fees. Deploying on existing computer hardware involves no financial expense, establishing economic feasibility.
 
 \subsubsection{Operational Feasibility}
-The web interface allows non-technical healthcare personnel to upload medical reports and view specialty predictions instantly, requiring minimal training and ensuring operational feasibility.
+The proposed web interface is designed to allow non-technical healthcare personnel to upload medical reports and view specialty predictions easily, requiring minimal training and ensuring operational feasibility.
 
 \subsubsection{Legal Feasibility}
-The Kaggle MTSamples dataset consists of fully anonymized public records containing no Protected Health Information (PHI). The project complies with data privacy laws, establishing legal feasibility.
+The Kaggle MTSamples dataset consists of public records that do not contain Protected Health Information (PHI). The project utilizes this anonymized public dataset and considers relevant data-privacy requirements, establishing legal feasibility.
 
 \subsubsection{Schedule Feasibility}
 Project milestones are structured systematically across the academic semester, guaranteeing completion within departmental deadlines.
