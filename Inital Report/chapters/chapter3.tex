@@ -376,24 +376,22 @@ and assigns the class label corresponding to the maximum aggregated probability.
 
 \vspace{16pt}
 
-\clearpage
-
 \paragraph{Activity Diagram}
 Figure \ref{fig:activity_diag} displays the TikZ activity diagram representing the execution flow of the proposed machine learning algorithm.
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[node distance=0.45cm and 0cm, auto, >=stealth',
-    stage/.style={rectangle, draw, fill=green!10, text width=16em, text centered, rounded corners, minimum height=2.2em},
+\begin{tikzpicture}[node distance=0.38cm and 0cm, auto, >=stealth',
+    stage/.style={rectangle, draw, fill=green!10, text width=15em, text centered, rounded corners, minimum height=2.0em},
     arrow/.style={draw, -latex'}]
     \node [stage] (d1) {Dataset (MTSamples CSV)};
-    \node [stage, below=0.45cm of d1] (d2) {EDA \& Data Cleaning};
-    \node [stage, below=0.45cm of d2] (d3) {Text Preprocessing (Lemmatized)};
-    \node [stage, below=0.45cm of d3] (d4) {TF-IDF Feature Extraction};
-    \node [stage, below=0.45cm of d4] (d5) {Train-Test Split (80:20)};
-    \node [stage, below=0.45cm of d5] (d6) {Model Training (LR, SVM, RF, MNB)};
-    \node [stage, below=0.45cm of d6] (d7) {Voting Ensemble Aggregation};
-    \node [stage, below=0.45cm of d7] (d8) {Specialty Prediction Output};
+    \node [stage, below=0.38cm of d1] (d2) {EDA \& Data Cleaning};
+    \node [stage, below=0.38cm of d2] (d3) {Text Preprocessing (Lemmatized)};
+    \node [stage, below=0.38cm of d3] (d4) {TF-IDF Feature Extraction};
+    \node [stage, below=0.38cm of d4] (d5) {Train-Test Split (80:20)};
+    \node [stage, below=0.38cm of d5] (d6) {Model Training (LR, SVM, RF, MNB)};
+    \node [stage, below=0.38cm of d6] (d7) {Voting Ensemble Aggregation};
+    \node [stage, below=0.38cm of d7] (d8) {Specialty Prediction Output};
     
     \path [arrow] (d1) -- (d2);
     \path [arrow] (d2) -- (d3);
