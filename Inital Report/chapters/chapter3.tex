@@ -312,7 +312,11 @@ Multinomial Naive Bayes is a probabilistic classifier based on Bayes' Theorem, s
 \paragraph{Voting Ensemble Classifier}
 The Voting Ensemble Classifier is a meta-estimator that aggregates predictions from individual base models (Logistic Regression, SVM, Random Forest, Multinomial Naive Bayes) to yield a unified prediction.
 
-\textbf{Process Flow}: Computes the average predicted probability across all base estimators $P_{\text{ensemble}}(y=c) = \frac{1}{M} \sum P_m(y=c)$ and assigns the class label corresponding to the maximum aggregated probability.
+\textbf{Process Flow}: Computes the average predicted probability across all base estimators
+\[
+P_{\text{ensemble}}(y=c) = \frac{1}{M} \sum P_m(y=c)
+\]
+and assigns the class label corresponding to the maximum aggregated probability.
 
 \textbf{Advantages}: Reduces individual model variance and bias, producing stable predictions across imbalanced clinical specialties.
 
@@ -322,45 +326,24 @@ The Voting Ensemble Classifier is a meta-estimator that aggregates predictions f
 
 \textbf{Role in Proposed System}: Serves as the final decision engine deployed in the Flask web application for real-time specialty categorization.
 
+\clearpage
+
 \paragraph{Activity Diagram}
-Figure \ref{fig:activity_diag} displays the TikZ activity diagram representing system execution flow.
+Figure \ref{fig:activity_diag} displays the TikZ activity diagram representing the execution flow of the proposed machine learning algorithm.
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[node distance=0.4cm and 0cm, auto, >=stealth',
-    block/.style={rectangle, draw, fill=blue!10, text width=12em, text centered, rounded corners, minimum height=2.2em},
-    line/.style={draw, -latex'}]
-    \node [block] (start) {User Uploads Report};
-    \node [block, below=0.4cm of start] (clean) {Text Cleaning \& Preprocessing};
-    \node [block, below=0.4cm of clean] (vector) {TF-IDF Vectorization};
-    \node [block, below=0.4cm of vector] (ensemble) {Voting Ensemble Inference};
-    \node [block, below=0.4cm of ensemble] (output) {Display Predicted Specialty};
-    
-    \path [line] (start) -- (clean);
-    \path [line] (clean) -- (vector);
-    \path [line] (vector) -- (ensemble);
-    \path [line] (ensemble) -- (output);
-\end{tikzpicture}
-\caption{System Activity Diagram Representing Algorithm Execution Flow}
-\label{fig:activity_diag}
-\end{figure}
-
-\paragraph{Algorithm Flow Diagram}
-Figure \ref{fig:algorithm_flow} displays the detailed algorithm execution flow diagram.
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}[node distance=0.35cm and 0cm, auto, >=stealth',
-    stage/.style={rectangle, draw, fill=green!10, text width=14em, text centered, minimum height=1.9em},
+\begin{tikzpicture}[node distance=0.45cm and 0cm, auto, >=stealth',
+    stage/.style={rectangle, draw, fill=green!10, text width=16em, text centered, rounded corners, minimum height=2.2em},
     arrow/.style={draw, -latex'}]
     \node [stage] (d1) {Dataset (MTSamples CSV)};
-    \node [stage, below=0.35cm of d1] (d2) {EDA \& Data Cleaning};
-    \node [stage, below=0.35cm of d2] (d3) {Text Preprocessing (Lemmatized)};
-    \node [stage, below=0.35cm of d3] (d4) {TF-IDF Feature Extraction};
-    \node [stage, below=0.35cm of d4] (d5) {Train-Test Split (80:20)};
-    \node [stage, below=0.35cm of d5] (d6) {Model Training (LR, SVM, RF, MNB)};
-    \node [stage, below=0.35cm of d6] (d7) {Voting Ensemble Aggregation};
-    \node [stage, below=0.35cm of d7] (d8) {Specialty Prediction Output};
+    \node [stage, below=0.45cm of d1] (d2) {EDA \& Data Cleaning};
+    \node [stage, below=0.45cm of d2] (d3) {Text Preprocessing (Lemmatized)};
+    \node [stage, below=0.45cm of d3] (d4) {TF-IDF Feature Extraction};
+    \node [stage, below=0.45cm of d4] (d5) {Train-Test Split (80:20)};
+    \node [stage, below=0.45cm of d5] (d6) {Model Training (LR, SVM, RF, MNB)};
+    \node [stage, below=0.45cm of d6] (d7) {Voting Ensemble Aggregation};
+    \node [stage, below=0.45cm of d7] (d8) {Specialty Prediction Output};
     
     \path [arrow] (d1) -- (d2);
     \path [arrow] (d2) -- (d3);
@@ -370,9 +353,11 @@ Figure \ref{fig:algorithm_flow} displays the detailed algorithm execution flow d
     \path [arrow] (d6) -- (d7);
     \path [arrow] (d7) -- (d8);
 \end{tikzpicture}
-\caption{Detailed Flow Diagram of Proposed Machine Learning Algorithm Execution}
-\label{fig:algorithm_flow}
+\caption{Activity Diagram of the Proposed Machine Learning Algorithm}
+\label{fig:activity_diag}
 \end{figure}
+
+\clearpage
 
 \paragraph{Step-by-Step Explanation}
 The system executes in eight sequential stages:
