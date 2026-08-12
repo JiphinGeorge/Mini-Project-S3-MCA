@@ -1,0 +1,455 @@
+\section{SYSTEM ANALYSIS}
+
+The Kaggle Medical Transcriptions (MTSamples) dataset, sourced from Kaggle \cite{mtsamples_dataset}, provides clinical narrative dictations across multiple healthcare sub-disciplines, enabling comprehensive evaluation of natural language processing and machine learning models for medical document categorization.
+
+\textbf{Dataset Link}: \url{https://www.kaggle.com/datasets/tboyle10/medicaltranscriptions}
+
+\textbf{Size}: The dataset comprises 4,999 clinical records spanning 40 distinct medical specialties.
+
+\textbf{Data Structure}: It contains six attributes including row index (\texttt{Unnamed: 0}), short report abstract (\texttt{description}), target medical department (\texttt{medical\_specialty}), sample dictation title (\texttt{sample\_name}), main clinical narrative (\texttt{transcription}), and extracted key terms (\texttt{keywords}).
+
+\textbf{Sparsity}: The primary text column (\texttt{transcription}) is highly complete, containing 33 missing records (0.66\%), which are dropped during preprocessing. The target label (\texttt{medical\_specialty}) contains zero missing values.
+
+\subsection{Analysis of dataset}
+
+\subsubsection{About the dataset}
+
+\paragraph{a) Dataset Overview}
+The Kaggle Medical Transcriptions dataset provides authentic clinical narratives dictating patient histories, diagnostic evaluations, physical examinations, and surgical procedures:
+\begin{itemize}
+    \item Total Records: 4,999 clinical reports.
+    \item Total Features: 5 independent variables + 1 target variable (\texttt{medical\_specialty}).
+    \item Data Types: Textual narratives (\texttt{transcription}, \texttt{description}, \texttt{keywords}), categorical labels (\texttt{medical\_specialty}), and integer index.
+    \item Missing Values: Present in \texttt{description} (6 records), \texttt{transcription} (33 records), and \texttt{keywords} (1,149 records).
+\end{itemize}
+
+Table \ref{tab:dataset_summary_card} summarizes the core dataset attributes.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.8cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Attribute} & \textbf{Details} \\
+\hline
+\textbf{Dataset Name} & Kaggle Medical Transcriptions (MTSamples) Dataset \\
+\hline
+\textbf{Source URL} & \url{https://www.kaggle.com/datasets/tboyle10/medicaltranscriptions} \\
+\hline
+\textbf{Number of Records} & 4,999 clinical reports \\
+\hline
+\textbf{Number of Columns} & 6 fields (\texttt{Unnamed: 0}, \texttt{description}, \texttt{medical\_specialty}, \texttt{sample\_name}, \texttt{transcription}, \texttt{keywords}) \\
+\hline
+\textbf{Input Variable} & \texttt{transcription} (Primary clinical narrative text) \\
+\hline
+\textbf{Target Variable} & \texttt{medical\_specialty} (40 unique clinical specialties) \\
+\hline
+\textbf{Advantages} & Authentic clinical dictations; complete target label annotations (0 missing labels); broad multi-class domain coverage \\
+\hline
+\textbf{Limitations} & Severe class imbalance across categories; 33 missing transcriptions; 1,149 missing keyword entries; variable text length \\
+\hline
+\end{tabularx}
+\caption{Kaggle Medical Transcriptions (MTSamples) Dataset Summary}
+\label{tab:dataset_summary_card}
+\end{table}
+
+\subsubsection{Explore the dataset}
+A statistical audit was conducted on the dataset fields. Table \ref{tab:column_description} describes each column, its data type, and missing value counts.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}p{2.0cm}|>{\raggedright\arraybackslash}X|r|}
+\hline
+\textbf{Column Name} & \textbf{Data Type} & \textbf{Description} & \textbf{Missing Count} \\
+\hline
+\texttt{Unnamed: 0} & Integer & Record Identifier / Row Index & 0 \\
+\hline
+\texttt{description} & Text & Short summary of clinical report & 6 \\
+\hline
+\texttt{medical\_specialty} & Categorical & Target specialty label (40 classes) & 0 \\
+\hline
+\texttt{sample\_name} & Text & Report title / dictation sample title & 0 \\
+\hline
+\texttt{transcription} & Text & Primary clinical narrative (Input) & 33 \\
+\hline
+\texttt{keywords} & Text & Extracted key terms & 1,149 \\
+\hline
+\end{tabularx}
+\caption{Dataset Column Descriptions and Missing Value Audit}
+\label{tab:column_description}
+\end{table}
+
+Table \ref{tab:top_bottom_specialties} lists the record counts for the top 10 majority specialties alongside the 10 rarest minority specialties.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}X|r|>{\raggedright\arraybackslash}X|r|}
+\hline
+\textbf{Top 10 Specialties} & \textbf{Count} & \textbf{Bottom 10 Specialties} & \textbf{Count} \\
+\hline
+Surgery & 1,103 & Cosmetic / Plastic Surgery & 27 \\
+\hline
+Consult - History and Phy. & 516 & Pediatric / Neonatal & 22 \\
+\hline
+Cardiovascular / Pulmonary & 372 & Sleep Medicine & 20 \\
+\hline
+Orthopedic & 355 & Bariatrics & 18 \\
+\hline
+Radiology & 273 & Speech - Language & 9 \\
+\hline
+General Medicine & 259 & Lab Medicine - Pathology & 8 \\
+\hline
+Gastroenterology & 230 & Allergy / Immunology & 7 \\
+\hline
+Neurology & 223 & Hospice - Palliative Care & 6 \\
+\hline
+SOAP / Chart / Progress Notes & 166 & Executive Evaluation & 2 \\
+\hline
+Obstetrics / Gynecology & 160 & Autopsy & 2 \\
+\hline
+\end{tabularx}
+\caption{Distribution of Top 10 Majority and Bottom 10 Minority Medical Specialties}
+\label{tab:top_bottom_specialties}
+\end{table}
+
+\subsection{Data Preprocessing}
+
+\subsubsection{Data Cleaning}
+Text preprocessing is essential in clinical NLP to remove noisy elements, normalize medical vocabulary, and transform raw narrative text into clean input suitable for mathematical vectorization. The cleaning pipeline executes eight sequential operations:
+
+1. \textit{Removing Missing Values}: Records containing empty or null \texttt{transcription} fields (33 records) are dropped from the dataset.
+2. \textit{Removing Duplicates}: Verification ensures no duplicate clinical reports exist in the corpus.
+3. \textit{Lowercasing}: All narrative text is converted to lowercase to standardize character representations.
+4. \textit{Removing Punctuation}: Commas, periods, semicolons, and special punctuation symbols are stripped.
+5. \textit{Removing Special Characters}: Numeric digits and non-alphanumeric symbols are removed.
+6. \textit{Tokenization}: Free-text narratives are segmented into individual word tokens.
+7. \textit{Stop-Word Removal}: Generic English stop-words are filtered out while preserving clinical vocabulary.
+8. \textit{Lemmatization}: Word tokens are mapped to their canonical base form using the WordNet Lemmatizer.
+
+Table \ref{tab:preprocessing_examples} provides concrete text transformation examples for each step.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Preprocessing Step} & \textbf{Input Text Example} & \textbf{Processed Output Example} \\
+\hline
+Raw Input Text & "SUBJECTIVE: Patient suffers from acute chest pain!" & "SUBJECTIVE: Patient suffers from acute chest pain!" \\
+\hline
+1. Missing Values & Checked: Non-null text & Retained \\
+\hline
+2. Duplicates & Checked: Unique entry & Retained \\
+\hline
+3. Lowercasing & "SUBJECTIVE: Patient suffers..." & "subjective: patient suffers from acute chest pain!" \\
+\hline
+4. Punctuation & "subjective: patient suffers..." & "subjective patient suffers from acute chest pain" \\
+\hline
+5. Special Chars & "chest pain! 100\%" & "chest pain" \\
+\hline
+6. Tokenization & "patient suffers pain" & ['patient', 'suffers', 'pain'] \\
+\hline
+7. Stop-Words & ['patient', 'suffers', 'from', 'pain'] & ['patient', 'suffers', 'pain'] \\
+\hline
+8. Lemmatization & ['patient', 'suffers', 'pain'] & ['patient', 'suffer', 'pain'] \\
+\hline
+\end{tabularx}
+\caption{Step-by-Step Clinical Text Preprocessing Examples}
+\label{tab:preprocessing_examples}
+\end{table}
+
+\subsubsection{Analysis of Feature Variables}
+The \texttt{transcription} field is selected as the sole feature variable because it contains full clinical narratives describing patient symptoms, diagnostic findings, and surgical procedures. Metadata fields (\texttt{description}, \texttt{keywords}) are excluded due to missingness. Numerical features are extracted using TF-IDF vectorization, which scales term frequency by inverse document frequency to emphasize discriminative medical terms.
+
+\subsubsection{Analysis of Class Variables}
+The target variable \texttt{medical\_specialty} contains 40 categories. Class imbalance (Surgery = 1,103 vs Autopsy = 2) is addressed using class weighting in estimators and voting ensemble aggregation to maintain balanced predictive performance.
+
+\subsection{Data Visualization}
+Visualizations generated natively in TikZ illustrate key dataset statistics. Figure \ref{fig:missing_chart} displays missing values per column. Figure \ref{fig:class_dist_chart} shows top specialty distributions. Figure \ref{fig:length_dist_chart} displays document length ranges.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    symbolic x coords={description, specialty, sample\_name, transcription, keywords},
+    xtick=data,
+    nodes near coords,
+    ymin=0, ymax=1300,
+    ylabel={Missing Records Count},
+    x tick label style={rotate=30, anchor=east},
+    bar width=18pt,
+    width=0.85\textwidth,
+    height=5.0cm
+]
+\addplot coordinates {(description,6) (specialty,0) (sample\_name,0) (transcription,33) (keywords,1149)};
+\end{axis}
+\end{tikzpicture}
+\caption{Missing Value Analysis Across Dataset Fields}
+\label{fig:missing_chart}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    xbar,
+    symbolic y coords={Obstetrics, SOAP Notes, Neurology, Gastroenterology, General Med., Radiology, Orthopedic, Cardio/Pulm, Consult, Surgery},
+    ytick=data,
+    nodes near coords,
+    xmin=0, xmax=1250,
+    xlabel={Number of Records},
+    width=0.85\textwidth,
+    height=6.2cm,
+    bar width=11pt
+]
+\addplot coordinates {(160,Obstetrics) (166,SOAP Notes) (223,Neurology) (230,Gastroenterology) (259,General Med.) (273,Radiology) (355,Orthopedic) (372,Cardio/Pulm) (516,Consult) (1103,Surgery)};
+\end{axis}
+\end{tikzpicture}
+\caption{Class Distribution of Top 10 Medical Specialties}
+\label{fig:class_dist_chart}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    symbolic x coords={0-100, 101-300, 301-600, 601-1000, 1000+},
+    xtick=data,
+    nodes near coords,
+    ymin=0, ymax=2200,
+    xlabel={Document Length Ranges (Words)},
+    ylabel={Number of Transcriptions},
+    width=0.85\textwidth,
+    height=5.0cm,
+    bar width=20pt
+]
+\addplot coordinates {(0-100,320) (101-300,1450) (301-600,1980) (601-1000,890) (1000+,326)};
+\end{axis}
+\end{tikzpicture}
+\caption{Document Length Distribution across Medical Transcriptions}
+\label{fig:length_dist_chart}
+\end{figure}
+
+\FloatBarrier
+
+\subsection{Analysis of Architecture (and/or) Algorithms}
+
+\subsubsection{Detailed Study report of the proposed algorithm}
+
+\paragraph{TF-IDF Vectorizer}
+Term Frequency--Inverse Document Frequency (TF-IDF) is a statistical vectorization method used to convert unstructured clinical text into high-dimensional numerical feature vectors. It evaluates the importance of a word relative to an individual report as well as the entire corpus.
+
+\textbf{Process Flow}: TF-IDF computes the mathematical product of local term frequency $\text{TF}(t,d)$ and logarithmic inverse document frequency $\text{IDF}(t,D) = \log(N / \text{DF}(t))$. Words appearing frequently across all clinical reports receive lower weights, while specialized terms receive higher numerical weights.
+
+\textbf{Advantages}: Computationally efficient, scales to large vocabularies, and highlights discriminative medical keywords without requiring GPU infrastructure.
+
+\textbf{Limitations}: Treats text as an unordered bag-of-words and ignores sequential context or semantic word relationships.
+
+\textbf{Reason for Selection}: Provides high-dimensional sparse numerical inputs optimized for linear classifiers.
+
+\textbf{Role in Proposed System}: Serves as the primary feature extraction engine, converting lemmatized clinical narratives into sparse numerical feature matrices for classifier training.
+
+\paragraph{Logistic Regression}
+Logistic Regression is a linear classification algorithm extended to multi-class clinical text categorization through multinomial Softmax regression. It provides a strong, interpretable probabilistic baseline for text processing.
+
+\textbf{Process Flow}: Computes linear combinations of input TF-IDF features and applies the Softmax function to convert raw model logits into normalized probability distributions across all 40 medical specialties.
+
+\textbf{Advantages}: Fast training speed, calibrated probability outputs, and strong resistance to overfitting when paired with L2 regularization.
+
+\textbf{Limitations}: Assumes linear decision boundaries in feature space, which may struggle with complex non-linear word interactions.
+
+\textbf{Reason for Selection}: Provides a reliable linear probabilistic baseline for sparse text features.
+
+\textbf{Role in Proposed System}: Operates as a primary linear probabilistic base estimator within the Voting Ensemble Classifier.
+
+\paragraph{Support Vector Machine (SVM)}
+Support Vector Machines (SVM) are supervised learning classifiers that construct maximum-margin hyperplanes separating target classes in high-dimensional feature space.
+
+\textbf{Process Flow}: Solves convex quadratic optimization to maximize the margin between closest training samples (support vectors) belonging to different medical specialties using linear hinge loss.
+
+\textbf{Advantages}: Highly effective in sparse, high-dimensional TF-IDF feature spaces and resistant to overfitting.
+
+\textbf{Limitations}: Does not generate native probability estimates without Platt scaling and requires higher memory during training.
+
+\textbf{Reason for Selection}: Proven state-of-the-art classifier for high-dimensional TF-IDF feature spaces.
+
+\textbf{Role in Proposed System}: Serves as the primary margin-based linear estimator in the Voting Ensemble, maximizing separation between medical categories.
+
+\paragraph{Random Forest}
+Random Forest is an ensemble learning method that constructs a multitude of decision trees during training and outputs the majority class vote across individual trees.
+
+\textbf{Process Flow}: Combines bootstrap aggregation (bagging) with random feature subspace selection at each tree node split, measuring impurity reduction via the Gini criterion.
+
+\textbf{Advantages}: Captures complex non-linear term interactions and demonstrates high robustness against noise and outliers.
+
+\textbf{Limitations}: Computationally slower during training on large, sparse high-dimensional matrices.
+
+\textbf{Reason for Selection}: Acts as the non-linear tree-based estimator in the Voting Ensemble, providing architectural model diversity.
+
+\textbf{Role in Proposed System}: Operates as the tree-based estimator in the Voting Ensemble.
+
+\paragraph{Multinomial Naive Bayes}
+Multinomial Naive Bayes is a probabilistic classifier based on Bayes' Theorem, specifically designed for text classification with word frequency counts.
+
+\textbf{Process Flow}: Computes log-posterior class probabilities $P(y|x) \propto P(y) \prod P(x_i|y)$ using word frequency counts with Laplace smoothing to prevent zero-probability errors.
+
+\textbf{Advantages}: Extremely fast training and inference speeds with low computational overhead.
+
+\textbf{Limitations}: Relies on the strong assumption that feature words are conditionally independent given the class.
+
+\textbf{Reason for Selection}: Industry standard baseline classifier tailored for word count and frequency features.
+
+\textbf{Role in Proposed System}: Operates as a fast probabilistic base estimator within the Voting Ensemble Classifier.
+
+\paragraph{Voting Ensemble Classifier}
+The Voting Ensemble Classifier is a meta-estimator that aggregates predictions from individual base models (Logistic Regression, SVM, Random Forest, Multinomial Naive Bayes) to yield a unified prediction.
+
+\textbf{Process Flow}: Computes the average predicted probability across all base estimators $P_{\text{ensemble}}(y=c) = \frac{1}{M} \sum P_m(y=c)$ and assigns the class label corresponding to the maximum aggregated probability.
+
+\textbf{Advantages}: Reduces individual model variance and bias, producing stable predictions across imbalanced clinical specialties.
+
+\textbf{Limitations}: Total inference latency equals the cumulative prediction time of all underlying base models.
+
+\textbf{Reason for Selection}: Maximizes classification accuracy by aggregating linear, margin, tree, and probabilistic models.
+
+\textbf{Role in Proposed System}: Serves as the final decision engine deployed in the Flask web application for real-time specialty categorization.
+
+\paragraph{Activity Diagram}
+Figure \ref{fig:activity_diag} displays the TikZ activity diagram representing system execution flow.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.4cm and 0cm, auto, >=stealth',
+    block/.style={rectangle, draw, fill=blue!10, text width=12em, text centered, rounded corners, minimum height=2.2em},
+    line/.style={draw, -latex'}]
+    \node [block] (start) {User Uploads Report};
+    \node [block, below=0.4cm of start] (clean) {Text Cleaning \& Preprocessing};
+    \node [block, below=0.4cm of clean] (vector) {TF-IDF Vectorization};
+    \node [block, below=0.4cm of vector] (ensemble) {Voting Ensemble Inference};
+    \node [block, below=0.4cm of ensemble] (output) {Display Predicted Specialty};
+    
+    \path [line] (start) -- (clean);
+    \path [line] (clean) -- (vector);
+    \path [line] (vector) -- (ensemble);
+    \path [line] (ensemble) -- (output);
+\end{tikzpicture}
+\caption{System Activity Diagram Representing Algorithm Execution Flow}
+\label{fig:activity_diag}
+\end{figure}
+
+\paragraph{Algorithm Flow Diagram}
+Figure \ref{fig:algorithm_flow} displays the detailed algorithm execution flow diagram.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.35cm and 0cm, auto, >=stealth',
+    stage/.style={rectangle, draw, fill=green!10, text width=14em, text centered, minimum height=1.9em},
+    arrow/.style={draw, -latex'}]
+    \node [stage] (d1) {Dataset (MTSamples CSV)};
+    \node [stage, below=0.35cm of d1] (d2) {EDA \& Data Cleaning};
+    \node [stage, below=0.35cm of d2] (d3) {Text Preprocessing (Lemmatized)};
+    \node [stage, below=0.35cm of d3] (d4) {TF-IDF Feature Extraction};
+    \node [stage, below=0.35cm of d4] (d5) {Train-Test Split (80:20)};
+    \node [stage, below=0.35cm of d5] (d6) {Model Training (LR, SVM, RF, MNB)};
+    \node [stage, below=0.35cm of d6] (d7) {Voting Ensemble Aggregation};
+    \node [stage, below=0.35cm of d7] (d8) {Specialty Prediction Output};
+    
+    \path [arrow] (d1) -- (d2);
+    \path [arrow] (d2) -- (d3);
+    \path [arrow] (d3) -- (d4);
+    \path [arrow] (d4) -- (d5);
+    \path [arrow] (d5) -- (d6);
+    \path [arrow] (d6) -- (d7);
+    \path [arrow] (d7) -- (d8);
+\end{tikzpicture}
+\caption{Detailed Flow Diagram of Proposed Machine Learning Algorithm Execution}
+\label{fig:algorithm_flow}
+\end{figure}
+
+\paragraph{Step-by-Step Explanation}
+The system executes in eight sequential stages:
+\begin{enumerate}
+    \item \textit{Dataset Ingestion}: Ingesting raw MTSamples CSV data containing 4,999 medical transcriptions.
+    \item \textit{Cleaning}: Dropping empty records, removing duplicate entries, and lowercasing narrative text.
+    \item \textit{Preprocessing}: Removing punctuation, digits, and stop-words, followed by WordNet lemmatization.
+    \item \textit{TF-IDF Vectorization}: Building sparse numerical feature matrices with sublinear term frequency scaling.
+    \item \textit{Train-Test Partitioning}: Splitting data into 80\% training and 20\% testing stratified sets.
+    \item \textit{Multi-Model Training}: Fitting Logistic Regression, Linear SVM, Random Forest, and Multinomial Naive Bayes.
+    \item \textit{Ensemble Aggregation}: Combining base estimator outputs into a soft/hard Voting Classifier.
+    \item \textit{Real-Time Prediction}: Returning top predicted medical specialty with confidence scores.
+\end{enumerate}
+
+\FloatBarrier
+
+\subsection{Project pipeline}
+
+\subsubsection{Project pipeline diagram with explanation}
+Figure \ref{fig:project_pipeline} presents the engineering project pipeline diagram following a top-down flow.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.35cm and 0cm, auto, >=stealth',
+    pipe/.style={rectangle, draw, fill=orange!10, text width=15em, text centered, rounded corners, minimum height=1.8em},
+    line/.style={draw, -latex'}]
+    \node [pipe] (p1) {1. Dataset Ingestion};
+    \node [pipe, below=0.35cm of p1] (p2) {2. Exploratory Data Analysis (EDA)};
+    \node [pipe, below=0.35cm of p2] (p3) {3. Data Cleaning \& Preprocessing};
+    \node [pipe, below=0.35cm of p3] (p4) {4. TF-IDF Feature Vectorization};
+    \node [pipe, below=0.35cm of p4] (p5) {5. Train-Test Stratified Split};
+    \node [pipe, below=0.35cm of p5] (p6) {6. Multi-Model Training};
+    \node [pipe, below=0.35cm of p6] (p7) {7. Model Performance Evaluation};
+    \node [pipe, below=0.35cm of p7] (p8) {8. Voting Ensemble Aggregation};
+    \node [pipe, below=0.35cm of p8] (p9) {9. Model Serialization (Joblib)};
+    \node [pipe, below=0.35cm of p9] (p10) {10. Flask Application Integration};
+    \node [pipe, below=0.35cm of p10] (p11) {11. Real-Time Specialty Prediction};
+    
+    \path [line] (p1) -- (p2);
+    \path [line] (p2) -- (p3);
+    \path [line] (p3) -- (p4);
+    \path [line] (p4) -- (p5);
+    \path [line] (p5) -- (p6);
+    \path [line] (p6) -- (p7);
+    \path [line] (p7) -- (p8);
+    \path [line] (p8) -- (p9);
+    \path [line] (p9) -- (p10);
+    \path [line] (p10) -- (p11);
+\end{tikzpicture}
+\caption{Engineering Project Pipeline Flow Diagram}
+\label{fig:project_pipeline}
+\end{figure}
+
+\paragraph{Data Phase}
+The procedure starts with gathering raw clinical data from the Kaggle MTSamples dataset. Preprocessing actions such as addressing missing values, removing noise, and lemmatizing word tokens are implemented. After cleaning, EDA is performed to visualize distributions, identify category counts, and discover patterns for feature extraction.
+
+\paragraph{Model Building Phase}
+After data preparation, the processed TF-IDF feature matrix is used to train machine learning models (Logistic Regression, Support Vector Machine, Random Forest, Multinomial Naive Bayes). Predictions from candidate base models are aggregated into a Voting Ensemble Classifier to optimize precision, recall, and F1 score across all 40 medical specialties.
+
+\paragraph{Deployment Phase}
+The trained Voting Ensemble model is serialized using Joblib and integrated into a Flask web application. Healthcare professionals can paste or upload clinical notes through the user interface and receive real-time medical specialty predictions instantly.
+
+\FloatBarrier
+
+\subsection{Feasibility analysis}
+
+\subsubsection{Technical Feasibility}
+The system utilizes standard open-source Python frameworks (Scikit-learn, NLTK, Pandas, Flask) running on standard CPU hardware. No expensive GPU infrastructure is required, establishing technical feasibility.
+
+\subsubsection{Economic Feasibility}
+All development tools, libraries, and datasets are open-source with zero licensing fees. Deploying on existing computer hardware involves no financial expense, establishing economic feasibility.
+
+\subsubsection{Operational Feasibility}
+The web interface allows non-technical healthcare personnel to upload medical reports and view specialty predictions instantly, requiring minimal training and ensuring operational feasibility.
+
+\subsubsection{Legal Feasibility}
+The Kaggle MTSamples dataset consists of fully anonymized public records containing no Protected Health Information (PHI). The project complies with data privacy laws, establishing legal feasibility.
+
+\subsubsection{Schedule Feasibility}
+Project milestones are structured systematically across the academic semester, guaranteeing completion within departmental deadlines.

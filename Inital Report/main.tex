@@ -1,0 +1,117 @@
+\documentclass[12pt,a4paper]{article}
+
+% Page Geometry & Margins (1 inch top/bottom/right, 1.25 inch left for binding)
+\usepackage[top=1.0in, bottom=1.0in, left=1.25in, right=1.0in]{geometry}
+
+% Times New Roman Font Setup
+\usepackage{mathptmx}
+
+% Line Spacing (1.5 line spacing)
+\usepackage{setspace}
+\setstretch{1.5}
+
+% Text Alignment & Formatting
+\usepackage{ragged2e}
+\justifying
+
+% Packages for Graphics, Tables, and Float Control
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{url}
+\usepackage{cite}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{placeins}
+
+% Table Caption Below Table Setup (Senior Report Format)
+\captionsetup[table]{position=below, skip=6pt, labelfont=bf, textfont=normalfont}
+\captionsetup[figure]{position=below, skip=6pt, labelfont=bf, textfont=normalfont}
+
+% TikZ & PGFPlots for Academic & Engineering Diagrams
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{shapes.geometric, arrows, positioning, calc, chains, shadows}
+
+% Header and Footer Setup (fancyhdr - Senior Report Exact Style)
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\headheight}{15pt}
+\fancyhf{} % Clear default header and footer
+
+% Header Configuration (Top Right)
+\fancyhead[R]{\small Medical Specialty Classification using TF-IDF and Ensemble Machine Learning}
+\fancyhead[L]{}
+
+% Footer Configuration (Left Bottom & Right Bottom - Senior Report Exact String)
+\fancyfoot[L]{\small Department of Computer Applications,MACE}
+\fancyfoot[R]{\small \thepage}
+\fancyfoot[C]{}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Section Heading Formatting (Matching Department Senior Report)
+\usepackage{titlesec}
+
+% Section Title (1. INTRODUCTION - 16pt Bold)
+\titleformat{\section}
+  {\normalfont\fontsize{16}{20}\bfseries}
+  {\thesection.}
+  {0.5em}
+  {}
+
+\titlespacing*{\section}{0pt}{14pt}{6pt}
+
+% Subsection Title (2.1. Literature Review Summary - 14pt Bold)
+\titleformat{\subsection}
+  {\normalfont\fontsize{14}{18}\bfseries}
+  {\thesubsection}
+  {0.5em}
+  {}
+
+\titlespacing*{\subsection}{0pt}{10pt}{4pt}
+
+% Sub-subsection Title (3.1.1. About the dataset - 12pt Bold)
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12}{15}\bfseries}
+  {\thesubsubsection}
+  {0.5em}
+  {}
+
+\titlespacing*{\subsubsection}{0pt}{8pt}{3pt}
+
+% Paragraph Spacing
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+
+% Table of Contents Depth Control (Matching Senior Report Outline)
+\setcounter{tocdepth}{3}
+
+% Hyperlink Setup
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+% Start directly from Introduction (Page 1)
+\pagenumbering{arabic}
+\setstretch{1.5}
+
+% Include Section Files
+\input{chapters/chapter1}
+\input{chapters/chapter2}
+\input{chapters/chapter3}
+
+% References / Bibliography
+\clearpage
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}
