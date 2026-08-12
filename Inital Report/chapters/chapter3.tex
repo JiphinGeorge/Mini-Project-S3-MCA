@@ -247,84 +247,134 @@ Visualizations generated natively in TikZ illustrate key dataset statistics. Fig
 \paragraph{TF-IDF Vectorizer}
 Term Frequency--Inverse Document Frequency (TF-IDF) is a statistical vectorization method used to convert unstructured clinical text into high-dimensional numerical feature vectors. It evaluates the importance of a word relative to an individual report as well as the entire corpus.
 
-\textbf{Process Flow}: TF-IDF computes the mathematical product of local term frequency $\text{TF}(t,d)$ and logarithmic inverse document frequency $\text{IDF}(t,D) = \log(N / \text{DF}(t))$. Words appearing frequently across all clinical reports receive lower weights, while specialized terms receive higher numerical weights.
+\vspace{3pt}
+\textbf{Process Flow}: TF-IDF computes the mathematical product of local term frequency $\text{TF}(t,d)$ and logarithmic inverse document frequency
+\[
+\text{IDF}(t,D) = \log(N / \text{DF}(t))
+\]
+Words appearing frequently across all clinical reports receive lower weights, while specialized terms receive higher numerical weights.
 
+\vspace{3pt}
 \textbf{Advantages}: Computationally efficient, scales to large vocabularies, and highlights discriminative medical keywords without requiring GPU infrastructure.
 
+\vspace{3pt}
 \textbf{Limitations}: Treats text as an unordered bag-of-words and ignores sequential context or semantic word relationships.
 
+\vspace{3pt}
 \textbf{Reason for Selection}: Provides high-dimensional sparse numerical inputs optimized for linear classifiers.
 
+\vspace{3pt}
 \textbf{Role in Proposed System}: Serves as the primary feature extraction engine, converting lemmatized clinical narratives into sparse numerical feature matrices for classifier training.
+
+\vspace{16pt}
 
 \paragraph{Logistic Regression}
 Logistic Regression is a linear classification algorithm extended to multi-class clinical text categorization through multinomial Softmax regression. It provides a strong, interpretable probabilistic baseline for text processing.
 
+\vspace{3pt}
 \textbf{Process Flow}: Computes linear combinations of input TF-IDF features and applies the Softmax function to convert raw model logits into normalized probability distributions across all 40 medical specialties.
 
+\vspace{3pt}
 \textbf{Advantages}: Fast training speed, calibrated probability outputs, and strong resistance to overfitting when paired with L2 regularization.
 
+\vspace{3pt}
 \textbf{Limitations}: Assumes linear decision boundaries in feature space, which may struggle with complex non-linear word interactions.
 
+\vspace{3pt}
 \textbf{Reason for Selection}: Provides a reliable linear probabilistic baseline for sparse text features.
 
+\vspace{3pt}
 \textbf{Role in Proposed System}: Operates as a primary linear probabilistic base estimator within the Voting Ensemble Classifier.
+
+\vspace{16pt}
 
 \paragraph{Support Vector Machine (SVM)}
 Support Vector Machines (SVM) are supervised learning classifiers that construct maximum-margin hyperplanes separating target classes in high-dimensional feature space.
 
+\vspace{3pt}
 \textbf{Process Flow}: Solves convex quadratic optimization to maximize the margin between closest training samples (support vectors) belonging to different medical specialties using linear hinge loss.
 
+\vspace{3pt}
 \textbf{Advantages}: Highly effective in sparse, high-dimensional TF-IDF feature spaces and resistant to overfitting.
 
+\vspace{3pt}
 \textbf{Limitations}: Does not generate native probability estimates without Platt scaling and requires higher memory during training.
 
+\vspace{3pt}
 \textbf{Reason for Selection}: Proven state-of-the-art classifier for high-dimensional TF-IDF feature spaces.
 
+\vspace{3pt}
 \textbf{Role in Proposed System}: Serves as the primary margin-based linear estimator in the Voting Ensemble, maximizing separation between medical categories.
+
+\vspace{16pt}
 
 \paragraph{Random Forest}
 Random Forest is an ensemble learning method that constructs a multitude of decision trees during training and outputs the majority class vote across individual trees.
 
+\vspace{3pt}
 \textbf{Process Flow}: Combines bootstrap aggregation (bagging) with random feature subspace selection at each tree node split, measuring impurity reduction via the Gini criterion.
 
+\vspace{3pt}
 \textbf{Advantages}: Captures complex non-linear term interactions and demonstrates high robustness against noise and outliers.
 
+\vspace{3pt}
 \textbf{Limitations}: Computationally slower during training on large, sparse high-dimensional matrices.
 
+\vspace{3pt}
 \textbf{Reason for Selection}: Acts as the non-linear tree-based estimator in the Voting Ensemble, providing architectural model diversity.
 
+\vspace{3pt}
 \textbf{Role in Proposed System}: Operates as the tree-based estimator in the Voting Ensemble.
+
+\vspace{16pt}
 
 \paragraph{Multinomial Naive Bayes}
 Multinomial Naive Bayes is a probabilistic classifier based on Bayes' Theorem, specifically designed for text classification with word frequency counts.
 
-\textbf{Process Flow}: Computes log-posterior class probabilities $P(y|x) \propto P(y) \prod P(x_i|y)$ using word frequency counts with Laplace smoothing to prevent zero-probability errors.
+\vspace{3pt}
+\textbf{Process Flow}: Computes log-posterior class probabilities
+\[
+P(y|x) \propto P(y) \prod P(x_i|y)
+\]
+using word frequency counts with Laplace smoothing to prevent zero-probability errors.
 
+\vspace{3pt}
 \textbf{Advantages}: Extremely fast training and inference speeds with low computational overhead.
 
+\vspace{3pt}
 \textbf{Limitations}: Relies on the strong assumption that feature words are conditionally independent given the class.
 
+\vspace{3pt}
 \textbf{Reason for Selection}: Industry standard baseline classifier tailored for word count and frequency features.
 
+\vspace{3pt}
 \textbf{Role in Proposed System}: Operates as a fast probabilistic base estimator within the Voting Ensemble Classifier.
+
+\vspace{16pt}
 
 \paragraph{Voting Ensemble Classifier}
 The Voting Ensemble Classifier is a meta-estimator that aggregates predictions from individual base models (Logistic Regression, SVM, Random Forest, Multinomial Naive Bayes) to yield a unified prediction.
 
+\vspace{3pt}
 \textbf{Process Flow}: Computes the average predicted probability across all base estimators
 \[
 P_{\text{ensemble}}(y=c) = \frac{1}{M} \sum P_m(y=c)
 \]
 and assigns the class label corresponding to the maximum aggregated probability.
 
+\vspace{3pt}
 \textbf{Advantages}: Reduces individual model variance and bias, producing stable predictions across imbalanced clinical specialties.
 
+\vspace{3pt}
 \textbf{Limitations}: Total inference latency equals the cumulative prediction time of all underlying base models.
 
+\vspace{3pt}
 \textbf{Reason for Selection}: Maximizes classification accuracy by aggregating linear, margin, tree, and probabilistic models.
 
+\vspace{3pt}
 \textbf{Role in Proposed System}: Serves as the final decision engine deployed in the Flask web application for real-time specialty categorization.
+
+\vspace{16pt}
 
 \clearpage
 

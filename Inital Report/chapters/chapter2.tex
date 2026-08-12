@@ -83,7 +83,10 @@ The proposed SemiADA framework achieved an average performance improvement of 14
 
 \paragraph{Paper 3 -- Blanchard AE, Gao S, Yoon HJ, Tourassi G. A keyword-enhanced approach to handle class imbalance in clinical text classification. IEEE Journal of Biomedical and Health Informatics. 2022.}
 
-Blanchard et al., writing in the \textit{IEEE Journal of Biomedical and Health Informatics}, focused on preventing deep neural models from overfitting on rare clinical categories in long pathology narratives. The authors introduced a data-centric strategy by injecting short class-associated keyword sequences into mini-batches during neural network training, formulating a combined loss function $L = L_{docs} + \alpha L_{key}$.
+Blanchard et al., writing in the \textit{IEEE Journal of Biomedical and Health Informatics}, focused on preventing deep neural models from overfitting on rare clinical categories in long pathology narratives. The authors introduced a data-centric strategy by injecting short class-associated keyword sequences into mini-batches during neural network training, formulating a combined loss function
+\[
+L = L_{\text{docs}} + \alpha L_{\text{key}}
+\]
 
 The study utilized the National Cancer Institute (NCI) Surveillance, Epidemiology, and End Results (SEER) cancer pathology registry dataset. The approach evaluated Convolutional Neural Networks (CNNs), keyword-constrained loss functions, and standard data resampling baselines (oversampling and undersampling).
 
