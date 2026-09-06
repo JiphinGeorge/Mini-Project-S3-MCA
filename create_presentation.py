@@ -334,7 +334,7 @@ def build_slide_2(prs):
     tf_sb.word_wrap = True
     items_sol = [
         ("Automated NLP & TF-IDF Extraction", "Transforms unstructured medical text through lowercasing, stop-word removal, and lemmatization into standardized, high-dimensional TF-IDF feature vectors."),
-        ("Multi-Classifier Supervised Learning", "Evaluates four distinct algorithms: Linear SVM (calibrated), Random Forest, Logistic Regression, and Multinomial Naive Bayes."),
+        ("Multi-Classifier Supervised Learning", "Evaluates four distinct algorithms: SVM, Random Forest, Logistic Regression, and Multinomial Naive Bayes."),
         ("Soft Consensus Voting Ensemble", "Synthesizes calibrated class probability distributions across all candidate models to mitigate individual classifier bias and reduce variance."),
         ("Live Interactive Web Deployment", "Integrates the serialized pipeline into a lightweight Flask web application, delivering instant specialty predictions and confidence scores for clinicians.")
     ]
@@ -396,7 +396,7 @@ def build_slide_3(prs):
             "Significantly faster and more lightweight than Word2Vec or deep embeddings, enabling instant local web deployment."
         ]),
         ("Supervised ML Classifiers", ACCENT_BLUE, [
-            "Literature demonstrates that Linear SVM and Logistic Regression excel at high-dimensional sparse text vectors.",
+            "Literature demonstrates that SVM and Logistic Regression excel at high-dimensional sparse text vectors.",
             "Random Forest introduces non-linear feature interactions and bagging robustness.",
             "Multinomial Naive Bayes provides strong, rapid probabilistic likelihoods for word frequency text representations."
         ]),
@@ -459,9 +459,9 @@ def build_slide_4(prs):
             "authors": "Omar et al. (2023)",
             "badge": "Feature Spaces & Estimators",
             "color": TEAL,
-            "method": "EMR Narrative Records | Evaluated Logistic Regression, Linear SVM, Multinomial Naive Bayes, and k-NN across clinical categories.",
-            "finding": "Linear SVM and Logistic Regression outperformed complex non-linear models on high-dimensional text vectors, achieving peak accuracy (92%) with rapid convergence.",
-            "relevance": "Directly justifies our selection of Linear SVM and Logistic Regression as core candidate estimators for sparse TF-IDF text matrices."
+            "method": "EMR Narrative Records | Evaluated Logistic Regression, SVM, Multinomial Naive Bayes, and k-NN across clinical categories.",
+            "finding": "SVM and Logistic Regression outperformed complex non-linear models on high-dimensional text vectors, achieving peak accuracy (92%) with rapid convergence.",
+            "relevance": "Directly justifies our selection of SVM and Logistic Regression as core candidate estimators for sparse TF-IDF text matrices."
         },
         {
             "num": "PAPER 3",
