@@ -254,10 +254,10 @@ Raw Input Text & "SUBJECTIVE: Patient suffers from acute chest pain!" & "SUBJECT
 \end{table}
 
 \subsubsection{ANALYSIS OF FEATURE VARIABLES}
-The \texttt{transcription} field is selected as the sole feature variable because it contains full clinical narratives describing patient symptoms, diagnostic findings, and surgical procedures. Metadata fields (\texttt{description}, \texttt{keywords}) are excluded due to high missingness. Unstructured clinical narratives are converted into high-dimensional numerical feature vectors using Term Frequency--Inverse Document Frequency (TF-IDF) vectorization, which extracts unigram and bigram tokens while applying sublinear frequency scaling and $L_2$ normalization.
+The \texttt{transcription} field is selected as the primary feature variable because it contains the complete clinical narrative. Other metadata fields, such as \texttt{description} and \texttt{keywords}, are not included in the primary classification feature set because the project focuses on full transcription-based specialty classification and the \texttt{keywords} field contains substantial missing values. Unstructured clinical narratives are converted into high-dimensional numerical feature vectors using Term Frequency--Inverse Document Frequency (TF-IDF) vectorization, which extracts unigram and bigram tokens while applying sublinear frequency scaling and $L_2$ normalization.
 
 \subsubsection{ANALYSIS OF CLASS VARIABLE}
-The target variable \texttt{medical\_specialty} contains 40 distinct diagnostic categories. The class distribution exhibits severe imbalance, ranging from 1,103 reports in Surgery to only 2 reports in Autopsy and Executive Evaluation. To ensure fair multi-class evaluation, stratified train-test splitting (80:20) is utilized to preserve class proportions, and ensemble voting consensus is deployed to avoid model bias toward majority classes.
+The target variable \texttt{medical\_specialty} contains 40 distinct medical specialty categories. The class distribution exhibits severe imbalance, ranging from 1,103 reports in Surgery to only 2 reports in Autopsy and Executive Evaluation. To ensure fair multi-class evaluation, stratified train-test splitting (80:20) is utilized to preserve class proportions, and ensemble voting consensus is deployed to avoid model bias toward majority classes.
 
 \clearpage
 
@@ -267,7 +267,7 @@ This project employs supervised machine learning algorithms to classify clinical
 
 \subsubsection{DETAILED STUDY REPORT OF THE PROPOSED ALGORITHMS}
 
-The proposed system evaluates diverse machine learning estimators alongside statistical feature extraction to construct a robust diagnostic classification engine. Each algorithm offers distinct theoretical properties, mathematical formulations, and operational characteristics when applied to high-dimensional clinical text spaces.
+The proposed system evaluates diverse machine learning estimators alongside statistical feature extraction to construct a robust specialty classification engine. Each algorithm offers distinct theoretical properties, mathematical formulations, and operational characteristics when applied to high-dimensional clinical text spaces.
 
 \paragraph{1. Support Vector Machine (SVM)}
 
