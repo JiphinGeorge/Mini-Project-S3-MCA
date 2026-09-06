@@ -39,7 +39,7 @@ def create_deck():
     prs.slide_height = Inches(7.5)
     return prs
 
-def add_header_footer(slide, title_text, category_badge, slide_num, total_slides=14):
+def add_header_footer(slide, title_text, category_badge, slide_num, total_slides=15):
     # Category badge
     tb_badge = slide.shapes.add_textbox(Inches(0.8), Inches(0.28), Inches(6.0), Inches(0.3))
     tf_b = tb_badge.text_frame
@@ -1278,7 +1278,103 @@ def build_slide_13(prs):
 
 
 def build_slide_14(prs):
-    """SLIDE 14: THANK YOU & QUESTIONS"""
+    """SLIDE 14: PROJECT TIMELINE & MILESTONE SCHEDULE"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_header_footer(slide, "Project Timeline & Milestone Schedule", "Project Timeline", 14)
+
+    # Subtitle / Summary info banner
+    c_top = add_card(slide, Inches(0.8), Inches(1.22), Inches(11.733), Inches(0.52),
+                     bg_color=RGBColor(240, 249, 255), border_color=RGBColor(186, 230, 253))
+    tb_top = slide.shapes.add_textbox(Inches(0.95), Inches(1.28), Inches(11.4), Inches(0.42))
+    tf_top = tb_top.text_frame
+    tf_top.word_wrap = True
+    p_t = tf_top.paragraphs[0]
+    p_t.text = "ACADEMIC TIMELINE & PRESENTATION MILESTONES (SEMESTER 3 MCA MINI PROJECT)"
+    p_t.font.name = FONT_HEADING
+    p_t.font.size = Pt(9.5)
+    p_t.font.bold = True
+    p_t.font.color.rgb = PRIMARY_BLUE
+
+    # 16-row, 2-column Table matching Chapter 3 Table 3.1
+    table_shape = slide.shapes.add_table(16, 2, Inches(0.8), Inches(1.85), Inches(11.733), Inches(4.95))
+    table = table_shape.table
+    table.columns[0].width = Inches(3.0)
+    table.columns[1].width = Inches(8.733)
+
+    # Header Row
+    headers = ["Period / Date", "Planned Activity / Presentation Milestone"]
+    for col_idx, h_text in enumerate(headers):
+        cell = table.cell(0, col_idx)
+        cell.fill.solid()
+        cell.fill.fore_color.rgb = NAVY
+        cell.margin_top = Inches(0.04)
+        cell.margin_bottom = Inches(0.04)
+        cell.margin_left = Inches(0.12)
+        cell.margin_right = Inches(0.12)
+        p = cell.text_frame.paragraphs[0]
+        p.text = h_text
+        p.font.name = FONT_HEADING
+        p.font.size = Pt(10.0)
+        p.font.bold = True
+        p.font.color.rgb = WHITE
+
+    timeline_data = [
+        ("Week 1–2", "Dataset Collection, Exploratory Data Analysis, and Initial Data Cleaning", False, "done"),
+        ("21.07.2026", "Project Proposal Approval", True, "done"),
+        ("Week 3–4", "Clinical Text Preprocessing, Medical Stop-word Removal, and Lemmatization", False, "done"),
+        ("Week 5", "TF-IDF Feature Extraction and Feature Representation Analysis", False, "done"),
+        ("08.09.2026", "First Project Presentation (Current Milestone — Phase 1 Faculty Review)", True, "current"),
+        ("09.09.2026", "Sprint Release I (Dataset Exploration & Pipeline Architecture Completed)", True, "current"),
+        ("Week 6", "Candidate ML Model Training (Linear SVM, Random Forest, Logistic Regression, MNB) & Probability Calibration", False, "planned"),
+        ("18.09.2026", "Sprint Release II", True, "planned"),
+        ("Week 7–8", "Soft Voting Ensemble Formulation, Grid Search Hyperparameter Tuning, and Web UI Design", False, "planned"),
+        ("29.09.2026 – 30.09.2026", "Interim Project Presentation", True, "planned"),
+        ("Week 9", "Flask Web Application Integration, Route Setup, and Serialized Pipeline Deployment", False, "planned"),
+        ("09.10.2026", "Sprint Release III", True, "planned"),
+        ("Week 10–11", "Multi-Class Evaluation, Confusion Matrix Analysis, Threshold Tuning, and System Testing", False, "planned"),
+        ("22.10.2026 – 23.10.2026", "Final Project Presentation", True, "planned"),
+        ("30.10.2026", "Final Report Submission", True, "planned")
+    ]
+
+    for row_idx, (period, activity, is_milestone, status) in enumerate(timeline_data, start=1):
+        cell_date = table.cell(row_idx, 0)
+        cell_act = table.cell(row_idx, 1)
+
+        # Background color
+        if status == "current":
+            bg_col = RGBColor(239, 246, 255) # Highlight current milestone
+        elif row_idx % 2 == 1:
+            bg_col = WHITE
+        else:
+            bg_col = RGBColor(248, 250, 252)
+
+        for cell in (cell_date, cell_act):
+            cell.fill.solid()
+            cell.fill.fore_color.rgb = bg_col
+            cell.margin_top = Inches(0.02)
+            cell.margin_bottom = Inches(0.02)
+            cell.margin_left = Inches(0.12)
+            cell.margin_right = Inches(0.12)
+
+        # Date text
+        p_d = cell_date.text_frame.paragraphs[0]
+        p_d.text = period
+        p_d.font.name = FONT_BODY
+        p_d.font.size = Pt(8.8)
+        p_d.font.bold = is_milestone or (status == "current")
+        p_d.font.color.rgb = PRIMARY_BLUE if status == "current" else (NAVY if is_milestone else SLATE_BODY)
+
+        # Activity text
+        p_a = cell_act.text_frame.paragraphs[0]
+        p_a.text = activity
+        p_a.font.name = FONT_BODY
+        p_a.font.size = Pt(8.8)
+        p_a.font.bold = is_milestone or (status == "current")
+        p_a.font.color.rgb = PRIMARY_BLUE if status == "current" else (NAVY if is_milestone else SLATE_BODY)
+
+
+def build_slide_15(prs):
+    """SLIDE 15: THANK YOU & QUESTIONS"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
 
     # Left decorative bar
@@ -1389,12 +1485,19 @@ def main():
     build_slide_12(prs)
     print("Building Slide 13: Progress & Next Steps...")
     build_slide_13(prs)
-    print("Building Slide 14: Thank You & Q&A...")
+    print("Building Slide 14: Project Timeline & Milestones...")
     build_slide_14(prs)
+    print("Building Slide 15: Thank You & Q&A...")
+    build_slide_15(prs)
 
     output_path = "Medical_Specialty_Classification_First_Presentation.pptx"
-    prs.save(output_path)
-    print(f"\nSuccessfully generated {len(prs.slides)}-slide presentation: '{output_path}'")
+    try:
+        prs.save(output_path)
+        print(f"\nSuccessfully generated {len(prs.slides)}-slide presentation: '{output_path}'")
+    except PermissionError:
+        output_path_alt = "Medical_Specialty_Classification_First_Presentation_v2.pptx"
+        prs.save(output_path_alt)
+        print(f"\nPrimary file was open in PowerPoint. Successfully saved {len(prs.slides)}-slide presentation to: '{output_path_alt}'")
 
 if __name__ == '__main__':
     main()
