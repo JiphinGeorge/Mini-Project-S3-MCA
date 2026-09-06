@@ -1024,7 +1024,7 @@ def build_slide_11(prs):
 
     # 4 Parallel Model Blocks in Middle Column
     model_names = [
-        ("Linear SVM (Calibrated)", TEAL),
+        ("SVM", TEAL),
         ("Random Forest", PURPLE),
         ("Logistic Regression", PRIMARY_BLUE),
         ("Multinomial Naive Bayes", DARK_BLUE)
@@ -1081,14 +1081,14 @@ def build_slide_11(prs):
     sub_gap = Inches(0.24)
     cards_ens = [
         ("Why Soft Voting Over Hard Voting?", PRIMARY_BLUE, [
-            "Probability Granularity: Hard voting counts binary majority votes, ignoring confidence. Soft voting sums calibrated class probabilities.",
-            "Weighting Subtle Signals: If an ambiguous clinical note gives 49% probability to Neurology across two models, soft voting preserves that critical confidence gradient.",
+            "Probability Granularity: Hard voting counts binary majority votes, ignoring confidence. Soft voting sums class probabilities.",
+            "Weighting Subtle Signals: If an ambiguous clinical note gives 49% probability to Neurology across models, soft voting preserves that critical confidence gradient.",
             "Reduced Misclassification: Mitigates abrupt decision boundary errors common in single-vote deadlocks."
         ]),
-        ("Calibrated Probability Estimation", TEAL, [
-            "Linear SVM Optimization: By default, SVM generates uncalibrated geometric margins rather than probabilities.",
-            "Platt Scaling Integration: CalibratedClassifierCV fits a sigmoid mapping on cross-validated SVM decision values.",
-            "Uniform Probability Scale: Ensures all four base estimators output mathematically comparable posterior distributions P(c|x)."
+        ("SVM in the Ensemble", TEAL, [
+            "SVM is used as one of the base machine learning classifiers for medical specialty classification.",
+            "It learns decision boundaries between different medical specialty categories using the TF-IDF feature representation.",
+            "Its predictions contribute to the overall ensemble decision together with Random Forest, Logistic Regression, and Multinomial Naive Bayes."
         ]),
         ("Expected Ensemble Advantages", PURPLE, [
             "Bias-Variance Trade-off: Combines linear hyperplanes (SVM, LR) with tree-based partitioning (RF) and probabilistic priors (MNB).",
