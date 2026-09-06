@@ -240,129 +240,276 @@ Figure \ref{fig:eda_wordcloud} displays a word cloud of the most frequent clinic
 
 \subsection{Analysis of Algorithms}
 
-The proposed system architecture is designed around a multi-stage machine learning pipeline consisting of numerical feature extraction, diverse supervised classification modeling, and meta-ensemble aggregation. In clinical natural language processing, free-text transcriptions contain rich vocabulary with specialized medical terminology, varying narrative lengths, and distinct lexical patterns characteristic of individual medical disciplines. To accurately categorize these unstructured reports into 40 distinct medical specialties, the system employs Term Frequency--Inverse Document Frequency (TF-IDF) for feature vectorization, evaluates four diverse baseline classifiers (Logistic Regression, Linear Support Vector Machine, Random Forest, and Multinomial Naive Bayes), and integrates their individual decision outputs using a Voting Ensemble Classifier.
+The proposed system architecture is designed around a multi-stage machine learning pipeline consisting of numerical feature extraction, diverse supervised classification modeling, and meta-ensemble aggregation. In clinical natural language processing, free-text transcriptions contain rich vocabulary with specialized medical terminology, varying narrative lengths, and distinct lexical patterns characteristic of individual medical disciplines. To accurately categorize these unstructured reports into 40 distinct medical specialties, the system employs Term Frequency--Inverse Document Frequency (TF-IDF) for feature vectorization, evaluates diverse candidate classifiers (Logistic Regression, Linear Support Vector Machine, Random Forest, and Multinomial Naive Bayes), and integrates their individual decision outputs using a Voting Ensemble Classifier.
+
+\subsubsection{Detailed Study Report of the Proposed Algorithm(s)}
+
+Although TF-IDF functions as a feature extraction method and individual classifiers serve as candidate estimators, this section presents a comprehensive study of the complete proposed machine learning pipeline, including feature engineering, candidate classification algorithms, ensemble aggregation mechanisms, and the complete execution workflow.
 
 \paragraph{TF-IDF Vectorizer}
-Term Frequency--Inverse Document Frequency (TF-IDF) is a statistical feature extraction and vectorization technique designed to transform unstructured textual narratives into high-dimensional numerical feature vectors. In our proposed medical specialty classification system, TF-IDF operates as the core feature engineering component, converting cleaned and lemmatized clinical transcriptions into structured mathematical representations suitable for machine learning estimators.
-
-The vectorization process evaluates the relative importance of each term $t$ within a specific document $d$ against the entire clinical corpus $D$. Term Frequency, denoted as $\text{TF}(t, d)$, measures the raw or sublinearly scaled occurrence count of a word in a clinical note. Inverse Document Frequency, denoted as $\text{IDF}(t, D)$, calculates the logarithmic inverse ratio of the total number of reports $N$ to the number of reports containing term $t$:
-\[
-\text{IDF}(t, D) = \log\left(\frac{1 + N}{1 + \text{DF}(t)}\right) + 1
-\]
-The composite TF-IDF weight is obtained by computing the product of both metrics:
-\[
-\text{TF-IDF}(t, d, D) = \text{TF}(t, d) \times \text{IDF}(t, D)
-\]
-Through this mechanism, generic anatomical references or common clinical verbs appearing across nearly all specialties receive lower numerical weights, whereas specialized vocabulary specific to particular disciplines (e.g., ``colonoscopy'' in Gastroenterology or ``craniotomy'' in Neurosurgery) receive high discriminative weights.
-
-In the complete machine learning workflow, the TF-IDF Vectorizer extracts unigram and bigram features, filters rare noise tokens through minimum document frequency thresholds, and constructs a normalized, sparse feature matrix. This high-dimensional sparse representation is computationally lightweight, operates efficiently on standard CPU hardware without GPU acceleration, and scales seamlessly across extensive medical vocabularies. However, the vectorizer operates under a bag-of-words assumption, meaning it evaluates lexical frequencies without modeling deeper word order semantics or syntactic sentence hierarchies.
+\begin{itemize}
+    \item \textbf{Detailed Explanation}: Term Frequency--Inverse Document Frequency (TF-IDF) is a statistical feature extraction and vectorization technique that converts unstructured clinical text documents into high-dimensional numerical feature matrices. In medical text classification, clinical narratives contain domain-specific vocabulary alongside standard syntactic words. TF-IDF evaluates word relevance by balancing local word occurrences in a document against its corpus-wide frequency, penalizing ubiquitous words while highlighting specialty-specific terminology.
+    
+    \item \textbf{Mathematical Working}: The TF-IDF weight for a term $t$ in a document $d$ within a corpus $D$ is defined as the product of Term Frequency ($\text{TF}$) and Inverse Document Frequency ($\text{IDF}$):
+    \[
+    \text{TF}(t, d) = \frac{f_{t, d}}{\sum_{t' \in d} f_{t', d}} \quad \text{or} \quad \text{TF}(t, d) = 1 + \log(f_{t, d}) \quad (\text{if } f_{t, d} > 0)
+    \]
+    \[
+    \text{IDF}(t, D) = \log\left(\frac{1 + |D|}{1 + |\{d \in D : t \in d\}|}\right) + 1
+    \]
+    \[
+    \text{TF-IDF}(t, d, D) = \text{TF}(t, d) \times \text{IDF}(t, D)
+    \]
+    To ensure comparability across clinical transcriptions of varying lengths, Euclidean $L_2$ normalization is applied:
+    \[
+    \mathbf{v}_{\text{norm}} = \frac{\mathbf{v}}{\|\mathbf{v}\|_2} = \frac{\mathbf{v}}{\sqrt{\sum_{i} v_i^2}}
+    \]
+    
+    \item \textbf{Role in the Proposed System}: In the proposed classification workflow, the TF-IDF Vectorizer extracts unigram and bigram features, filters rare noise tokens through minimum document frequency thresholds, and constructs a normalized, sparse feature matrix. This high-dimensional numerical representation serves as the standardized input for all downstream machine learning classifiers without requiring GPU hardware acceleration.
+\end{itemize}
 
 \paragraph{Logistic Regression}
-Logistic Regression is a foundational linear classification algorithm adapted for multi-class medical text categorization through multinomial Softmax regression. In the proposed system, it serves as an interpretable, probabilistic linear baseline model that maps input TF-IDF feature vectors to predicted probability distributions across all 40 target medical specialty classes.
+\begin{itemize}
+    \item \textbf{Detailed Explanation}: Logistic Regression is a foundational linear classification algorithm extended to multi-class medical text categorization through multinomial Softmax regression. It models the posterior probability distribution over all 40 target medical specialty classes as a linear combination of input TF-IDF features.
+    
+    \item \textbf{Working}: For an input feature vector $\mathbf{x} \in \mathbb{R}^d$ and $K = 40$ specialty classes, the algorithm computes linear logit scores $z_k = \mathbf{w}_k^T \mathbf{x} + b_k$ for each class $k$. The posterior probability distribution is computed via the Softmax activation function:
+    \[
+    P(y = k \mid \mathbf{x}) = \frac{\exp(\mathbf{w}_k^T \mathbf{x} + b_k)}{\sum_{j=1}^{K} \exp(\mathbf{w}_j^T \mathbf{x} + b_j)}
+    \]
+    The model is optimized by minimizing the regularized categorical cross-entropy loss function over the training corpus:
+    \[
+    \mathcal{L}_{\text{LR}}(\mathbf{W}) = -\frac{1}{N} \sum_{i=1}^{N} \sum_{k=1}^{K} \mathbb{I}(y_i = k) \log P(y_i = k \mid \mathbf{x}_i) + \frac{\lambda}{2} \sum_{k=1}^{K} \|\mathbf{w}_k\|_2^2
+    \]
+    where $\lambda$ controls $L_2$ Ridge regularization to prevent overfitting in high-dimensional sparse text spaces.
+    
+    \item \textbf{Role in the Proposed System}: Logistic Regression provides well-calibrated posterior probabilities that reflect model confidence for each medical specialty. It is computationally efficient to train, scales seamlessly to sparse TF-IDF inputs, and supplies probabilistic class distributions for soft-voting ensemble aggregation.
+\end{itemize}
 
-For a multi-class problem with $K = 40$ specialty categories, the algorithm computes a linear combination of input features for each class $k$ using learned weight vectors $W_k$ and bias $b_k$. The raw linear logit scores $z_k = W_k^T x + b_k$ are transformed into normalized posterior class probabilities using the Softmax activation function:
-\[
-P(y = k \mid x) = \frac{\exp(W_k^T x + b_k)}{\sum_{j=1}^{K} \exp(W_j^T x + b_j)}
-\]
-Model optimization is conducted by minimizing the categorical cross-entropy loss function over the training corpus, coupled with $L_2$ weight regularization (Ridge penalty) to constrain feature coefficients and prevent overfitting in high-dimensional sparse text spaces.
+\paragraph{Linear SVC / SVM (Linear Support Vector Machine)}
+\begin{itemize}
+    \item \textbf{Detailed Explanation}: Support Vector Machines (SVM) are maximum-margin supervised learning classifiers renowned for strong generalization in high-dimensional text classification domains. Linear SVM (Linear SVC) constructs optimal linear separating hyperplanes between individual medical specialties using a One-vs-Rest (OvR) multi-class strategy.
+    
+    \item \textbf{Working}: The mathematical formulation of Linear SVM identifies a separating hyperplane $(\mathbf{w}_k, b_k)$ for each class $k$ that maximizes the geometric margin $\frac{2}{\|\mathbf{w}_k\|_2}$ while penalizing classification errors using the soft-margin hinge loss:
+    \[
+    \min_{\mathbf{w}_k, b_k} \left( \frac{1}{2} \|\mathbf{w}_k\|_2^2 + C \sum_{i=1}^{N} \max\left(0, 1 - y_{i, k} (\mathbf{w}_k^T \mathbf{x}_i + b_k)\right) \right)
+    \]
+    where $C > 0$ is a regularization hyperparameter balancing margin maximization against training margin violations, and $y_{i, k} \in \{+1, -1\}$.
+    
+    \item \textbf{Role in the Proposed System}: Linear SVM is well-suited for high-dimensional, sparse TF-IDF text representations where linear separability is effective. It exhibits strong resistance to overfitting and serves as a core maximum-margin baseline model in the classification ensemble.
+\end{itemize}
 
-Within the proposed workflow, Logistic Regression provides well-calibrated posterior probabilities that indicate model confidence for each specialty. It is computationally efficient to train, converges rapidly on sparse matrix inputs, and exhibits high interpretability by allowing direct inspection of top positive and negative coefficient terms per specialty. The primary limitation of Logistic Regression is its assumption of linear decision boundaries between classes, which can constrain its capacity to model complex non-linear feature interactions without explicit polynomial feature expansion.
-
-\paragraph{Linear Support Vector Machine (Linear SVM)}
-Support Vector Machines (SVM) are maximum-margin supervised learning models renowned for exceptional generalization capabilities in high-dimensional text classification domains. In the proposed classification system, Linear SVM is deployed using a One-vs-Rest (OvR) multi-class strategy to construct optimal separating hyperplanes between individual medical specialties and the remaining categories.
-
-The mathematical formulation of Linear SVM aims to find a separating hyperplane defined by weight vector $W$ and bias $b$ that maximizes the geometric margin $\frac{2}{\|W\|}$ between the opposing classes while penalizing misclassifications. The model minimizes the regularized soft-margin objective function using linear hinge loss:
-\[
-\min_{W, b} \left( \frac{1}{2} \|W\|^2 + C \sum_{i=1}^{n} \max\left(0, 1 - y_i (W^T x_i + b)\right) \right)
-\]
-where $C > 0$ is a regularization hyperparameter balancing margin maximization against training error tolerance, and $x_i$ represents the TF-IDF vector of the $i$-th clinical document.
-
-Linear SVM is particularly well-suited for clinical text categorization because TF-IDF feature spaces are inherently high-dimensional and sparse, environments where linear hyperplanes offer optimal geometric separation. It is robust against overfitting, maintains high performance even when the number of features exceeds the number of training samples, and focuses decisions entirely on critical support vectors. Its main limitation is that it natively outputs uncalibrated geometric decision distances rather than true class probabilities, requiring sigmoid probability calibration (Platt scaling) when integrated into soft-voting ensembles.
-
-\paragraph{Random Forest Classifier}
-Random Forest is a non-linear ensemble learning algorithm that constructs a diverse forest of randomized decision trees during the training phase and aggregates their predictions to produce stable classifications. In our medical text categorization framework, Random Forest acts as the non-linear, tree-based candidate model, introducing architectural diversity alongside the linear classifiers.
-
-The algorithm builds upon bootstrap aggregating (bagging) by generating multiple bootstrap sub-samples of the training dataset. For each decision tree in the forest, node splits are evaluated using a randomly selected subset of TF-IDF features rather than the full feature space, mitigating correlation among individual trees. At each split node, the model identifies the feature and threshold that maximize impurity reduction, quantified via the Gini impurity metric:
-\[
-\text{Gini}(D) = 1 - \sum_{k=1}^{K} p_k^2
-\]
-where $p_k$ represents the proportion of clinical training records belonging to medical specialty $k$ present at that node.
-
-Within the proposed pipeline, Random Forest captures complex, non-linear interactions between combinations of clinical keywords that linear models might overlook. It provides high resilience against noisy text, handles outliers effectively, and yields internal feature importance rankings. However, building and querying hundreds of deep decision trees across high-dimensional sparse TF-IDF matrices requires greater memory and computational training time compared to linear algorithms.
+\paragraph{Random Forest}
+\begin{itemize}
+    \item \textbf{Detailed Explanation}: Random Forest is a non-linear ensemble learning algorithm that constructs a multitude of randomized decision trees during training and aggregates their predictions to produce stable classifications. In our framework, Random Forest acts as a tree-based candidate model that introduces architectural diversity alongside linear classifiers.
+    
+    \item \textbf{Working}: The algorithm utilizes bootstrap aggregating (bagging) to generate multiple random subsets of the training data. For each decision tree in the forest, node splits are evaluated on a randomly selected subset of TF-IDF features to reduce correlation between individual trees. At each split node, the feature and threshold that maximize impurity reduction are determined using the Gini Impurity metric:
+    \[
+    \text{Gini}(S) = 1 - \sum_{k=1}^{K} p_k^2
+    \]
+    where $p_k$ represents the proportion of clinical training records belonging to medical specialty $k$ in node $S$. The forest aggregates individual tree probability estimates through arithmetic averaging:
+    \[
+    P_{\text{RF}}(y = k \mid \mathbf{x}) = \frac{1}{B} \sum_{b=1}^{B} P_b(y = k \mid \mathbf{x})
+    \]
+    
+    \item \textbf{Role in the Proposed System}: Random Forest captures complex non-linear feature interactions and keyword co-occurrences that linear models may not fully model, enhancing the diversity and robustness of the ensemble architecture.
+\end{itemize}
 
 \paragraph{Multinomial Naive Bayes}
-Multinomial Naive Bayes is a specialized probabilistic classification algorithm rooted in Bayes' Theorem, specifically formulated for discrete word counts and term frequency distributions in document categorization tasks. In our medical specialty classification workflow, it serves as a fast, computationally efficient probabilistic candidate model.
-
-The algorithm calculates the posterior probability of a clinical transcription belonging to a target specialty class $c$ given its constituent word tokens $(x_1, x_2, \dots, x_m)$. Applying Bayes' rule alongside the naive assumption of conditional feature independence given the class label yields:
-\[
-P(c \mid x) \propto P(c) \prod_{i=1}^{m} P(x_i \mid c)
-\]
-To compute the class-conditional feature probabilities $P(x_i \mid c)$ while preventing zero-probability penalties for words absent in the training split of a particular specialty, Laplace (additive) smoothing is applied:
-\[
-P(x_i \mid c) = \frac{N_{ci} + \alpha}{N_c + \alpha |V|}
-\]
-where $N_{ci}$ is the cumulative count of term $x_i$ in class $c$, $N_c$ is the total word count in class $c$, $|V|$ is the vocabulary size, and $\alpha = 1.0$ is the smoothing parameter.
-
-Multinomial Naive Bayes is exceptionally fast during both training and inference, has minimal memory requirements, and functions effectively even on smaller clinical training subsets. Its primary limitation is the conditional independence assumption, which assumes that the presence of one medical term is independent of another given the specialty, ignoring clinical co-occurrence patterns (e.g., ``coronary'' and ``artery'').
+\begin{itemize}
+    \item \textbf{Detailed Explanation}: Multinomial Naive Bayes is a specialized probabilistic classification algorithm rooted in Bayes' Theorem, specifically formulated for discrete word counts and term frequency distributions in document categorization tasks. In our medical specialty classification workflow, it serves as a fast, computationally efficient probabilistic candidate model.
+    
+    \item \textbf{Working}: The algorithm calculates the posterior probability of a clinical transcription belonging to a target specialty class $c$ given its constituent word tokens $(x_1, x_2, \dots, x_m)$. Applying Bayes' rule alongside the naive assumption of conditional feature independence given the class label yields:
+    \[
+    P(c \mid \mathbf{x}) \propto P(c) \prod_{i=1}^{m} P(x_i \mid c)
+    \]
+    To compute the class-conditional feature probabilities $P(x_i \mid c)$ while preventing zero-probability penalties for words absent in the training split of a particular specialty, Laplace (additive) smoothing is applied:
+    \[
+    P(x_i \mid c) = \frac{N_{ci} + \alpha}{N_c + \alpha |V|}
+    \]
+    where $N_{ci}$ is the cumulative count of term $x_i$ in class $c$, $N_c$ is the total word count in class $c$, $|V|$ is the vocabulary size, and $\alpha = 1.0$ is the smoothing parameter.
+    
+    \item \textbf{Role in the Proposed System}: Multinomial Naive Bayes provides an extremely fast baseline with low computational overhead, contributing probabilistic diversity to the ensemble when combined with discriminative linear and tree-based estimators.
+\end{itemize}
 
 \paragraph{Voting Ensemble Classifier}
-The Voting Ensemble Classifier is the final meta-classification mechanism in the proposed system. Rather than relying on a single learning algorithm that may exhibit inductive biases or uneven performance across imbalanced specialties, the ensemble aggregates the individual predictions of Logistic Regression, Linear SVM, Random Forest, and Multinomial Naive Bayes to form a robust consensus decision.
-
-In the soft-voting configuration, each base classifier $m \in \{1, 2, \dots, M\}$ generates a calibrated posterior probability distribution $P_m(y = c \mid x)$ indicating the likelihood that a given clinical transcription $x$ belongs to specialty $c$. The ensemble computes the weighted or unweighted arithmetic mean of these class probabilities across all $M$ estimators:
-\[
-P_{\text{ensemble}}(y = c \mid x) = \frac{1}{M} \sum_{m=1}^{M} P_m(y = c \mid x)
-\]
-The final predicted medical specialty $\hat{y}$ is selected as the class that maximizes the aggregated probability score:
-\[
-\hat{y} = \arg\max_{c \in \{1, \dots, K\}} P_{\text{ensemble}}(y = c \mid x)
-\]
-
-In our medical transcription classification workflow, the Voting Ensemble functions as the central predictive engine. By combining linear probabilistic modeling (Logistic Regression), maximum-margin geometric boundaries (Linear SVM), non-linear decision trees (Random Forest), and conditional frequency modeling (Multinomial Naive Bayes), the ensemble offsets the individual weaknesses of each classifier, reduces predictive variance, and improves overall classification stability across all 40 medical specialties. The primary trade-off is an increase in total inference latency, as computing the ensemble output requires sequential or parallel evaluation across all constituent base models.
+\begin{itemize}
+    \item \textbf{Detailed Explanation}: The Voting Ensemble Classifier is the final meta-classification mechanism in the proposed system. Rather than relying on a single learning algorithm that may exhibit inductive biases across imbalanced specialties, the ensemble combines predictions from diverse candidate models (Logistic Regression, Linear SVM, Random Forest, and Multinomial Naive Bayes) to generate a consensus decision.
+    
+    \item \textbf{Ensemble Working}: In the soft-voting configuration, each base classifier $m \in \{1, \dots, M\}$ generates a calibrated class probability distribution $P_m(y = k \mid \mathbf{x})$ indicating the likelihood that a given clinical transcription $\mathbf{x}$ belongs to specialty $k$. The ensemble computes the weighted or unweighted arithmetic mean of these posterior probabilities across all $M$ estimators:
+    \[
+    P_{\text{ensemble}}(y = k \mid \mathbf{x}) = \frac{1}{M} \sum_{m=1}^{M} P_m(y = k \mid \mathbf{x})
+    \]
+    
+    \item \textbf{Final Prediction Process}: The final predicted medical specialty $\hat{y}$ is selected as the category that maximizes the aggregated ensemble probability:
+    \[
+    \hat{y} = \arg\max_{k \in \{1, \dots, K\}} P_{\text{ensemble}}(y = k \mid \mathbf{x})
+    \]
+    
+    \item \textbf{Role in the Proposed System}: By integrating linear probabilistic modeling, maximum-margin geometric boundaries, non-linear decision trees, and conditional probability distributions, the Voting Ensemble balances individual model limitations, reduces prediction variance, and improves classification stability across all 40 medical specialties.
+\end{itemize}
 
 \clearpage
 
 \paragraph{Activity Diagram}
-Figure \ref{fig:activity_diag} displays the TikZ activity diagram representing the execution flow of the proposed machine learning algorithm.
+Figure \ref{fig:candidate_activity_diags} illustrates the compact activity diagrams representing the decision flows of the four candidate supervised machine learning algorithms, while Figure \ref{fig:ensemble_activity_diag} presents the complete execution and aggregation flow of the Voting Ensemble Classifier.
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[node distance=0.38cm and 0cm, auto, >=stealth',
-    stage/.style={rectangle, draw, fill=green!10, text width=15em, text centered, rounded corners, minimum height=2.0em},
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\begin{tikzpicture}[node distance=0.22cm, auto, >=stealth',
+    box/.style={rectangle, draw, fill=blue!6, text width=13.5em, text centered, rounded corners, minimum height=1.45em, font=\scriptsize},
     arrow/.style={draw, -latex'}]
-    \node [stage] (d1) {Dataset (MTSamples CSV)};
-    \node [stage, below=0.38cm of d1] (d2) {EDA \& Data Cleaning};
-    \node [stage, below=0.38cm of d2] (d3) {Text Preprocessing (Lemmatized)};
-    \node [stage, below=0.38cm of d3] (d4) {TF-IDF Feature Extraction};
-    \node [stage, below=0.38cm of d4] (d5) {Train-Test Split (80:20)};
-    \node [stage, below=0.38cm of d5] (d6) {Model Training (LR, SVM, RF, MNB)};
-    \node [stage, below=0.38cm of d6] (d7) {Voting Ensemble Aggregation};
-    \node [stage, below=0.38cm of d7] (d8) {Specialty Prediction Output};
+    \node [box] (s1) {TF-IDF Feature Input};
+    \node [box, below=0.22cm of s1] (s2) {Initialize Model Parameters};
+    \node [box, below=0.22cm of s2] (s3) {Calculate Weighted Sum ($z_k$)};
+    \node [box, below=0.22cm of s3] (s4) {Apply Softmax Function};
+    \node [box, below=0.22cm of s4] (s5) {Calculate Class Probabilities};
+    \node [box, below=0.22cm of s5] (s6) {Select Highest Probability Class};
+    \node [box, below=0.22cm of s6] (s7) {Predicted Medical Specialty};
     
-    \path [arrow] (d1) -- (d2);
-    \path [arrow] (d2) -- (d3);
-    \path [arrow] (d3) -- (d4);
-    \path [arrow] (d4) -- (d5);
-    \path [arrow] (d5) -- (d6);
-    \path [arrow] (d6) -- (d7);
-    \path [arrow] (d7) -- (d8);
+    \path [arrow] (s1) -- (s2);
+    \path [arrow] (s2) -- (s3);
+    \path [arrow] (s3) -- (s4);
+    \path [arrow] (s4) -- (s5);
+    \path [arrow] (s5) -- (s6);
+    \path [arrow] (s6) -- (s7);
 \end{tikzpicture}
-\caption{Activity Diagram of the Proposed Machine Learning Algorithm}
-\label{fig:activity_diag}
+\caption*{(a) Logistic Regression}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\begin{tikzpicture}[node distance=0.22cm, auto, >=stealth',
+    box/.style={rectangle, draw, fill=blue!6, text width=13.5em, text centered, rounded corners, minimum height=1.45em, font=\scriptsize},
+    arrow/.style={draw, -latex'}]
+    \node [box] (s1) {TF-IDF Feature Input};
+    \node [box, below=0.22cm of s1] (s2) {Map Input Features};
+    \node [box, below=0.22cm of s2] (s3) {Calculate Decision Boundary};
+    \node [box, below=0.22cm of s3] (s4) {Determine Max-Margin Hyperplane};
+    \node [box, below=0.22cm of s4] (s5) {Classify Relative to Hyperplane};
+    \node [box, below=0.22cm of s5] (s6) {Select Maximum Margin Class};
+    \node [box, below=0.22cm of s6] (s7) {Predicted Medical Specialty};
+    
+    \path [arrow] (s1) -- (s2);
+    \path [arrow] (s2) -- (s3);
+    \path [arrow] (s3) -- (s4);
+    \path [arrow] (s4) -- (s5);
+    \path [arrow] (s5) -- (s6);
+    \path [arrow] (s6) -- (s7);
+\end{tikzpicture}
+\caption*{(b) Support Vector Machine}
+\end{minipage}
+
+\vspace{0.35cm}
+
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\begin{tikzpicture}[node distance=0.22cm, auto, >=stealth',
+    box/.style={rectangle, draw, fill=blue!6, text width=13.5em, text centered, rounded corners, minimum height=1.45em, font=\scriptsize},
+    arrow/.style={draw, -latex'}]
+    \node [box] (s1) {TF-IDF Feature Input};
+    \node [box, below=0.22cm of s1] (s2) {Generate Multiple Decision Trees};
+    \node [box, below=0.22cm of s2] (s3) {Each Tree Performs Classification};
+    \node [box, below=0.22cm of s3] (s4) {Collect Predictions from All Trees};
+    \node [box, below=0.22cm of s4] (s5) {Majority Voting / Aggregation};
+    \node [box, below=0.22cm of s5] (s6) {Select Majority Class};
+    \node [box, below=0.22cm of s6] (s7) {Predicted Medical Specialty};
+    
+    \path [arrow] (s1) -- (s2);
+    \path [arrow] (s2) -- (s3);
+    \path [arrow] (s3) -- (s4);
+    \path [arrow] (s4) -- (s5);
+    \path [arrow] (s5) -- (s6);
+    \path [arrow] (s6) -- (s7);
+\end{tikzpicture}
+\caption*{(c) Random Forest}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+\centering
+\begin{tikzpicture}[node distance=0.22cm, auto, >=stealth',
+    box/.style={rectangle, draw, fill=blue!6, text width=13.5em, text centered, rounded corners, minimum height=1.45em, font=\scriptsize},
+    arrow/.style={draw, -latex'}]
+    \node [box] (s1) {TF-IDF Feature Input};
+    \node [box, below=0.22cm of s1] (s2) {Calculate Prior Probability $P(c)$};
+    \node [box, below=0.22cm of s2] (s3) {Calculate Feature Likelihood $P(x_i \mid c)$};
+    \node [box, below=0.22cm of s3] (s4) {Apply Bayes' Theorem};
+    \node [box, below=0.22cm of s4] (s5) {Calculate Probability per Specialty};
+    \node [box, below=0.22cm of s5] (s6) {Select Maximum Probability};
+    \node [box, below=0.22cm of s6] (s7) {Predicted Medical Specialty};
+    
+    \path [arrow] (s1) -- (s2);
+    \path [arrow] (s2) -- (s3);
+    \path [arrow] (s3) -- (s4);
+    \path [arrow] (s4) -- (s5);
+    \path [arrow] (s5) -- (s6);
+    \path [arrow] (s6) -- (s7);
+\end{tikzpicture}
+\caption*{(d) Multinomial Naive Bayes}
+\end{minipage}
+
+\caption{Activity Diagrams of Candidate Supervised Learning Algorithms}
+\label{fig:candidate_activity_diags}
 \end{figure}
 
 \clearpage
 
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=0.42cm and 0.2cm, auto, >=stealth',
+    box/.style={rectangle, draw, fill=green!10, text width=16em, text centered, rounded corners, minimum height=1.8em, font=\small},
+    smallbox/.style={rectangle, draw, fill=blue!10, text width=5.6em, text centered, rounded corners, minimum height=2.2em, font=\scriptsize},
+    arrow/.style={draw, -latex'}]
+    
+    \node [box] (input) {TF-IDF Feature Input};
+    
+    \node [smallbox, below left=0.6cm and 1.8cm of input] (lr) {Logistic\\Regression};
+    \node [smallbox, below left=0.6cm and 0.15cm of input] (svm) {Linear\\SVC / SVM};
+    \node [smallbox, below right=0.6cm and 0.15cm of input] (rf) {Random\\Forest};
+    \node [smallbox, below right=0.6cm and 1.8cm of input] (nb) {Multinomial\\Naive Bayes};
+    
+    \node [box, below=1.8cm of input] (collect) {Collect Predictions};
+    \node [box, below=0.35cm of collect] (vote) {Apply Voting Strategy (Soft / Hard)};
+    \node [box, below=0.35cm of vote] (select) {Select Final Predicted Class};
+    \node [box, below=0.35cm of select] (output) {Medical Specialty Output};
+    
+    \path [arrow] (input) -| (lr.north);
+    \path [arrow] (input) -| (svm.north);
+    \path [arrow] (input) -| (rf.north);
+    \path [arrow] (input) -| (nb.north);
+    
+    \path [arrow] (lr.south) |- (collect);
+    \path [arrow] (svm.south) |- (collect);
+    \path [arrow] (rf.south) |- (collect);
+    \path [arrow] (nb.south) |- (collect);
+    
+    \path [arrow] (collect) -- (vote);
+    \path [arrow] (vote) -- (select);
+    \path [arrow] (select) -- (output);
+\end{tikzpicture}
+\caption{Activity Diagram of Voting Ensemble Classifier}
+\label{fig:ensemble_activity_diag}
+\end{figure}
+
 \paragraph{Step-by-Step Explanation}
-The system executes in eight sequential stages:
+The detailed working of the proposed machine learning algorithm proceeds through the following sequential steps:
 \begin{enumerate}
-    \item \textit{Dataset Ingestion}: Ingesting raw MTSamples CSV data containing 4,999 medical transcriptions.
-    \item \textit{Cleaning}: Dropping empty records, removing duplicate entries, and lowercasing narrative text.
-    \item \textit{Preprocessing}: Removing punctuation, digits, and stop-words, followed by WordNet lemmatization.
-    \item \textit{TF-IDF Vectorization}: Building sparse numerical feature matrices with sublinear term frequency scaling.
-    \item \textit{Train-Test Partitioning}: Splitting data into 80\% training and 20\% testing stratified sets.
-    \item \textit{Multi-Model Training}: Fitting Logistic Regression, Linear SVM, Random Forest, and Multinomial Naive Bayes.
-    \item \textit{Ensemble Aggregation}: Combining base estimator outputs into a soft/hard Voting Classifier.
-    \item \textit{Real-Time Prediction}: Returning top predicted medical specialty with confidence scores.
+    \item \textbf{Dataset ingestion}: The raw MTSamples clinical dataset containing 4,999 transcription records across 40 medical specialties is ingested from the CSV repository into a structured Pandas DataFrame.
+    
+    \item \textbf{Data cleaning}: Initial data cleaning is performed by removing duplicate entries, identifying and dropping records with missing clinical transcriptions (33 null records), handling missing keywords (1,068 null records), and standardizing text to lower case.
+    
+    \item \textbf{Text preprocessing}: Clinical narrative texts undergo natural language preprocessing by eliminating punctuation marks, digits, and special characters, filtering out domain-general stop-words via NLTK, and applying WordNet lemmatization to extract base morphological lemmas.
+    
+    \item \textbf{TF-IDF feature extraction}: Unigram and bigram Term Frequency--Inverse Document Frequency (TF-IDF) feature extraction with sublinear scaling is applied to transform preprocessed text narratives into a high-dimensional, $L_2$-normalized sparse numerical feature matrix.
+    
+    \item \textbf{Train-test splitting}: The feature matrix and corresponding medical specialty labels are partitioned into an 80\% training set and a 20\% testing set using stratified sampling to preserve class proportion distributions across all 40 medical specialties.
+    
+    \item \textbf{Training individual classifiers}: Candidate supervised machine learning models—Logistic Regression, Linear Support Vector Machine (Linear SVC), Random Forest, and Multinomial Naive Bayes—are independently trained and tuned on the training partition.
+    
+    \item \textbf{Voting ensemble aggregation}: Predictions and posterior class probability distributions generated by the trained individual classifiers are combined through soft-voting consensus aggregation.
+    
+    \item \textbf{Medical specialty prediction}: The integrated Voting Ensemble model evaluates new clinical transcriptions, aggregates model probabilities, and outputs the top predicted medical specialty along with classification confidence scores.
 \end{enumerate}
 
 \FloatBarrier
