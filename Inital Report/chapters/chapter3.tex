@@ -311,6 +311,13 @@ The predicted medical specialty $\hat{y}$ corresponds to the class with the maxi
 \subparagraph{C. Hyperparameter Tuning and Clinical Relevance}
 The predictive performance of Linear SVM depends primarily on optimizing the regularization parameter $C$. Linear SVM excels in clinical transcription classification due to its immunity to high-dimensional overfitting, low memory footprint during inference, and reliance solely on critical support vectors along decision margins.
 
+\subparagraph{D. Probability Calibration for Soft-Voting Integration}
+Standard Linear Support Vector Classifiers (\texttt{LinearSVC}) compute uncalibrated signed geometric distances to separating hyperplanes, which do not directly provide posterior probability distributions (\texttt{predict\_proba}). Because the proposed ensemble relies on soft-voting probability aggregation, the Linear SVM decision scores are calibrated to produce class probability estimates before soft-voting aggregation. This is achieved using Scikit-learn's \texttt{CalibratedClassifierCV}, which applies Platt scaling via an internal cross-validated logistic sigmoid transformation:
+\begin{equation}
+P(y = k \mid x) = \frac{1}{1 + \exp(A \cdot f_k(x) + B)}
+\end{equation}
+where scalar parameters $A$ and $B$ are estimated through maximum likelihood on internal validation folds. Probability calibration maps decision boundary margins monotonically into valid multi-class probability distributions, enabling Linear SVM to participate effectively in soft-voting probability aggregation alongside inherently probabilistic estimators.
+
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=0.24cm, auto, >=stealth',
