@@ -656,34 +656,36 @@ By integrating linear probabilistic modeling (Logistic Regression), maximum-marg
 \begin{tikzpicture}[node distance=0.35cm and 0.2cm, auto, >=stealth',
     startstop/.style={rectangle, rounded corners=8pt, draw=black, fill=white, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
     process/.style={rectangle, draw=black, fill=white, text width=15em, text centered, rounded corners=2pt, minimum height=1.6em, font=\scriptsize},
-    smallbox/.style={rectangle, draw=black, fill=white, text width=5.6em, text centered, rounded corners=2pt, minimum height=2.2em, font=\scriptsize},
+    smallbox/.style={rectangle, draw=black, fill=white, text width=6.2em, text centered, rounded corners=2pt, minimum height=2.2em, font=\scriptsize},
     branch/.style={rectangle, draw=black, fill=white, text width=7.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
     arrow/.style={draw, -latex', semithick}]
     
-    \node [startstop] (start) {START};
+    \node [startstop] (start) at (0, 0) {START};
     \node [process, below=0.3cm of start] (input) {TF-IDF Feature Vector Input};
     
-    \node [smallbox, below left=0.6cm and 1.8cm of input] (lr) {Logistic\\Regression};
-    \node [smallbox, below left=0.6cm and 0.15cm of input] (svm) {Linear\\SVC / SVM};
-    \node [smallbox, below right=0.6cm and 0.15cm of input] (rf) {Random\\Forest};
-    \node [smallbox, below right=0.6cm and 1.8cm of input] (nb) {Multinomial\\Naive Bayes};
+    % Symmetrically positioned candidate classifiers with 3.0cm spacing (no overlap)
+    \node [smallbox] (lr)  at (-4.5, -1.85) {Logistic\\Regression};
+    \node [smallbox] (svm) at (-1.5, -1.85) {Linear\\SVC / SVM};
+    \node [smallbox] (rf)  at (1.5, -1.85) {Random\\Forest};
+    \node [smallbox] (nb)  at (4.5, -1.85) {Multinomial\\Naive Bayes};
     
-    \node [process, below=1.8cm of input] (collect) {Collect Predictions from All Classifiers};
-    \node [process, below=0.3cm of collect] (vote) {Apply Soft-Voting Aggregation Strategy};
-    \node [process, below=0.3cm of vote] (select) {Select Final Predicted Class ($\arg\max$)};
-    \node [branch, below=0.3cm of select] (output) {Predicted Medical Specialty};
-    \node [startstop, below=0.3cm of output] (end) {END};
+    \node [process, text width=13cm] (collect) at (0, -3.3) {Collect Predictions from All Classifiers};
+    \node [process, below=0.35cm of collect] (vote) {Apply Soft-Voting Aggregation Strategy};
+    \node [process, below=0.35cm of vote] (select) {Select Final Predicted Class ($\arg\max$)};
+    \node [branch, below=0.35cm of select] (output) {Predicted Medical Specialty};
+    \node [startstop, below=0.35cm of output] (end) {END};
     
     \path [arrow] (start) -- (input);
-    \path [arrow] (input) -| (lr.north);
-    \path [arrow] (input) -| (svm.north);
-    \path [arrow] (input) -| (rf.north);
-    \path [arrow] (input) -| (nb.north);
+    \path [arrow] (input.south) -- (0, -1.3) -| (lr.north);
+    \path [arrow] (input.south) -- (0, -1.3) -| (svm.north);
+    \path [arrow] (input.south) -- (0, -1.3) -| (rf.north);
+    \path [arrow] (input.south) -- (0, -1.3) -| (nb.north);
     
-    \path [arrow] (lr.south) -- ++(0,-0.3) -| ([xshift=-1.5cm]collect.north);
-    \path [arrow] (svm.south) -- ++(0,-0.3) -| ([xshift=-0.5cm]collect.north);
-    \path [arrow] (rf.south) -- ++(0,-0.3) -| ([xshift=0.5cm]collect.north);
-    \path [arrow] (nb.south) -- ++(0,-0.3) -| ([xshift=1.5cm]collect.north);
+    % Parallel vertical drop lines into collect (no crossings)
+    \path [arrow] (lr.south)  -- ([xshift=-4.5cm]collect.north);
+    \path [arrow] (svm.south) -- ([xshift=-1.5cm]collect.north);
+    \path [arrow] (rf.south)  -- ([xshift=1.5cm]collect.north);
+    \path [arrow] (nb.south)  -- ([xshift=4.5cm]collect.north);
     
     \path [arrow] (collect) -- (vote);
     \path [arrow] (vote) -- (select);
@@ -718,79 +720,7 @@ The proposed Medical Specialty Classification system follows a structured pipeli
 
 \begin{figure}[H]
 \centering
-\resizebox{\linewidth}{!}{
-\begin{tikzpicture}[
-    box/.style={rectangle, draw=black, thick, fill=white, rounded corners=3pt, text centered, inner sep=4pt, font=\small},
-    titlebox/.style={rectangle, draw=black, thick, fill=white, rounded corners=2pt, font=\normalsize\bfseries, inner sep=4pt},
-    arr/.style={-latex', thick}
-]
-
-    % ======================== CONTAINER 1: DATA ========================
-    \draw [thick, rounded corners=5pt] (0, 8.4) rectangle (15.8, 11.6);
-    \node at (7.9, 11.6) [titlebox] {DATA};
-    
-    \node [box, text width=2.4cm, minimum height=1.7cm] (d1) at (1.5, 9.9) {\textbf{Kaggle}\\\textbf{MTSamples}\\\textbf{Dataset}};
-    \node [box, text width=2.5cm, minimum height=1.7cm] (d2) at (4.7, 9.9) {\textbf{Raw Clinical}\\\textbf{Transcriptions}\\(4,966 Reports)};
-    \node [box, text width=2.6cm, minimum height=1.7cm] (d3) at (8.0, 9.9) {\textbf{Text}\\\textbf{Preprocessing}\\(Cleaning, Stopwords,\\Lemmatization)};
-    \node [box, text width=2.6cm, minimum height=1.7cm] (d4) at (11.3, 9.9) {\textbf{Feature Extraction}\\\textbf{TF-IDF Vectorizer}\\(Unigrams + Bigrams,\\Sublinear TF)};
-    \node [box, text width=2.4cm, minimum height=1.7cm] (d5) at (14.4, 9.9) {\textbf{Feature Dataset}\\\textbf{Sparse Matrix}\\(\texttt{features.csv})};
-    
-    \path [arr] (d1) -- (d2);
-    \path [arr] (d2) -- (d3);
-    \path [arr] (d3) -- (d4);
-    \path [arr] (d4) -- (d5);
-
-    % Routing from Container 1 to Container 2
-    \draw [arr] (d5.south) -- ++(0,-0.6) -| (0.6, 7.8) -- (0.6, 5.8) -- (1.0, 5.8);
-
-    % ======================== CONTAINER 2: MODEL BUILDING ========================
-    \draw [thick, rounded corners=5pt] (0, 3.4) rectangle (15.8, 7.6);
-    \node at (7.9, 7.6) [titlebox] {MODEL BUILDING};
-    
-    \node [box, text width=2.2cm, minimum height=2.4cm] (m1) at (2.2, 5.5) {\textbf{Train--Test}\\\textbf{Split}\\(80\% / 20\%)};
-    
-    \node [box, text width=2.8cm, minimum height=0.65cm] (m_svm) at (5.4, 6.7) {\textbf{Linear SVM}};
-    \node [box, text width=2.8cm, minimum height=0.65cm] (m_rf) at (5.4, 5.9) {\textbf{Random Forest}};
-    \node [box, text width=2.8cm, minimum height=0.65cm] (m_lr) at (5.4, 5.1) {\textbf{Logistic Regression}};
-    \node [box, text width=2.8cm, minimum height=0.65cm] (m_nb) at (5.4, 4.3) {\textbf{Multinomial NB}};
-    
-    \node [box, text width=2.5cm, minimum height=2.4cm] (m_ens) at (8.5, 5.5) {\textbf{Voting Ensemble}\\\textbf{Classifier}\\(Soft Consensus\\Voting)};
-    \node [box, text width=2.4cm, minimum height=2.4cm] (m_eval) at (11.5, 5.5) {\textbf{Model Evaluation}\\Accuracy, F1-Score,\\Precision, Recall};
-    \node [box, text width=2.2cm, minimum height=2.4cm] (m_best) at (14.3, 5.5) {\textbf{Select \& Save}\\\textbf{Best Model}\\(\texttt{pipeline.joblib})};
-    
-    \path [arr] (m1.east) -- ++(0.3,0) |- (m_svm.west);
-    \path [arr] (m1.east) -- ++(0.3,0) |- (m_rf.west);
-    \path [arr] (m1.east) -- ++(0.3,0) |- (m_lr.west);
-    \path [arr] (m1.east) -- ++(0.3,0) |- (m_nb.west);
-    
-    \path [arr] (m_svm.east) -| ++(0.3,-0.6) -- (m_ens.west |- m_svm.east);
-    \path [arr] (m_rf.east) -- (m_ens.west |- m_rf.east);
-    \path [arr] (m_lr.east) -- (m_ens.west |- m_lr.east);
-    \path [arr] (m_nb.east) -| ++(0.3,0.6) -- (m_ens.west |- m_nb.east);
-    
-    \path [arr] (m_ens) -- (m_eval);
-    \path [arr] (m_eval) -- (m_best);
-
-    % Routing from Container 2 to Container 3
-    \draw [arr] (m_best.south) -- ++(0,-0.6) -| (0.6, 2.8) -- (0.6, 0.9) -- (1.0, 0.9);
-
-    % ======================== CONTAINER 3: DEPLOYMENT ========================
-    \draw [thick, rounded corners=5pt] (0, -0.6) rectangle (15.8, 2.6);
-    \node at (7.9, 2.6) [titlebox] {DEPLOYMENT};
-    
-    \node [box, text width=2.4cm, minimum height=1.7cm] (dep1) at (1.5, 0.9) {\textbf{Flask Web}\\\textbf{Application}\\(User-Friendly UI)};
-    \node [box, text width=2.4cm, minimum height=1.7cm] (dep2) at (4.5, 0.9) {\textbf{Input Clinical}\\\textbf{Transcription}\\(Paste / Upload)};
-    \node [box, text width=2.6cm, minimum height=1.7cm] (dep3) at (7.6, 0.9) {\textbf{Feature Extraction}\\\textbf{\& Vectorization}\\(Using Saved Pipeline)};
-    \node [box, text width=2.4cm, minimum height=1.7cm] (dep4) at (10.7, 0.9) {\textbf{Specialty}\\\textbf{Prediction}\\(40 Specialties)};
-    \node [box, text width=2.6cm, minimum height=1.7cm] (dep5) at (13.8, 0.9) {\textbf{Assessment}\\\textbf{Report}\\(Prediction Result +\\Probability Insights)};
-    
-    \path [arr] (dep1) -- (dep2);
-    \path [arr] (dep2) -- (dep3);
-    \path [arr] (dep3) -- (dep4);
-    \path [arr] (dep4) -- (dep5);
-
-\end{tikzpicture}
-}
+\includegraphics[width=\linewidth]{EDA_Diagrams/07_project_pipeline.png}
 \caption{Project Pipeline Diagram of Medical Specialty Classification System}
 \label{fig:project_pipeline}
 \end{figure}
