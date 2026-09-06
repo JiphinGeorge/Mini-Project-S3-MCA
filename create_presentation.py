@@ -946,10 +946,10 @@ def build_slide_10(prs):
             "High-Dimensional Efficacy: Highly efficient and fast convergence on sparse, high-dimensional TF-IDF vectors.",
             "Calibrated Outputs: Inherently yields smooth, well-calibrated class probability estimates for soft voting."
         ]),
-        ("Support Vector Machine (Linear SVM)", TEAL, "Maximum-Margin Hyperplane", [
+        ("Support Vector Machine (SVM)", TEAL, "Maximum-Margin Hyperplane", [
             "Formulation: Identifies optimal separating hyperplanes maximizing the functional margin between specialty classes.",
             "Sparse Vector Superiority: Consistently recognized in clinical NLP literature as a top performer for text classification.",
-            "Probability Calibration: Utilizes CalibratedClassifierCV (Platt Scaling) to generate calibrated posterior probabilities."
+            "Decision Boundary Optimization: Effectively establishes robust decision boundaries across high-dimensional clinical feature vectors."
         ]),
         ("Random Forest (RF)", PURPLE, "Bagged Decision Tree Ensemble", [
             "Formulation: Ensemble of decorrelated decision trees trained via bootstrap aggregating and random feature subsets.",
@@ -1241,7 +1241,7 @@ def build_slide_13(prs):
     next_items = [
         ("Execute Automated Preprocessing Pipeline", "Implement modular Python text cleaner to generate clean tokenized transcripts."),
         ("TF-IDF Matrix Generation & Feature Export", "Fit and persist TF-IDF vectorizer; compile high-dimensional sparse feature matrix."),
-        ("Candidate Model Training & Probability Calibration", "Train Linear SVM, Random Forest, Logistic Regression, and MNB; calibrate SVM probabilities."),
+        ("Candidate Model Training", "Train SVM, Random Forest, Logistic Regression, and Multinomial Naive Bayes candidate classifiers."),
         ("Soft Voting Ensemble Implementation", "Implement soft consensus probability aggregation combining all four candidate estimators."),
         ("Rigorous Multi-Class Model Evaluation", "Compute multi-class evaluation metrics: Macro/Weighted Precision, Recall, F1, and Confusion Matrices."),
         ("Model Serialization & Web Deployment", "Serialize trained ensemble with Joblib; build interactive clinician dashboard using Flask."),
