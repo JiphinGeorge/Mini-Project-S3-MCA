@@ -651,25 +651,27 @@ By integrating linear probabilistic modeling (Logistic Regression), maximum-marg
     arrow/.style={draw, -latex', semithick}]
     
     \node [startstop] (start) at (0, 0) {START};
-    \node [process, below=0.3cm of start] (input) {TF-IDF Feature Vector Input};
+    \node [process, below=0.35cm of start] (input) {TF-IDF Feature Vector Input};
     
-    % Symmetrically positioned candidate classifiers with 3.0cm spacing (no overlap)
-    \node [smallbox] (lr)  at (-4.5, -1.85) {Logistic\\Regression};
-    \node [smallbox] (svm) at (-1.5, -1.85) {Linear\\SVC / SVM};
-    \node [smallbox] (rf)  at (1.5, -1.85) {Random\\Forest};
-    \node [smallbox] (nb)  at (4.5, -1.85) {Multinomial\\Naive Bayes};
+    % Symmetrically positioned candidate classifiers with ample 1.05cm clearance below input
+    \node [smallbox, below=1.05cm of input, xshift=-4.5cm] (lr)  {Logistic\\Regression};
+    \node [smallbox, below=1.05cm of input, xshift=-1.5cm] (svm) {Linear\\SVC / SVM};
+    \node [smallbox, below=1.05cm of input, xshift=1.5cm]  (rf)  {Random\\Forest};
+    \node [smallbox, below=1.05cm of input, xshift=4.5cm]  (nb)  {Multinomial\\Naive Bayes};
     
-    \node [process, text width=13cm] (collect) at (0, -3.3) {Collect Predictions from All Classifiers};
+    \coordinate (bus1) at ([yshift=-0.52cm]input.south);
+    
+    \node [process, text width=13cm, below=0.85cm of svm, xshift=1.5cm] (collect) {Collect Predictions from All Classifiers};
     \node [process, below=0.35cm of collect] (vote) {Apply Soft-Voting Aggregation Strategy};
     \node [process, below=0.35cm of vote] (select) {Select Final Predicted Class ($\arg\max$)};
     \node [branch, below=0.35cm of select] (output) {Predicted Medical Specialty};
     \node [startstop, below=0.35cm of output] (end) {END};
     
     \path [arrow] (start) -- (input);
-    \path [arrow] (input.south) -- (0, -1.3) -| (lr.north);
-    \path [arrow] (input.south) -- (0, -1.3) -| (svm.north);
-    \path [arrow] (input.south) -- (0, -1.3) -| (rf.north);
-    \path [arrow] (input.south) -- (0, -1.3) -| (nb.north);
+    \path [arrow] (input.south) -- (bus1) -| (lr.north);
+    \path [arrow] (input.south) -- (bus1) -| (svm.north);
+    \path [arrow] (input.south) -- (bus1) -| (rf.north);
+    \path [arrow] (input.south) -- (bus1) -| (nb.north);
     
     % Parallel vertical drop lines into collect (no crossings)
     \path [arrow] (lr.south)  -- ([xshift=-4.5cm]collect.north);
