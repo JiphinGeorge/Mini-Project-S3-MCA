@@ -274,7 +274,11 @@ The proposed system evaluates diverse machine learning estimators alongside stat
 Support Vector Machine (SVM) is a robust supervised learning algorithm founded on statistical learning theory and structural risk minimization principles. It constructs an optimal decision boundary (hyperplane) in a high-dimensional feature space to separate target classes while maximizing the geometric margin between them. Linear SVM (Linear SVC) is exceptionally well suited for text categorization where sparse TF-IDF vectors offer natural linear separability.
 
 \subparagraph{A. Theoretical Foundation and Optimization Model}
-Given a training dataset $D = \{(x_1, y_1), (x_2, y_2), \dots, (x_N, y_N)\}$, where $x_i \in \mathbb{R}^d$ represents the sparse TF-IDF feature vector of $d$ vocabulary terms and $y_i \in \{1, 2, \dots, K\}$ denotes the target medical specialty ($K = 40$), the linear decision hyperplane is defined as:
+Given a training dataset of clinical transcription records:
+\begin{equation}
+D = \{(x_1, y_1), (x_2, y_2), \dots, (x_N, y_N)\}
+\end{equation}
+where $x_i \in \mathbb{R}^d$ represents the sparse TF-IDF feature vector across $d$ vocabulary terms and $y_i \in \{1, 2, \dots, K\}$ denotes the target medical specialty ($K = 40$), the linear decision hyperplane is defined as:
 \begin{equation}
 w^T x + b = 0
 \end{equation}
@@ -310,10 +314,10 @@ The predictive performance of Linear SVM depends primarily on optimizing the reg
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=0.24cm, auto, >=stealth',
-    startstop/.style={rectangle, rounded corners=8pt, draw, fill=gray!12, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
-    process/.style={rectangle, draw, fill=blue!8, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
-    decision/.style={diamond, draw, fill=yellow!12, text width=5.5em, text centered, inner sep=0pt, font=\scriptsize},
-    branch/.style={rectangle, draw, fill=green!10, text width=6.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+    startstop/.style={rectangle, rounded corners=8pt, draw=black, fill=white, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
+    process/.style={rectangle, draw=black, fill=white, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+    decision/.style={diamond, draw=black, fill=white, text width=5.5em, text centered, inner sep=0pt, font=\scriptsize},
+    branch/.style={rectangle, draw=black, fill=white, text width=7.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
     arrow/.style={draw, -latex', semithick}]
     
     \node [startstop] (start) {START};
@@ -336,7 +340,7 @@ The predictive performance of Linear SVM depends primarily on optimizing the reg
     \path [arrow] (p3) -- (p4);
     \path [arrow] (p4) -- (p5);
     \path [arrow] (p5) -- (dec1);
-    \path [arrow] (dec1.west) -- node[above, font=\tiny]{No} ++(-0.6cm,0) |- (p2.west);
+    \path [arrow] (dec1.west) -- node[above, font=\tiny]{No} ([xshift=-0.9cm]p2.west |- dec1.west) -- ([xshift=-0.9cm]p2.west) -- (p2.west);
     \path [arrow] (dec1.south) -- node[right, font=\tiny]{Yes} (p6);
     \path [arrow] (p6) -- (p7);
     \path [arrow] (p7) -- (p8);
@@ -403,10 +407,10 @@ Random Forest captures complex non-linear keyword interactions that linear model
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=0.24cm, auto, >=stealth',
-    startstop/.style={rectangle, rounded corners=8pt, draw, fill=gray!12, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
-    process/.style={rectangle, draw, fill=blue!8, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
-    decision/.style={diamond, draw, fill=yellow!12, text width=5.5em, text centered, inner sep=0pt, font=\scriptsize},
-    branch/.style={rectangle, draw, fill=green!10, text width=6.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+    startstop/.style={rectangle, rounded corners=8pt, draw=black, fill=white, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
+    process/.style={rectangle, draw=black, fill=white, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+    decision/.style={diamond, draw=black, fill=white, text width=5.5em, text centered, inner sep=0pt, font=\scriptsize},
+    branch/.style={rectangle, draw=black, fill=white, text width=7.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
     arrow/.style={draw, -latex', semithick}]
     
     \node [startstop] (start) {START};
@@ -427,7 +431,7 @@ Random Forest captures complex non-linear keyword interactions that linear model
     \path [arrow] (p2) -- (p3);
     \path [arrow] (p3) -- (p4);
     \path [arrow] (p4) -- (dec1);
-    \path [arrow] (dec1.west) -- node[above, font=\tiny]{Yes} ++(-0.6cm,0) |- (p2.west);
+    \path [arrow] (dec1.west) -- node[above, font=\tiny]{Yes} ([xshift=-0.9cm]p2.west |- dec1.west) -- ([xshift=-0.9cm]p2.west) -- (p2.west);
     \path [arrow] (dec1.south) -- node[right, font=\tiny]{No} (p5);
     \path [arrow] (p5) -- (p6);
     \path [arrow] (p6) -- (p7);
@@ -468,10 +472,10 @@ Logistic Regression serves as an essential baseline model due to its high interp
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=0.24cm, auto, >=stealth',
-    startstop/.style={rectangle, rounded corners=8pt, draw, fill=gray!12, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
-    process/.style={rectangle, draw, fill=blue!8, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
-    decision/.style={diamond, draw, fill=yellow!12, text width=5.5em, text centered, inner sep=0pt, font=\scriptsize},
-    branch/.style={rectangle, draw, fill=green!10, text width=6.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+    startstop/.style={rectangle, rounded corners=8pt, draw=black, fill=white, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
+    process/.style={rectangle, draw=black, fill=white, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+    decision/.style={diamond, draw=black, fill=white, text width=5.5em, text centered, inner sep=0pt, font=\scriptsize},
+    branch/.style={rectangle, draw=black, fill=white, text width=7.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
     arrow/.style={draw, -latex', semithick}]
     
     \node [startstop] (start) {START};
@@ -496,7 +500,7 @@ Logistic Regression serves as an essential baseline model due to its high interp
     \path [arrow] (p4) -- (p5);
     \path [arrow] (p5) -- (p6);
     \path [arrow] (p6) -- (dec1);
-    \path [arrow] (dec1.west) -- node[above, font=\tiny]{No} ++(-0.6cm,0) |- (p3.west);
+    \path [arrow] (dec1.west) -- node[above, font=\tiny]{No} ([xshift=-0.9cm]p3.west |- dec1.west) -- ([xshift=-0.9cm]p3.west) -- (p3.west);
     \path [arrow] (dec1.south) -- node[right, font=\tiny]{Yes} (p7);
     \path [arrow] (p7) -- (p8);
     \path [arrow] (p8) -- (p9);
@@ -534,9 +538,9 @@ Multinomial Naive Bayes executes in linear time with minimal memory overhead. It
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=0.24cm, auto, >=stealth',
-    startstop/.style={rectangle, rounded corners=8pt, draw, fill=gray!12, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
-    process/.style={rectangle, draw, fill=blue!8, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
-    branch/.style={rectangle, draw, fill=green!10, text width=6.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+    startstop/.style={rectangle, rounded corners=8pt, draw=black, fill=white, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
+    process/.style={rectangle, draw=black, fill=white, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+    branch/.style={rectangle, draw=black, fill=white, text width=7.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
     arrow/.style={draw, -latex', semithick}]
     
     \node [startstop] (start) {START};
@@ -599,8 +603,8 @@ Through this formulation, terms appearing across almost all reports receive low 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=0.24cm, auto, >=stealth',
-    startstop/.style={rectangle, rounded corners=8pt, draw, fill=gray!12, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
-    process/.style={rectangle, draw, fill=blue!8, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+    startstop/.style={rectangle, rounded corners=8pt, draw=black, fill=white, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
+    process/.style={rectangle, draw=black, fill=white, text width=14em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
     arrow/.style={draw, -latex', semithick}]
     
     \node [startstop] (start) {START};
@@ -649,11 +653,11 @@ By integrating linear probabilistic modeling (Logistic Regression), maximum-marg
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[node distance=0.4cm and 0.2cm, auto, >=stealth',
-    startstop/.style={rectangle, rounded corners=8pt, draw, fill=gray!12, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
-    process/.style={rectangle, draw, fill=green!10, text width=15em, text centered, rounded corners=2pt, minimum height=1.6em, font=\scriptsize},
-    smallbox/.style={rectangle, draw, fill=blue!10, text width=5.6em, text centered, rounded corners=2pt, minimum height=2.2em, font=\scriptsize},
-    branch/.style={rectangle, draw, fill=green!10, text width=7em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
+\begin{tikzpicture}[node distance=0.35cm and 0.2cm, auto, >=stealth',
+    startstop/.style={rectangle, rounded corners=8pt, draw=black, fill=white, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
+    process/.style={rectangle, draw=black, fill=white, text width=15em, text centered, rounded corners=2pt, minimum height=1.6em, font=\scriptsize},
+    smallbox/.style={rectangle, draw=black, fill=white, text width=5.6em, text centered, rounded corners=2pt, minimum height=2.2em, font=\scriptsize},
+    branch/.style={rectangle, draw=black, fill=white, text width=7.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
     arrow/.style={draw, -latex', semithick}]
     
     \node [startstop] (start) {START};
@@ -676,10 +680,10 @@ By integrating linear probabilistic modeling (Logistic Regression), maximum-marg
     \path [arrow] (input) -| (rf.north);
     \path [arrow] (input) -| (nb.north);
     
-    \path [arrow] (lr.south) |- (collect);
-    \path [arrow] (svm.south) |- (collect);
-    \path [arrow] (rf.south) |- (collect);
-    \path [arrow] (nb.south) |- (collect);
+    \path [arrow] (lr.south) -- ++(0,-0.3) -| ([xshift=-1.5cm]collect.north);
+    \path [arrow] (svm.south) -- ++(0,-0.3) -| ([xshift=-0.5cm]collect.north);
+    \path [arrow] (rf.south) -- ++(0,-0.3) -| ([xshift=0.5cm]collect.north);
+    \path [arrow] (nb.south) -- ++(0,-0.3) -| ([xshift=1.5cm]collect.north);
     
     \path [arrow] (collect) -- (vote);
     \path [arrow] (vote) -- (select);
@@ -708,113 +712,217 @@ The proposed machine learning classification framework executes through the foll
 
 \FloatBarrier
 
-\subsection{Project pipeline}
+\subsection{PROJECT PIPELINE}
 
-\subsubsection{Project pipeline diagram with explanation}
-Figure \ref{fig:project_pipeline} presents the engineering project pipeline diagram following a top-down flow.
+The proposed Medical Specialty Classification system follows a structured pipeline that transforms raw clinical transcription narratives into reliable diagnostic specialty predictions using machine learning. The pipeline begins with clinical text data acquisition, followed by text preprocessing, TF-IDF feature extraction, machine learning model development and voting ensemble aggregation, and finally medical specialty prediction through a user-friendly Flask web application. Each stage plays an important role in ensuring accurate and reliable classification across all 40 medical specialties.
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[node distance=0.35cm and 0cm, auto, >=stealth',
-    pipe/.style={rectangle, draw, fill=orange!10, text width=15em, text centered, rounded corners, minimum height=1.8em},
-    line/.style={draw, -latex'}]
-    \node [pipe] (p1) {1. Dataset Ingestion};
-    \node [pipe, below=0.35cm of p1] (p2) {2. Exploratory Data Analysis (EDA)};
-    \node [pipe, below=0.35cm of p2] (p3) {3. Data Cleaning \& Preprocessing};
-    \node [pipe, below=0.35cm of p3] (p4) {4. TF-IDF Feature Vectorization};
-    \node [pipe, below=0.35cm of p4] (p5) {5. Train-Test Stratified Split};
-    \node [pipe, below=0.35cm of p5] (p6) {6. Multi-Model Training};
-    \node [pipe, below=0.35cm of p6] (p7) {7. Model Performance Evaluation};
-    \node [pipe, below=0.35cm of p7] (p8) {8. Voting Ensemble Aggregation};
-    \node [pipe, below=0.35cm of p8] (p9) {9. Model Serialization (Joblib)};
-    \node [pipe, below=0.35cm of p9] (p10) {10. Flask Application Integration};
-    \node [pipe, below=0.35cm of p10] (p11) {11. Real-Time Specialty Prediction};
+\resizebox{\linewidth}{!}{
+\begin{tikzpicture}[
+    box/.style={rectangle, draw=black, thick, fill=white, rounded corners=3pt, text centered, inner sep=4pt, font=\small},
+    titlebox/.style={rectangle, draw=black, thick, fill=white, rounded corners=2pt, font=\normalsize\bfseries, inner sep=4pt},
+    arr/.style={-latex', thick}
+]
+
+    % ======================== CONTAINER 1: DATA ========================
+    \draw [thick, rounded corners=5pt] (0, 8.4) rectangle (15.8, 11.6);
+    \node at (7.9, 11.6) [titlebox] {DATA};
     
-    \path [line] (p1) -- (p2);
-    \path [line] (p2) -- (p3);
-    \path [line] (p3) -- (p4);
-    \path [line] (p4) -- (p5);
-    \path [line] (p5) -- (p6);
-    \path [line] (p6) -- (p7);
-    \path [line] (p7) -- (p8);
-    \path [line] (p8) -- (p9);
-    \path [line] (p9) -- (p10);
-    \path [line] (p10) -- (p11);
+    \node [box, text width=2.4cm, minimum height=1.7cm] (d1) at (1.5, 9.9) {\textbf{Kaggle}\\\textbf{MTSamples}\\\textbf{Dataset}};
+    \node [box, text width=2.5cm, minimum height=1.7cm] (d2) at (4.7, 9.9) {\textbf{Raw Clinical}\\\textbf{Transcriptions}\\(4,966 Reports)};
+    \node [box, text width=2.6cm, minimum height=1.7cm] (d3) at (8.0, 9.9) {\textbf{Text}\\\textbf{Preprocessing}\\(Cleaning, Stopwords,\\Lemmatization)};
+    \node [box, text width=2.6cm, minimum height=1.7cm] (d4) at (11.3, 9.9) {\textbf{Feature Extraction}\\\textbf{TF-IDF Vectorizer}\\(Unigrams + Bigrams,\\Sublinear TF)};
+    \node [box, text width=2.4cm, minimum height=1.7cm] (d5) at (14.4, 9.9) {\textbf{Feature Dataset}\\\textbf{Sparse Matrix}\\(\texttt{features.csv})};
+    
+    \path [arr] (d1) -- (d2);
+    \path [arr] (d2) -- (d3);
+    \path [arr] (d3) -- (d4);
+    \path [arr] (d4) -- (d5);
+
+    % Routing from Container 1 to Container 2
+    \draw [arr] (d5.south) -- ++(0,-0.6) -| (0.6, 7.8) -- (0.6, 5.8) -- (1.0, 5.8);
+
+    % ======================== CONTAINER 2: MODEL BUILDING ========================
+    \draw [thick, rounded corners=5pt] (0, 3.4) rectangle (15.8, 7.6);
+    \node at (7.9, 7.6) [titlebox] {MODEL BUILDING};
+    
+    \node [box, text width=2.2cm, minimum height=2.4cm] (m1) at (2.2, 5.5) {\textbf{Train--Test}\\\textbf{Split}\\(80\% / 20\%)};
+    
+    \node [box, text width=2.8cm, minimum height=0.65cm] (m_svm) at (5.4, 6.7) {\textbf{Linear SVM}};
+    \node [box, text width=2.8cm, minimum height=0.65cm] (m_rf) at (5.4, 5.9) {\textbf{Random Forest}};
+    \node [box, text width=2.8cm, minimum height=0.65cm] (m_lr) at (5.4, 5.1) {\textbf{Logistic Regression}};
+    \node [box, text width=2.8cm, minimum height=0.65cm] (m_nb) at (5.4, 4.3) {\textbf{Multinomial NB}};
+    
+    \node [box, text width=2.5cm, minimum height=2.4cm] (m_ens) at (8.5, 5.5) {\textbf{Voting Ensemble}\\\textbf{Classifier}\\(Soft Consensus\\Voting)};
+    \node [box, text width=2.4cm, minimum height=2.4cm] (m_eval) at (11.5, 5.5) {\textbf{Model Evaluation}\\Accuracy, F1-Score,\\Precision, Recall};
+    \node [box, text width=2.2cm, minimum height=2.4cm] (m_best) at (14.3, 5.5) {\textbf{Select \& Save}\\\textbf{Best Model}\\(\texttt{pipeline.joblib})};
+    
+    \path [arr] (m1.east) -- ++(0.3,0) |- (m_svm.west);
+    \path [arr] (m1.east) -- ++(0.3,0) |- (m_rf.west);
+    \path [arr] (m1.east) -- ++(0.3,0) |- (m_lr.west);
+    \path [arr] (m1.east) -- ++(0.3,0) |- (m_nb.west);
+    
+    \path [arr] (m_svm.east) -| ++(0.3,-0.6) -- (m_ens.west |- m_svm.east);
+    \path [arr] (m_rf.east) -- (m_ens.west |- m_rf.east);
+    \path [arr] (m_lr.east) -- (m_ens.west |- m_lr.east);
+    \path [arr] (m_nb.east) -| ++(0.3,0.6) -- (m_ens.west |- m_nb.east);
+    
+    \path [arr] (m_ens) -- (m_eval);
+    \path [arr] (m_eval) -- (m_best);
+
+    % Routing from Container 2 to Container 3
+    \draw [arr] (m_best.south) -- ++(0,-0.6) -| (0.6, 2.8) -- (0.6, 0.9) -- (1.0, 0.9);
+
+    % ======================== CONTAINER 3: DEPLOYMENT ========================
+    \draw [thick, rounded corners=5pt] (0, -0.6) rectangle (15.8, 2.6);
+    \node at (7.9, 2.6) [titlebox] {DEPLOYMENT};
+    
+    \node [box, text width=2.4cm, minimum height=1.7cm] (dep1) at (1.5, 0.9) {\textbf{Flask Web}\\\textbf{Application}\\(User-Friendly UI)};
+    \node [box, text width=2.4cm, minimum height=1.7cm] (dep2) at (4.5, 0.9) {\textbf{Input Clinical}\\\textbf{Transcription}\\(Paste / Upload)};
+    \node [box, text width=2.6cm, minimum height=1.7cm] (dep3) at (7.6, 0.9) {\textbf{Feature Extraction}\\\textbf{\& Vectorization}\\(Using Saved Pipeline)};
+    \node [box, text width=2.4cm, minimum height=1.7cm] (dep4) at (10.7, 0.9) {\textbf{Specialty}\\\textbf{Prediction}\\(40 Specialties)};
+    \node [box, text width=2.6cm, minimum height=1.7cm] (dep5) at (13.8, 0.9) {\textbf{Assessment}\\\textbf{Report}\\(Prediction Result +\\Probability Insights)};
+    
+    \path [arr] (dep1) -- (dep2);
+    \path [arr] (dep2) -- (dep3);
+    \path [arr] (dep3) -- (dep4);
+    \path [arr] (dep4) -- (dep5);
+
 \end{tikzpicture}
-\caption{Engineering Project Pipeline Flow Diagram}
+}
+\caption{Project Pipeline Diagram of Medical Specialty Classification System}
 \label{fig:project_pipeline}
 \end{figure}
 
-\paragraph{Data Phase}
-The procedure starts with gathering raw clinical data from the Kaggle MTSamples dataset. Preprocessing actions such as addressing missing values, removing noise, and lemmatizing word tokens are implemented. After cleaning, EDA is performed to visualize distributions, identify category counts, and discover patterns for feature extraction.
-
-\paragraph{Model Building Phase}
-After data preparation, the processed TF-IDF feature matrix will be used to train candidate machine learning models (Logistic Regression, Support Vector Machine, Random Forest, Multinomial Naive Bayes). Predictions from candidate base models will be aggregated into a Voting Ensemble Classifier, and standard classification metrics—precision, recall, and F1 score—will be evaluated to assess model performance across the 40 medical specialties.
-
-\paragraph{Deployment Phase}
-In the proposed system, the trained Voting Ensemble model will be serialized using Joblib and integrated into a Flask web application. Healthcare professionals will be able to paste or upload clinical notes through the user interface and receive real-time medical specialty predictions.
+The project pipeline consists of the following stages:
+\begin{enumerate}
+    \item \textbf{Dataset}: The Kaggle MTSamples Medical Transcription Dataset containing 4,966 cleaned clinical reports across 40 medical specialties is used as the input corpus.
+    \item \textbf{Exploratory Data Analysis (EDA)}: The distribution of transcription lengths, medical specialty frequencies, vocabulary counts, and class imbalances is systematically analyzed and statistically profiled.
+    \item \textbf{Text Preprocessing}: Unstructured clinical transcription narratives undergo thorough text cleaning, punctuation removal, lowercasing, medical stop-word filtering, and WordNet morphological lemmatization.
+    \item \textbf{Feature Extraction}: Term Frequency--Inverse Document Frequency (TF-IDF) feature extraction is applied with sublinear term-frequency scaling, unigram and bigram vocabulary extraction, and Euclidean $L_2$ vector normalization.
+    \item \textbf{Feature Dataset Creation}: The extracted numerical representations are compiled into a structured, high-dimensional sparse feature matrix paired with mapped categorical target specialty labels.
+    \item \textbf{Train--Test Split}: The prepared feature dataset is divided using stratified sampling into an 80\% training partition and a 20\% testing partition to strictly preserve minority and majority class proportions across all 40 medical specialties.
+    \item \textbf{Machine Learning Model Development}: Multiple supervised machine learning algorithms, including Linear Support Vector Machine (Linear SVM), Random Forest (RF), Logistic Regression (LR), and Multinomial Naive Bayes (MNB), are trained independently using the extracted features.
+    \item \textbf{Hyperparameter Tuning}: Grid search cross-validation is performed to optimize critical hyperparameters, including regularisation strengths ($C, \lambda$), smoothing parameters ($\alpha$), and tree estimators ($B$).
+    \item \textbf{Ensemble Model Formulation}: A Voting Ensemble Classifier is constructed using soft-voting consensus aggregation to synthesize probability distributions from all candidate models, mitigating individual estimator variance.
+    \item \textbf{Model Evaluation and Comparison}: All trained candidate models and the Voting Ensemble are evaluated using diagnostic multi-class metrics: Accuracy, Precision, Recall (Sensitivity), and F1-Scores.
+    \item \textbf{Deployment}: The optimal pipeline, comprising the fitted TF-IDF vectorizer and trained Voting Ensemble classifier, is serialized using Joblib and integrated into a lightweight Flask web application.
+    \item \textbf{Clinical Text Input and Prediction}: Healthcare professionals enter or upload patient clinical notes through the web application. The text is preprocessed and vectorized using the deployed pipeline, and the model predicts the most appropriate medical specialty alongside classification confidence probabilities.
+\end{enumerate}
 
 \FloatBarrier
 
-\subsection{Feasibility analysis}
+\subsection{Project Timeline}
 
-\subsubsection{Technical Feasibility}
-The system utilizes standard open-source Python frameworks (Scikit-learn, NLTK, Pandas, Flask) running on standard CPU hardware. No expensive GPU infrastructure is required, establishing technical feasibility.
-
-\subsubsection{Economic Feasibility}
-All development tools, libraries, and datasets are open-source with zero licensing fees. Deploying on existing computer hardware involves no financial expense, establishing economic feasibility.
-
-\subsubsection{Operational Feasibility}
-The proposed web interface is designed to allow non-technical healthcare personnel to upload medical reports and view specialty predictions easily, requiring minimal training and ensuring operational feasibility.
-
-\subsubsection{Legal Feasibility}
-The Kaggle MTSamples dataset consists of public records that do not contain Protected Health Information (PHI). The project utilizes this anonymized public dataset and considers relevant data-privacy requirements, establishing legal feasibility.
-
-\subsubsection{Schedule Feasibility}
-Project milestones are structured systematically across the academic semester, guaranteeing completion within departmental deadlines.
-
-\clearpage
-
-\subsection{System Environment}
-The proposed system architecture is designed to execute on standard computing resources using well-established, open-source data science, natural language processing, and web development technologies. This section delineates the software environment and hardware specifications utilized and proposed for developing, evaluating, and hosting the TF-IDF and Ensemble Machine Learning classification pipeline.
-
-\subsubsection{Software Environment}
-The software stack combines open-source programming frameworks, specialized text preprocessing tools, machine learning libraries, visualization suites, and web deployment components. The primary development language is Python, chosen for its extensive ecosystem of scientific computing and machine learning libraries. Interactive exploration, data auditing, model development, and preliminary experiments are performed using the Google Colab environment. Modular code development, application scripting, and version management are carried out using Visual Studio Code, while \LaTeX\ is utilized for compiling formal academic documentation according to departmental formatting standards.
-
-The data preprocessing and analytical workflow relies on Pandas for structured data manipulation and NumPy for multidimensional array computations. Statistical visualization and exploratory distribution charts are rendered using Matplotlib and Seaborn, complemented by the WordCloud package for visualizing term frequency distributions across clinical narratives. Text preprocessing is handled using the Natural Language Toolkit (NLTK), which supplies tokenizers, stop-word corpora, and the WordNet lemmatizer. Candidate classifiers (Logistic Regression, Support Vector Machine, Random Forest, Multinomial Naive Bayes) as well as the Voting Ensemble Classifier and TF-IDF vectorizer are implemented via Scikit-learn. Finally, the lightweight Flask WSGI micro-framework is proposed for serializing model artifacts with Joblib and serving interactive prediction endpoints to healthcare users. Table \ref{tab:software_environment} details each software tool, its type, and its specific purpose in the proposed system.
+The project timeline outlines the major activities planned for the development of the Medical Specialty Classification system, from initial dataset analysis and text preprocessing to machine learning model development, voting ensemble integration, web application implementation, system testing, and final submission. The activities are organized according to the common project schedule and presentation milestones.
 
 \begin{table}[H]
 \centering
-\footnotesize
-\renewcommand{\arraystretch}{1.08}
-\setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}X|}
+\small
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{8pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{4.2cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Period / Date} & \textbf{Planned Activity} \\
+\hline
+Week 1--2 & Dataset Collection, Exploratory Data Analysis and Initial Data Cleaning \\
+\hline
+21.07.2026 & Project Proposal Approval \\
+\hline
+Week 3 & Clinical Text Preprocessing, Stopword Removal and Lemmatization \\
+\hline
+Week 4 & TF-IDF Feature Extraction and Feature Representation Analysis \\
+\hline
+Week 5 & Implementation and Training of Selected Machine Learning Classifiers (Linear SVM, MNB, LR, RF) \\
+\hline
+Week 6 & Voting Ensemble Classifier Formulation and Hyperparameter Optimization \\
+\hline
+08.09.2026 & Initial Flask Interface Design and Route Setup \\
+\hline
+09.09.2026 & First Project Presentation -- Sprint Release I \\
+\hline
+Week 8--9 & Flask Web Application Development and Medical Input Form Integration \\
+\hline
+18.09.2026 & Sprint Release II \\
+\hline
+Week 10 & Model Integration into Flask, Real-time Specialty Prediction and Confidence Scoring \\
+\hline
+29.09.2026 -- 30.09.2026 & Interim Project Presentation \\
+\hline
+Week 11 & Multi-Class Evaluation, Confusion Matrix Analysis and Threshold Tuning \\
+\hline
+05.10.2026 & Project Execution, Report and Presentation Preparation \\
+\hline
+09.10.2026 & Sprint Release III \\
+\hline
+22.10.2026 -- 23.10.2026 & Final Project Presentation \\
+\hline
+30.10.2026 & Final Report Submission \\
+\hline
+\end{tabularx}
+\caption{Project Timeline}
+\label{tab:project_timeline}
+\end{table}
+
+\FloatBarrier
+
+\subsection{FEASIBILITY ANALYSIS}
+
+Feasibility analysis is conducted to evaluate the practicality of developing and implementing the proposed Medical Specialty Classification system. It assesses whether the project can be successfully developed using the available computational resources, technologies, budget, and time. The feasibility study ensures that the proposed solution is technically viable, economically affordable, operationally practical, and achievable within the designated project schedule.
+
+\subsubsection{Technical Feasibility}
+The proposed system is technically feasible because it utilizes widely adopted open-source software, established Natural Language Processing (NLP) libraries, and standard machine learning toolkits. The development environment consists of Python programming language, Google Colab, and Visual Studio Code, while libraries such as NLTK, Scikit-learn, Pandas, NumPy, Matplotlib, and Seaborn provide comprehensive functionality for text preprocessing, feature extraction, model training, and performance evaluation. The final system will be deployed using the Flask WSGI web framework, enabling healthcare practitioners to enter or upload clinical notes and obtain specialty predictions through an intuitive web interface. The required software tools are freely available and can be executed on standard CPU-based computing systems without requiring specialized high-performance GPU hardware.
+
+\subsubsection{Economic Feasibility}
+The proposed system is economically feasible because it relies entirely on open-source software and publicly available resources. The Kaggle MTSamples clinical transcription dataset used in this project is freely accessible, and all development tools, including Python, Google Colab, Flask, and the required machine learning libraries, are available without commercial licensing costs. Furthermore, because the classical machine learning workflow (TF-IDF paired with Linear SVM, Logistic Regression, Random Forest, and Naive Bayes) is computationally efficient, it eliminates the need for expensive cloud GPU instances or specialized hardware accelerators. Consequently, the overall development expenditure is minimal, making the project exceptionally cost-effective and suitable for academic research and clinical prototype deployment.
+
+\subsubsection{Operational Feasibility}
+The proposed system is operationally feasible because it is designed to provide a simple and user-friendly interface for medical specialty prediction. Healthcare professionals and administrative personnel will be able to input clinical transcription narratives directly through the web application, after which the system will automatically preprocess the text, extract TF-IDF feature vectors, and generate specialty predictions using the trained Voting Ensemble model. The straightforward workflow minimizes user effort while providing an efficient, reliable, and accessible method for preliminary clinical categorization and automated medical workflow triaging.
+
+\subsubsection{Schedule Feasibility}
+The project is considered schedule feasible because its development activities are planned in a structured and phased manner. The initial phases, including dataset acquisition, exploratory data analysis, data cleaning, and text preprocessing, have been completed successfully. The remaining phases, such as machine learning model development, voting ensemble aggregation, performance evaluation, Flask web application deployment, and system testing, are planned according to the project timeline. The availability of suitable development tools, pre-existing datasets, and established algorithms supports the timely completion of the project within the academic schedule.
+
+\clearpage
+
+\subsection{SYSTEM ENVIRONMENT}
+The system environment specifies the software tools, libraries, and hardware resources required for the development and implementation of the proposed Medical Specialty Classification system. The project uses standard software tools and computing resources for text processing, feature extraction, machine learning model development, performance evaluation, and web application deployment.
+
+\subsubsection{Software Environment}
+The software environment consists of Python and commonly used open-source libraries for Natural Language Processing, data analysis, machine learning, visualization, and web application development. Google Colab and Visual Studio Code are used for development, experimentation, and modular scripting, while Flask is used for deploying the trained model pipeline as an interactive web application. These tools are freely available and do not require specialized commercial software licenses. Table \ref{tab:software_environment} details each software tool, its type, and its specific purpose in the proposed system.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.15}
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \textbf{Software / Tool} & \textbf{Type} & \textbf{Purpose} \\
 \hline
-Python & Programming Language & Primary language for preprocessing, feature extraction, modeling, and backend scripts. \\
+Python & Programming Language & Primary programming language used for data preprocessing, feature extraction, model training, and backend scripts. \\
 \hline
-Google Colab & Cloud IDE & Cloud-based interactive development environment used for data preprocessing, exploratory data analysis (EDA), machine learning model development, visualization, and experimentation. \\
+Google Colab & Cloud IDE & Cloud-based interactive environment used for exploratory data analysis, model experimentation, and visualization. \\
 \hline
-Visual Studio Code & Development IDE & Primary IDE for modular Python script development, project management, and debugging. \\
+Visual Studio Code & Development IDE & Primary IDE for modular Python script development, project organization, and debugging. \\
 \hline
-\LaTeX & Typesetting System & Document preparation system for compiling academic reports and formatted tables. \\
+\LaTeX & Typesetting System & Document preparation system used for compiling academic reports and formatted tables. \\
 \hline
-Pandas & Data Manipulation & High-performance library for loading CSV data, handling missing values, and dataset structuring. \\
+Pandas & Data Manipulation & Handling structured CSV data, dataset filtering, null audits, and category mapping. \\
 \hline
-NumPy & Numerical Computing & Library for multi-dimensional array structures and mathematical vector operations. \\
+NumPy & Numerical Computing & Efficient multi-dimensional array manipulation and mathematical operations. \\
 \hline
-Matplotlib & Data Visualization & Core library for generating statistical figures, bar charts, and distribution plots. \\
+NLTK & NLP Toolkit & Text tokenization, stop-word elimination, and WordNet morphological lemmatization. \\
 \hline
-Seaborn & Statistical Graphics & High-level library for generating styled class distribution plots and box plots. \\
+Scikit-learn & Machine Learning & TF-IDF feature extraction, individual classifier training, hyperparameter tuning, and Voting Ensemble aggregation. \\
 \hline
-NLTK & NLP Suite & Toolkit for text tokenization, stop-word elimination, and WordNet lemmatization. \\
+Matplotlib & Data Visualization & Rendering statistical charts, class distribution plots, and performance curves. \\
 \hline
-Scikit-learn & Machine Learning & Toolkit for TF-IDF feature extraction, baseline model training, and voting ensemble integration. \\
+Seaborn & Statistical Graphics & High-level statistical visualization for categorical frequencies and confusion matrices. \\
 \hline
-WordCloud & Text Visualization & Library for generating lexical frequency word clouds from clinical narratives. \\
+WordCloud & Text Visualization & Generating lexical frequency word clouds from clinical narratives. \\
 \hline
-Flask & Web Framework & Proposed WSGI framework for serving serialized model predictions via an interactive UI. \\
+Flask & Web Framework & Lightweight WSGI framework for serving serialized model predictions via an interactive web interface. \\
 \hline
 \end{tabularx}
 \caption{Software Environment and Tool Specifications}
@@ -824,7 +932,7 @@ Flask & Web Framework & Proposed WSGI framework for serving serialized model pre
 \clearpage
 
 \subsubsection{Hardware Environment}
-The proposed classical machine learning framework leverages Term Frequency--Inverse Document Frequency (TF-IDF) feature extraction paired with ensemble supervised classifiers. Unlike deep neural networks and large language model architectures that require dedicated, high-cost Graphics Processing Units (GPUs) with substantial VRAM, the proposed architecture executes efficiently on standard commodity Central Processing Unit (CPU) hardware. Model training, cross-validation, and real-time inference are computationally lightweight, allowing the entire pipeline to operate within standard consumer-grade PC or laptop environments without financial investment in specialized accelerator hardware. Table \ref{tab:hardware_environment} outlines the minimum and recommended hardware configurations required for developing and running the proposed system.
+The proposed Medical Specialty Classification system does not require specialized hardware for its development or operation. The classical machine learning approach, combining TF-IDF feature extraction with ensemble supervised classifiers, is computationally lightweight compared to deep learning transformers. A standard laptop or desktop computer with sufficient processing capability, memory, and storage can be used for text preprocessing, feature extraction, model training, and Flask web application hosting. Table \ref{tab:hardware_environment} outlines the minimum and recommended hardware configurations required for developing and running the proposed system.
 
 \begin{table}[H]
 \centering
@@ -849,4 +957,5 @@ Internet Connection & Standard Broadband (5 Mbps) & High-Speed Broadband Connect
 \caption{Hardware Specifications and Environment Requirements}
 \label{tab:hardware_environment}
 \end{table}
+
 
