@@ -7,40 +7,40 @@ ax.set_xlim(0, 15.8)
 ax.set_ylim(0, 12.6)
 ax.axis('off')
 
-# Crisp, dark academic color scheme
-BORDER_COLOR = '#111827'  # Deep obsidian black
-LINE_COLOR = '#111827'
-TITLE_COLOR = '#000000'   # Pure black for crisp maximum contrast
-SUBTITLE_COLOR = '#1F2937' # Dark charcoal (easily readable, non-washed-out)
+# Crisp, dark academic color scheme (solid pure black for razor-sharp printing)
+BORDER_COLOR = '#000000'  # Solid black border
+LINE_COLOR = '#000000'    # Solid black connectors
+TITLE_COLOR = '#000000'   # Solid black text
+SUBTITLE_COLOR = '#000000' # Solid black text for zero-halftone print crispness
 
 def draw_container(ax, x, y, w, h, title):
     # Main container box
     rect = patches.FancyBboxPatch((x, y), w, h, boxstyle='round,pad=0.03,rounding_size=0.22',
-                                  facecolor='#FFFFFF', edgecolor=BORDER_COLOR, linewidth=2.0)
+                                  facecolor='#FFFFFF', edgecolor=BORDER_COLOR, linewidth=2.2)
     ax.add_patch(rect)
     
     # Title badge / tab centered on top border
-    tw, th = 3.8, 0.48
+    tw, th = 4.2, 0.52
     tx = x + (w - tw) / 2
     ty = y + h - th / 2
     tab = patches.FancyBboxPatch((tx, ty), tw, th, boxstyle='round,pad=0.02,rounding_size=0.12',
-                                 facecolor='#FFFFFF', edgecolor=BORDER_COLOR, linewidth=2.0)
+                                 facecolor='#FFFFFF', edgecolor=BORDER_COLOR, linewidth=2.2)
     ax.add_patch(tab)
     ax.text(tx + tw/2, ty + th/2, title, ha='center', va='center',
-            fontsize=13.0, fontweight='bold', color=TITLE_COLOR)
+            fontsize=13.5, fontweight='bold', color=TITLE_COLOR)
 
 def draw_box(ax, x, y, w, h, title, subtitle=''):
     rect = patches.FancyBboxPatch((x, y), w, h, boxstyle='round,pad=0.02,rounding_size=0.15',
-                                  facecolor='#FFFFFF', edgecolor=BORDER_COLOR, linewidth=1.6)
+                                  facecolor='#FFFFFF', edgecolor=BORDER_COLOR, linewidth=1.8)
     ax.add_patch(rect)
     if subtitle:
         ax.text(x + w/2, y + h*0.65, title, ha='center', va='center',
-                fontsize=11.2, fontweight='bold', color=TITLE_COLOR, linespacing=1.22)
+                fontsize=12.2, fontweight='bold', color=TITLE_COLOR, linespacing=1.20)
         ax.text(x + w/2, y + h*0.28, subtitle, ha='center', va='center',
-                fontsize=9.2, fontweight='medium', color=SUBTITLE_COLOR, linespacing=1.20)
+                fontsize=11.0, fontweight='bold', color=SUBTITLE_COLOR, linespacing=1.18)
     else:
         ax.text(x + w/2, y + h/2, title, ha='center', va='center',
-                fontsize=10.0, fontweight='bold', color=TITLE_COLOR, linespacing=1.20)
+                fontsize=11.2, fontweight='bold', color=TITLE_COLOR, linespacing=1.18)
 
 # ======================== CONTAINER 1: DATA ========================
 c1_x, c1_y, c1_w, c1_h = 0.5, 9.1, 14.8, 2.9
@@ -162,14 +162,14 @@ ax.annotate('', xy=dep1_top_center, xytext=(dep1_top_center[0], dep1_top_center[
 # Clinician / User Icon & Label at far right of Deployment
 user_x = dep_xs[4] + dep_w + 0.38
 user_y = dep_y + dep_h/2
-circle = patches.Circle((user_x + 0.36, user_y + 0.36), 0.22, facecolor='#FFFFFF', edgecolor=BORDER_COLOR, lw=1.6)
+circle = patches.Circle((user_x + 0.36, user_y + 0.36), 0.22, facecolor='#FFFFFF', edgecolor=BORDER_COLOR, lw=1.8)
 ax.add_patch(circle)
-arc = patches.Arc((user_x + 0.36, user_y - 0.16), 0.65, 0.55, theta1=0, theta2=180, edgecolor=BORDER_COLOR, lw=1.6)
+arc = patches.Arc((user_x + 0.36, user_y - 0.16), 0.65, 0.55, theta1=0, theta2=180, edgecolor=BORDER_COLOR, lw=1.8)
 ax.add_patch(arc)
 ax.text(user_x + 0.36, user_y - 0.55, 'Clinician / User', ha='center', va='center',
-        fontsize=10.5, fontweight='bold', color=TITLE_COLOR)
+        fontsize=11.2, fontweight='bold', color=TITLE_COLOR)
 ax.annotate('', xy=(user_x, user_y), xytext=(dep_xs[4] + dep_w, user_y),
-            arrowprops=dict(arrowstyle='->,head_width=0.45,head_length=0.6', color=LINE_COLOR, lw=1.8))
+            arrowprops=dict(arrowstyle='->,head_width=0.45,head_length=0.6', color=LINE_COLOR, lw=2.0))
 
 plt.tight_layout()
 plt.savefig('Inital Report/EDA_Diagrams/07_project_pipeline.png', dpi=300, bbox_inches='tight')
