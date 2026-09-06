@@ -45,7 +45,7 @@ The project follows a structured engineering workflow:
     \item \textit{Text Preprocessing}: Removing noise, tokenizing, filtering stop-words, and lemmatizing text.
     \item \textit{Feature Engineering}: Transforming clean text into sparse numerical vectors via TF-IDF.
     \item \textit{Model Development}: Training baseline classifiers and hyperparameter tuning.
-    \item \textit{Ensemble Integration}: Aggregating base estimator probabilities via soft/hard voting.
+    \item \textit{Ensemble Integration}: Combining the outputs of the candidate models using soft voting to generate the final specialty prediction.
     \item \textit{Web Deployment}: Serializing model artifacts with Joblib and serving via a proposed Flask web application.
 \end{enumerate}
 
