@@ -485,6 +485,8 @@ The Kaggle MTSamples dataset consists of public records that do not contain Prot
 \subsubsection{Schedule Feasibility}
 Project milestones are structured systematically across the academic semester, guaranteeing completion within departmental deadlines.
 
+\clearpage
+
 \subsection{System Environment}
 The proposed system architecture is designed to execute on standard computing resources using well-established, open-source data science, natural language processing, and web development technologies. This section delineates the software environment and hardware specifications utilized and proposed for developing, evaluating, and hosting the TF-IDF and Ensemble Machine Learning classification pipeline.
 
@@ -495,42 +497,45 @@ The data preprocessing and analytical workflow relies on Pandas for structured d
 
 \begin{table}[H]
 \centering
-\small
-\setlength{\tabcolsep}{5pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{2.8cm}|>{\raggedright\arraybackslash}X|}
+\footnotesize
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \textbf{Software / Tool} & \textbf{Category} & \textbf{Purpose in Proposed System} \\
 \hline
-Python & Programming Language & Core programming language used for preprocessing, feature extraction, model engineering, and application backend. \\
+Python & Programming Language & Primary language for preprocessing, feature extraction, modeling, and backend scripts. \\
 \hline
-Google Colab & Cloud IDE & Cloud-based interactive development environment utilized for rapid exploratory prototyping and remote testing. \\
+Google Colab & Cloud IDE & Cloud development environment for preliminary experimentation and model prototyping. \\
 \hline
-Jupyter Notebook & Interactive IDE & Interactive notebook environment used for data analysis, iterative preprocessing experiments, and EDA visualization. \\
+Jupyter Notebook & Interactive IDE & Interactive environment for exploratory data analysis (EDA) and iterative testing. \\
 \hline
-Visual Studio Code & Development IDE & Primary code editor used for developing modular Python scripts, managing project directories, and debugging. \\
+Visual Studio Code & Development IDE & Primary IDE for modular Python script development, project management, and debugging. \\
 \hline
-\LaTeX & Typesetting System & Document preparation system used for compiling the academic project documentation, technical reports, and tables. \\
+\LaTeX & Typesetting System & Document preparation system for compiling academic reports and formatted tables. \\
 \hline
-Pandas & Data Manipulation & High-performance data manipulation library used for loading the MTSamples CSV, handling missing values, and dataset structuring. \\
+Pandas & Data Manipulation & High-performance library for loading CSV data, handling missing values, and dataset structuring. \\
 \hline
-NumPy & Numerical Computing & Library providing high-performance multidimensional array structures and mathematical operations for vectorized data. \\
+NumPy & Numerical Computing & Library for multi-dimensional array structures and mathematical vector operations. \\
 \hline
-Matplotlib & Data Visualization & Fundamental visualization library used for generating statistical figures, bar charts, and distribution histograms. \\
+Matplotlib & Data Visualization & Core library for generating statistical figures, bar charts, and distribution plots. \\
 \hline
-Seaborn & Statistical Graphics & High-level statistical visualization library built on Matplotlib, used for advanced distribution and box-plot graphics. \\
+Seaborn & Statistical Graphics & High-level library for generating styled class distribution plots and box plots. \\
 \hline
-NLTK & NLP Suite & Natural language processing toolkit used for text cleaning, stop-word elimination, and WordNet token lemmatization. \\
+NLTK & NLP Suite & Toolkit for text tokenization, stop-word elimination, and WordNet lemmatization. \\
 \hline
-Scikit-learn & Machine Learning & Primary machine learning toolkit used for TF-IDF feature extraction, candidate baseline model training, and voting ensemble integration. \\
+Scikit-learn & Machine Learning & Toolkit for TF-IDF feature extraction, baseline model training, and voting ensemble integration. \\
 \hline
-WordCloud & Text Visualization & Text visualizer used for generating lexical frequency clouds of prominent clinical keywords across transcriptions. \\
+WordCloud & Text Visualization & Library for generating lexical frequency word clouds from clinical narratives. \\
 \hline
-Flask & Web Framework & Proposed lightweight Python web framework to be used for hosting the serialized ensemble model and providing user prediction endpoints. \\
+Flask & Web Framework & Proposed WSGI framework for serving serialized model predictions via an interactive UI. \\
 \hline
 \end{tabularx}
 \caption{Software Environment and Tool Specifications}
 \label{tab:software_environment}
 \end{table}
+
+\clearpage
 
 \subsubsection{Hardware Environment}
 The proposed classical machine learning framework leverages Term Frequency--Inverse Document Frequency (TF-IDF) feature extraction paired with ensemble supervised classifiers. Unlike deep neural networks and large language model architectures that require dedicated, high-cost Graphics Processing Units (GPUs) with substantial VRAM, the proposed architecture executes efficiently on standard commodity Central Processing Unit (CPU) hardware. Model training, cross-validation, and real-time inference are computationally lightweight, allowing the entire pipeline to operate within standard consumer-grade PC or laptop environments without financial investment in specialized accelerator hardware. Table \ref{tab:hardware_environment} outlines the minimum and recommended hardware configurations required for developing and running the proposed system.
@@ -538,6 +543,7 @@ The proposed classical machine learning framework leverages Term Frequency--Inve
 \begin{table}[H]
 \centering
 \small
+\renewcommand{\arraystretch}{1.15}
 \setlength{\tabcolsep}{5pt}
 \begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.5cm}|>{\raggedright\arraybackslash}p{4.2cm}|>{\raggedright\arraybackslash}X|}
 \hline
