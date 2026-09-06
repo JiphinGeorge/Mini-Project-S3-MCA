@@ -484,3 +484,77 @@ The Kaggle MTSamples dataset consists of public records that do not contain Prot
 
 \subsubsection{Schedule Feasibility}
 Project milestones are structured systematically across the academic semester, guaranteeing completion within departmental deadlines.
+
+\subsection{System Environment}
+The proposed system architecture is designed to execute on standard computing resources using well-established, open-source data science, natural language processing, and web development technologies. This section delineates the software environment and hardware specifications utilized and proposed for developing, evaluating, and hosting the TF-IDF and Ensemble Machine Learning classification pipeline.
+
+\subsubsection{Software Environment}
+The software stack combines open-source programming frameworks, specialized text preprocessing tools, machine learning libraries, visualization suites, and web deployment components. The primary development language is Python, chosen for its extensive ecosystem of scientific computing and machine learning libraries. Interactive exploration, data auditing, and preliminary experiments are performed using Jupyter Notebook and Google Colab environments. Modular code development, application scripting, and version management are carried out using Visual Studio Code, while \LaTeX\ is utilized for compiling formal academic documentation according to departmental formatting standards.
+
+The data preprocessing and analytical workflow relies on Pandas for structured data manipulation and NumPy for multidimensional array computations. Statistical visualization and exploratory distribution charts are rendered using Matplotlib and Seaborn, complemented by the WordCloud package for visualizing term frequency distributions across clinical narratives. Text preprocessing is handled using the Natural Language Toolkit (NLTK), which supplies tokenizers, stop-word corpora, and the WordNet lemmatizer. Candidate classifiers (Logistic Regression, Support Vector Machine, Random Forest, Multinomial Naive Bayes) as well as the Voting Ensemble Classifier and TF-IDF vectorizer are implemented via Scikit-learn. Finally, the lightweight Flask WSGI micro-framework is proposed for serializing model artifacts with Joblib and serving interactive prediction endpoints to healthcare users. Table \ref{tab:software_environment} details each software tool, its category, and its specific purpose in the proposed system.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{2.8cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Software / Tool} & \textbf{Category} & \textbf{Purpose in Proposed System} \\
+\hline
+Python & Programming Language & Core programming language used for preprocessing, feature extraction, model engineering, and application backend. \\
+\hline
+Google Colab & Cloud IDE & Cloud-based interactive development environment utilized for rapid exploratory prototyping and remote testing. \\
+\hline
+Jupyter Notebook & Interactive IDE & Interactive notebook environment used for data analysis, iterative preprocessing experiments, and EDA visualization. \\
+\hline
+Visual Studio Code & Development IDE & Primary code editor used for developing modular Python scripts, managing project directories, and debugging. \\
+\hline
+\LaTeX & Typesetting System & Document preparation system used for compiling the academic project documentation, technical reports, and tables. \\
+\hline
+Pandas & Data Manipulation & High-performance data manipulation library used for loading the MTSamples CSV, handling missing values, and dataset structuring. \\
+\hline
+NumPy & Numerical Computing & Library providing high-performance multidimensional array structures and mathematical operations for vectorized data. \\
+\hline
+Matplotlib & Data Visualization & Fundamental visualization library used for generating statistical figures, bar charts, and distribution histograms. \\
+\hline
+Seaborn & Statistical Graphics & High-level statistical visualization library built on Matplotlib, used for advanced distribution and box-plot graphics. \\
+\hline
+NLTK & NLP Suite & Natural language processing toolkit used for text cleaning, stop-word elimination, and WordNet token lemmatization. \\
+\hline
+Scikit-learn & Machine Learning & Primary machine learning toolkit used for TF-IDF feature extraction, candidate baseline model training, and voting ensemble integration. \\
+\hline
+WordCloud & Text Visualization & Text visualizer used for generating lexical frequency clouds of prominent clinical keywords across transcriptions. \\
+\hline
+Flask & Web Framework & Proposed lightweight Python web framework to be used for hosting the serialized ensemble model and providing user prediction endpoints. \\
+\hline
+\end{tabularx}
+\caption{Software Environment and Tool Specifications}
+\label{tab:software_environment}
+\end{table}
+
+\subsubsection{Hardware Environment}
+The proposed classical machine learning framework leverages Term Frequency--Inverse Document Frequency (TF-IDF) feature extraction paired with ensemble supervised classifiers. Unlike deep neural networks and large language model architectures that require dedicated, high-cost Graphics Processing Units (GPUs) with substantial VRAM, the proposed architecture executes efficiently on standard commodity Central Processing Unit (CPU) hardware. Model training, cross-validation, and real-time inference are computationally lightweight, allowing the entire pipeline to operate within standard consumer-grade PC or laptop environments without financial investment in specialized accelerator hardware. Table \ref{tab:hardware_environment} outlines the minimum and recommended hardware configurations required for developing and running the proposed system.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.5cm}|>{\raggedright\arraybackslash}p{4.2cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Hardware Component} & \textbf{Minimum Requirement} & \textbf{Recommended Specification} \\
+\hline
+Processor (CPU) & Dual-Core Processor (2.0 GHz or higher) & Quad-Core / Octa-Core Intel Core i5/i7 or AMD Ryzen 5/7 (Multi-core CPU; no GPU required) \\
+\hline
+RAM & 8 GB DDR4 & 16 GB DDR4/DDR5 (Supports parallel cross-validation and multiple candidate estimators) \\
+\hline
+Storage & 20 GB available disk space & 256 GB / 512 GB Solid State Drive (SSD) for rapid dataset read/write and virtual environments \\
+\hline
+Operating System & Windows 10 (64-bit) & Windows 10/11 (64-bit), Ubuntu Linux 20.04+, or macOS \\
+\hline
+Internet Connection & Standard Broadband (5 Mbps) & High-Speed Broadband Connection (For package installation, dataset download, and cloud backup) \\
+\hline
+\end{tabularx}
+\caption{Hardware Specifications and Environment Requirements}
+\label{tab:hardware_environment}
+\end{table}
+
