@@ -491,9 +491,9 @@ Project milestones are structured systematically across the academic semester, g
 The proposed system architecture is designed to execute on standard computing resources using well-established, open-source data science, natural language processing, and web development technologies. This section delineates the software environment and hardware specifications utilized and proposed for developing, evaluating, and hosting the TF-IDF and Ensemble Machine Learning classification pipeline.
 
 \subsubsection{Software Environment}
-The software stack combines open-source programming frameworks, specialized text preprocessing tools, machine learning libraries, visualization suites, and web deployment components. The primary development language is Python, chosen for its extensive ecosystem of scientific computing and machine learning libraries. Interactive exploration, data auditing, and preliminary experiments are performed using Jupyter Notebook and Google Colab environments. Modular code development, application scripting, and version management are carried out using Visual Studio Code, while \LaTeX\ is utilized for compiling formal academic documentation according to departmental formatting standards.
+The software stack combines open-source programming frameworks, specialized text preprocessing tools, machine learning libraries, visualization suites, and web deployment components. The primary development language is Python, chosen for its extensive ecosystem of scientific computing and machine learning libraries. Interactive exploration, data auditing, model development, and preliminary experiments are performed using the Google Colab environment. Modular code development, application scripting, and version management are carried out using Visual Studio Code, while \LaTeX\ is utilized for compiling formal academic documentation according to departmental formatting standards.
 
-The data preprocessing and analytical workflow relies on Pandas for structured data manipulation and NumPy for multidimensional array computations. Statistical visualization and exploratory distribution charts are rendered using Matplotlib and Seaborn, complemented by the WordCloud package for visualizing term frequency distributions across clinical narratives. Text preprocessing is handled using the Natural Language Toolkit (NLTK), which supplies tokenizers, stop-word corpora, and the WordNet lemmatizer. Candidate classifiers (Logistic Regression, Support Vector Machine, Random Forest, Multinomial Naive Bayes) as well as the Voting Ensemble Classifier and TF-IDF vectorizer are implemented via Scikit-learn. Finally, the lightweight Flask WSGI micro-framework is proposed for serializing model artifacts with Joblib and serving interactive prediction endpoints to healthcare users. Table \ref{tab:software_environment} details each software tool, its category, and its specific purpose in the proposed system.
+The data preprocessing and analytical workflow relies on Pandas for structured data manipulation and NumPy for multidimensional array computations. Statistical visualization and exploratory distribution charts are rendered using Matplotlib and Seaborn, complemented by the WordCloud package for visualizing term frequency distributions across clinical narratives. Text preprocessing is handled using the Natural Language Toolkit (NLTK), which supplies tokenizers, stop-word corpora, and the WordNet lemmatizer. Candidate classifiers (Logistic Regression, Support Vector Machine, Random Forest, Multinomial Naive Bayes) as well as the Voting Ensemble Classifier and TF-IDF vectorizer are implemented via Scikit-learn. Finally, the lightweight Flask WSGI micro-framework is proposed for serializing model artifacts with Joblib and serving interactive prediction endpoints to healthcare users. Table \ref{tab:software_environment} details each software tool, its type, and its specific purpose in the proposed system.
 
 \begin{table}[H]
 \centering
@@ -502,13 +502,11 @@ The data preprocessing and analytical workflow relies on Pandas for structured d
 \setlength{\tabcolsep}{4pt}
 \begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}X|}
 \hline
-\textbf{Software / Tool} & \textbf{Category} & \textbf{Purpose in Proposed System} \\
+\textbf{Software / Tool} & \textbf{Type} & \textbf{Purpose} \\
 \hline
 Python & Programming Language & Primary language for preprocessing, feature extraction, modeling, and backend scripts. \\
 \hline
-Google Colab & Cloud IDE & Cloud development environment for preliminary experimentation and model prototyping. \\
-\hline
-Jupyter Notebook & Interactive IDE & Interactive environment for exploratory data analysis (EDA) and iterative testing. \\
+Google Colab & Cloud IDE & Cloud-based interactive development environment used for data preprocessing, exploratory data analysis (EDA), machine learning model development, visualization, and experimentation. \\
 \hline
 Visual Studio Code & Development IDE & Primary IDE for modular Python script development, project management, and debugging. \\
 \hline
