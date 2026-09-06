@@ -256,12 +256,12 @@ def build_slide_2(prs):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_header_footer(slide, "Problem Statement & Project Overview", "Introduction", 2)
 
-    # Top Pipeline Indicator Cards
+    # Top Pipeline Indicator Card    
     steps = [
         ("1. Clinical Text", "Unstructured medical narratives & patient records"),
         ("2. Text Preprocessing", "Cleaning, lemmatization & medical stop-words"),
         ("3. TF-IDF Extraction", "Unigram/bigram numerical vectorization"),
-        ("4. Ensemble ML", "Calibrated soft-voting classification"),
+        ("4. Ensemble ML", "Proposed Calibrated Soft-Voting Ensemble"),
         ("5. Medical Specialty", "Automated prediction across 40 departments")
     ]
     step_w = Inches(2.22)
@@ -335,7 +335,7 @@ def build_slide_2(prs):
     items_sol = [
         ("Automated NLP & TF-IDF Extraction", "Transforms unstructured medical text through lowercasing, stop-word removal, and lemmatization into standardized, high-dimensional TF-IDF feature vectors."),
         ("Multi-Classifier Supervised Learning", "Evaluates four distinct algorithms: SVM, Random Forest, Logistic Regression, and Multinomial Naive Bayes."),
-        ("Soft Consensus Voting Ensemble", "Synthesizes calibrated class probability distributions across all candidate models to mitigate individual classifier bias and reduce variance."),
+        ("Soft Consensus Voting Ensemble", "Synthesizes average probability distributions across candidate models to mitigate individual classifier bias and reduce variance."),
         ("Live Interactive Web Deployment", "Integrates the serialized pipeline into a lightweight Flask web application, delivering instant specialty predictions and confidence scores for clinicians.")
     ]
     for idx, (head, body) in enumerate(items_sol):
@@ -362,7 +362,7 @@ def build_slide_3(prs):
     flow_steps = [
         ("1. Prior Literature", "Validation of ML for clinical text"),
         ("2. Key Methodologies", "TF-IDF vectorization & linear classifiers"),
-        ("3. Identified Gap", "High variance & heavy GPU requirements"),
+        ("3. Identified Gap", "High compute requirements & model variance"),
         ("4. Proposed Architecture", "Lightweight soft voting ensemble on web")
     ]
     f_w = Inches(2.78)
@@ -383,27 +383,27 @@ def build_slide_3(prs):
         p2.font.size = Pt(8.5)
         p2.font.color.rgb = SLATE_MUTED
 
-    # 4 Thematic Pillars in 2x2 layout
+    # 4 Thematic Pillars in 2x2 layout (Streamlined & readable)
     cards_data = [
         ("Clinical NLP & Preprocessing", TEAL, [
-            "Medical text contains distinct lexical noise: contractions, special characters, and non-informative clinical stops.",
-            "Studies establish a standard 5-step sequence: Cleaning, Lowercasing, Stop-word removal, Lemmatization, and Tokenization.",
-            "Domain-specific lemmatization normalizes inflected clinical roots without losing diagnostic context."
+            "Clinical narratives contain domain noise: contractions, punctuation, and non-standard medical abbreviations.",
+            "Standard 5-step sequence: Cleaning, Lowercasing, Tokenization, Stop-word removal, and Lemmatization.",
+            "Morphological lemmatization normalizes inflected clinical terms while preserving diagnostic root semantics."
         ]),
         ("TF-IDF Feature Representation", PRIMARY_BLUE, [
-            "Clinical notes exhibit high dimensional vocabulary with extreme word frequency variance across specialties.",
-            "TF-IDF with sublinear scaling (1 + log(TF)) dampens repetitive clinical terms ('patient', 'procedure').",
-            "Significantly faster and more lightweight than Word2Vec or deep embeddings, enabling instant local web deployment."
+            "Transforms unstructured medical text into normalized sparse numerical feature vectors.",
+            "Sublinear term-frequency scaling (1 + log(TF)) dampens repetitive non-discriminative clinical terms.",
+            "Computationally lightweight; enables rapid CPU-based real-time inference on web platforms."
         ]),
         ("Supervised ML Classifiers", ACCENT_BLUE, [
-            "Literature demonstrates that SVM and Logistic Regression excel at high-dimensional sparse text vectors.",
-            "Random Forest introduces non-linear feature interactions and bagging robustness.",
-            "Multinomial Naive Bayes provides strong, rapid probabilistic likelihoods for word frequency text representations."
+            "Literature confirms SVM and Logistic Regression perform well on high-dimensional sparse text vectors.",
+            "Random Forest introduces non-linear decision partitioning and bagging variance reduction.",
+            "Multinomial Naive Bayes provides fast, effective probabilistic likelihood estimation for text representations."
         ]),
         ("Ensemble Learning & Research Gap", PURPLE, [
-            "Individual models show variable recall across the 40 imbalanced medical specialties in clinical practice.",
-            "Deep transformer models (BioBERT) require heavy GPU servers, unsuitable for lightweight hospital web apps.",
-            "Research Gap: Need for a fast, accessible Soft Voting Ensemble combining calibrated base estimators."
+            "Identified Gap: Heavy deep learning models require extensive GPU resources for training and deployment.",
+            "Single estimators may exhibit performance variations across under-represented medical specialties.",
+            "Proposed Solution: An accessible Soft Voting Ensemble combining calibrated base models for balanced classification."
         ])
     ]
 
@@ -432,46 +432,46 @@ def build_slide_3(prs):
         for b in bullets:
             pb = tf.add_paragraph()
             pb.text = f"•  {b}"
-            pb.font.size = Pt(9.0)
+            pb.font.size = Pt(9.2)
             pb.font.color.rgb = SLATE_BODY
-            pb.space_before = Pt(3)
+            pb.space_before = Pt(4)
 
 
 def build_slide_4(prs):
-    """SLIDE 4: SUMMARY OF RESEARCH PAPERS"""
+    """SLIDE 4: SUMMARY OF RESEARCH PAPERS (VERIFIED ACADEMIC REFERENCES)"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_header_footer(slide, "Summary of Key Research Papers", "Literature Review", 4)
 
     papers = [
         {
             "num": "PAPER 1",
-            "title": "Clinical Text Classification using Machine Learning",
-            "authors": "Almazaydeh et al. (2023)",
-            "badge": "MTSamples & Preprocessing",
+            "title": "Clinical Text Classification with Word Representation Features and Machine Learning",
+            "authors": "Omar AM, Elhoseny M, Hassanien AM (2023)",
+            "badge": "EMR Text & Vectorization",
             "color": PRIMARY_BLUE,
-            "method": "Kaggle MTSamples Dataset | 5-Stage Modular NLP Pipeline (Cleaning, Lowering, Stop-words, Lemmatization, Tokenization) + TF-IDF Vectorization.",
-            "finding": "Demonstrated that thorough clinical text preprocessing and TF-IDF feature weighting are critical to prevent sparse lexical noise and boost classification accuracy.",
-            "relevance": "Establishes our exact 5-step NLP preprocessing pipeline and proves the efficacy of the public Kaggle MTSamples benchmark dataset."
+            "method": "EMR Clinical Transcriptions Dataset | Evaluated BOW, TF-IDF, and Word2Vec across LR, SVM, Naive Bayes, and k-NN.",
+            "finding": "Word2Vec + k-NN reached 92% accuracy; confirmed linear models are highly effective and fast on sparse text vectors.",
+            "relevance": "Establishes our multi-phase text preprocessing and feature vectorization pipeline."
         },
         {
             "num": "PAPER 2",
-            "title": "Clinical Vectorization and Multi-Class Supervised Learning",
-            "authors": "Omar et al. (2023)",
-            "badge": "Feature Spaces & Estimators",
+            "title": "Medical Specialty Classification Based on Semiadversarial Data Augmentation",
+            "authors": "Zhang H, Zhu D, Tan H, Shafiq M, Gu Z (2023)",
+            "badge": "Data Augmentation & Imbalance",
             "color": TEAL,
-            "method": "EMR Narrative Records | Evaluated Logistic Regression, SVM, Multinomial Naive Bayes, and k-NN across clinical categories.",
-            "finding": "SVM and Logistic Regression outperformed complex non-linear models on high-dimensional text vectors, achieving peak accuracy (92%) with rapid convergence.",
-            "relevance": "Directly justifies our selection of SVM and Logistic Regression as core candidate estimators for sparse TF-IDF text matrices."
+            "method": "Kaggle Medical Specialty Dataset (18 classes) | Semiadversarial data augmentation (SemiADA) with BERT & domain noun weighting.",
+            "finding": "Domain-specific medical nouns carry the strongest discriminative signal for specialty categorization (+14.9% accuracy gain).",
+            "relevance": "Identifies class imbalance in MTSamples; motivates an accessible TF-IDF ensemble for all 40 classes on standard CPUs."
         },
         {
             "num": "PAPER 3",
-            "title": "Medical Subdomain Classification & Ensemble Aggregation",
-            "authors": "Weng et al. (2017) / Al-Garadi et al.",
-            "badge": "Ensemble Methods",
+            "title": "A Keyword-Enhanced Approach to Handle Class Imbalance in Clinical Text",
+            "authors": "Blanchard AE, Gao S, Yoon HJ, Tourassi G (2022)",
+            "badge": "Imbalanced Clinical NLP",
             "color": PURPLE,
-            "method": "Multi-Specialty Clinical Narratives | Multi-estimator aggregation, probability consensus, and tree-based decision ensembles.",
-            "finding": "Ensemble voting across complementary classifiers significantly mitigates individual estimator variance and improves multi-class minority specialty recognition.",
-            "relevance": "Provides the foundational justification for our proposed Soft Consensus Voting Ensemble combining SVM, Random Forest, LR, and MNB."
+            "method": "NCI SEER Cancer Pathology Reports | Injected keyword-constrained loss functions into neural training on imbalanced notes.",
+            "finding": "Keyword constraints significantly improved macro F1 on rare classes without degrading majority performance.",
+            "relevance": "Confirms n-gram keyword weighting preserves rare specialty signals, justifying TF-IDF and stratified evaluation."
         }
     ]
 
@@ -490,7 +490,7 @@ def build_slide_4(prs):
         bar.fill.fore_color.rgb = p_info['color']
         bar.line.fill.background()
 
-        tb = slide.shapes.add_textbox(px + Inches(0.2), py + Inches(0.22), p_w - Inches(0.4), p_h - Inches(0.35))
+        tb = slide.shapes.add_textbox(px + Inches(0.2), py + Inches(0.20), p_w - Inches(0.4), p_h - Inches(0.32))
         tf = tb.text_frame
         tf.word_wrap = True
 
@@ -502,56 +502,56 @@ def build_slide_4(prs):
 
         p1 = tf.add_paragraph()
         p1.text = p_info['title']
-        p1.font.size = Pt(12)
+        p1.font.size = Pt(11.0)
         p1.font.bold = True
         p1.font.color.rgb = NAVY
         p1.space_before = Pt(2)
 
         p2 = tf.add_paragraph()
         p2.text = f"Authors: {p_info['authors']}"
-        p2.font.size = Pt(9.5)
+        p2.font.size = Pt(9.0)
         p2.font.color.rgb = SLATE_MUTED
         p2.space_before = Pt(2)
 
         # Methodology Box
         p_m_lbl = tf.add_paragraph()
         p_m_lbl.text = "METHODOLOGY & DATASET:"
-        p_m_lbl.font.size = Pt(9)
+        p_m_lbl.font.size = Pt(9.5)
         p_m_lbl.font.bold = True
         p_m_lbl.font.color.rgb = PRIMARY_BLUE
-        p_m_lbl.space_before = Pt(10)
+        p_m_lbl.space_before = Pt(8)
 
         p_m = tf.add_paragraph()
         p_m.text = p_info['method']
-        p_m.font.size = Pt(9)
+        p_m.font.size = Pt(9.0)
         p_m.font.color.rgb = SLATE_BODY
         p_m.space_before = Pt(2)
 
         # Key Finding Box
         p_f_lbl = tf.add_paragraph()
         p_f_lbl.text = "KEY RESEARCH FINDING:"
-        p_f_lbl.font.size = Pt(9)
+        p_f_lbl.font.size = Pt(9.5)
         p_f_lbl.font.bold = True
         p_f_lbl.font.color.rgb = TEAL
-        p_f_lbl.space_before = Pt(10)
+        p_f_lbl.space_before = Pt(8)
 
         p_f = tf.add_paragraph()
         p_f.text = p_info['finding']
-        p_f.font.size = Pt(9)
+        p_f.font.size = Pt(9.0)
         p_f.font.color.rgb = SLATE_BODY
         p_f.space_before = Pt(2)
 
         # Relevance Box
         p_r_lbl = tf.add_paragraph()
         p_r_lbl.text = "DIRECT RELEVANCE TO OUR SYSTEM:"
-        p_r_lbl.font.size = Pt(9)
+        p_r_lbl.font.size = Pt(9.5)
         p_r_lbl.font.bold = True
         p_r_lbl.font.color.rgb = PURPLE
-        p_r_lbl.space_before = Pt(10)
+        p_r_lbl.space_before = Pt(8)
 
         p_r = tf.add_paragraph()
         p_r.text = p_info['relevance']
-        p_r.font.size = Pt(9)
+        p_r.font.size = Pt(9.0)
         p_r.font.color.rgb = SLATE_BODY
         p_r.space_before = Pt(2)
 
@@ -612,8 +612,8 @@ def build_slide_5(prs):
     p_lh.font.color.rgb = PRIMARY_BLUE
 
     items_l = [
-        ("Public Academic Benchmark", "Sourced from the verified Kaggle MTSamples repository, comprising real-world anonymized medical transcription dictations."),
-        ("Overcoming HIPAA Constraints", "HIPAA privacy regulations legally restrict distribution of private hospital electronic health records (EHR). MTSamples provides an authentic, ethically validated substitute."),
+        ("Public Benchmark Dataset", "The MTSamples dataset is a publicly available collection of medical transcription samples commonly used for text classification research."),
+        ("Privacy Consideration", "Enables machine learning experimentation on realistic clinical narratives without requiring access to private hospital records."),
         ("Diverse Medical Narratives", "Contains actual physician dictations spanning operative notes, discharge summaries, emergency consultations, physical examinations, and patient histories."),
         ("Multi-Class Domain Breadth", "Encompasses 40 distinct specialty disciplines from General Medicine and Surgery to Neurosurgery, Cardiology, and Pediatrics.")
     ]

@@ -56,7 +56,7 @@ draw_box(ax, xs[0], b_y, b_w, b_h, 'Kaggle MTSamples\nDataset', 'Clinical Transc
 draw_box(ax, xs[1], b_y, b_w, b_h, 'Raw Clinical\nTranscriptions', '4,966 Cleaned Reports\n40 Specialties')
 draw_box(ax, xs[2], b_y, b_w, b_h, 'Text\nPreprocessing', 'Lowercasing, Stop-words,\nLemmatization')
 draw_box(ax, xs[3], b_y, b_w, b_h, 'TF-IDF Feature\nExtraction', 'Unigram & Bigram\nSublinear Frequency')
-draw_box(ax, xs[4], b_y, b_w, b_h, 'Feature Dataset\nCreation', 'Sparse Feature Matrix\n(features_final.csv)')
+draw_box(ax, xs[4], b_y, b_w, b_h, 'Feature Matrix\nCreation', 'High-Dimensional\nSparse Representation')
 
 for i in range(4):
     ax.annotate('', xy=(xs[i+1], b_y + b_h/2), xytext=(xs[i] + b_w, b_y + b_h/2),
