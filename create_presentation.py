@@ -240,13 +240,13 @@ def build_slide_1(prs):
     p4.font.color.rgb = TEAL
 
     p5 = tf_c2.add_paragraph()
-    p5.text = "Mr. Biju Skaria"
+    p5.text = "Prof. Biju Skaria"
     p5.font.size = Pt(17)
     p5.font.bold = True
     p5.font.color.rgb = NAVY
 
     p6 = tf_c2.add_paragraph()
-    p6.text = "Associate Professor, Department of Computer Applications\nMar Athanasius College of Engineering, Kothamangalam"
+    p6.text = "Department of Computer Applications\nMar Athanasius College of Engineering, Kothamangalam"
     p6.font.size = Pt(10.5)
     p6.font.color.rgb = SLATE_BODY
 
@@ -1444,12 +1444,12 @@ def build_slide_15(prs):
     pm4.font.bold = True
     pm4.font.color.rgb = TEAL
     pm5 = tf_m2.add_paragraph()
-    pm5.text = "Mr. Biju Skaria"
+    pm5.text = "Prof. Biju Skaria"
     pm5.font.size = Pt(13)
     pm5.font.bold = True
     pm5.font.color.rgb = NAVY
     pm6 = tf_m2.add_paragraph()
-    pm6.text = "Associate Professor, Department of Computer Applications\nMar Athanasius College of Engineering, Kothamangalam"
+    pm6.text = "Department of Computer Applications\nMar Athanasius College of Engineering, Kothamangalam"
     pm6.font.size = Pt(10)
     pm6.font.color.rgb = SLATE_BODY
 
