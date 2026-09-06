@@ -1325,7 +1325,7 @@ def build_slide_14(prs):
         ("Week 5", "TF-IDF Feature Extraction and Feature Representation Analysis", False, "done"),
         ("08.09.2026", "First Project Presentation (Current Milestone — Phase 1 Faculty Review)", True, "current"),
         ("09.09.2026", "Sprint Release I (Dataset Exploration & Pipeline Architecture Completed)", True, "current"),
-        ("Week 6", "Candidate ML Model Training (Linear SVM, Random Forest, Logistic Regression, MNB) & Probability Calibration", False, "planned"),
+        ("Week 6", "Candidate ML Model Training (SVM, Random Forest, Logistic Regression, MNB) and Baseline Evaluation", False, "planned"),
         ("18.09.2026", "Sprint Release II", True, "planned"),
         ("Week 7–8", "Soft Voting Ensemble Formulation, Grid Search Hyperparameter Tuning, and Web UI Design", False, "planned"),
         ("29.09.2026 – 30.09.2026", "Interim Project Presentation", True, "planned"),
