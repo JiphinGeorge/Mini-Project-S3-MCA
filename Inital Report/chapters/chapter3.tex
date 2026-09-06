@@ -749,39 +749,35 @@ The project timeline outlines the major activities planned for the development o
 \small
 \renewcommand{\arraystretch}{1.2}
 \setlength{\tabcolsep}{8pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{4.2cm}|>{\raggedright\arraybackslash}X|}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{4.5cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \textbf{Period / Date} & \textbf{Planned Activity} \\
 \hline
-Week 1--2 & Dataset Collection, Exploratory Data Analysis and Initial Data Cleaning \\
+Week 1--2 & Dataset Collection, Exploratory Data Analysis, and Initial Data Cleaning \\
 \hline
 21.07.2026 & Project Proposal Approval \\
 \hline
-Week 3 & Clinical Text Preprocessing, Stopword Removal and Lemmatization \\
+Week 3--4 & Clinical Text Preprocessing, Medical Stop-word Removal, and Lemmatization \\
 \hline
-Week 4 & TF-IDF Feature Extraction and Feature Representation Analysis \\
+Week 5 & TF-IDF Feature Extraction and Feature Representation Analysis \\
 \hline
-Week 5 & Implementation and Training of Selected Machine Learning Classifiers (Linear SVM, MNB, LR, RF) \\
+08.09.2026 & First Project Presentation \\
 \hline
-Week 6 & Voting Ensemble Classifier Formulation and Hyperparameter Optimization \\
+09.09.2026 & Sprint Release I \\
 \hline
-08.09.2026 & Initial Flask Interface Design and Route Setup \\
-\hline
-09.09.2026 & First Project Presentation -- Sprint Release I \\
-\hline
-Week 8--9 & Flask Web Application Development and Medical Input Form Integration \\
+Week 6 & Candidate ML Model Training (Linear SVM, Random Forest, Logistic Regression, MNB) and Probability Calibration \\
 \hline
 18.09.2026 & Sprint Release II \\
 \hline
-Week 10 & Model Integration into Flask, Real-time Specialty Prediction and Confidence Scoring \\
+Week 7--8 & Soft Voting Ensemble Formulation, Grid Search Hyperparameter Tuning, and Initial Web Interface Design \\
 \hline
 29.09.2026 -- 30.09.2026 & Interim Project Presentation \\
 \hline
-Week 11 & Multi-Class Evaluation, Confusion Matrix Analysis and Threshold Tuning \\
-\hline
-05.10.2026 & Project Execution, Report and Presentation Preparation \\
+Week 9 & Flask Web Application Integration, Route Setup, and Serialized Pipeline Deployment \\
 \hline
 09.10.2026 & Sprint Release III \\
+\hline
+Week 10--11 & Multi-Class Evaluation, Confusion Matrix Analysis, Threshold Tuning, and End-to-End System Testing \\
 \hline
 22.10.2026 -- 23.10.2026 & Final Project Presentation \\
 \hline
@@ -808,7 +804,7 @@ The proposed system is economically feasible because it relies entirely on open-
 The proposed system is operationally feasible because it is designed to provide a simple and user-friendly interface for medical specialty prediction. Healthcare professionals and administrative personnel will be able to input clinical transcription narratives directly through the web application, after which the system will automatically preprocess the text, extract TF-IDF feature vectors, and generate specialty predictions using the trained Voting Ensemble model. The straightforward workflow minimizes user effort while providing an efficient, reliable, and accessible method for preliminary clinical categorization and automated medical workflow triaging.
 
 \subsubsection{Schedule Feasibility}
-The project is considered schedule feasible because its development activities are planned in a structured and phased manner. The initial phases, including dataset acquisition, exploratory data analysis, data cleaning, and text preprocessing, have been completed successfully. The remaining phases, such as machine learning model development, voting ensemble aggregation, performance evaluation, Flask web application deployment, and system testing, are planned according to the project timeline. The availability of suitable development tools, pre-existing datasets, and established algorithms supports the timely completion of the project within the academic schedule.
+The project is considered schedule feasible because its development activities are planned in a structured and phased manner. The initial phases, including dataset acquisition, exploratory data analysis, data cleaning, and text preprocessing, have been planned and initiated according to the project schedule. The subsequent phases, such as machine learning model development, probability calibration, voting ensemble aggregation, performance evaluation, Flask web application deployment, and system testing, are scheduled sequentially according to the project timeline. The availability of suitable development tools, pre-existing datasets, and established algorithms supports the timely completion of the project within the academic schedule.
 
 \clearpage
 
