@@ -182,7 +182,7 @@ def build_slide_1(prs):
     tf_s.word_wrap = True
     tf_s.margin_left = tf_s.margin_top = tf_s.margin_right = tf_s.margin_bottom = 0
     p_s = tf_s.paragraphs[0]
-    p_s.text = "FIRST PROJECT PRESENTATION — SPRINT RELEASE I"
+    p_s.text = "FIRST PROJECT PRESENTATION"
     p_s.font.name = FONT_HEADING
     p_s.font.size = Pt(14)
     p_s.font.bold = True
@@ -383,27 +383,27 @@ def build_slide_3(prs):
         p2.font.size = Pt(8.5)
         p2.font.color.rgb = SLATE_MUTED
 
-    # 4 Thematic Pillars in 2x2 layout (Streamlined & readable)
+    # 4 Thematic Pillars in 2x2 layout (Streamlined, punchy & highly readable)
     cards_data = [
         ("Clinical NLP & Preprocessing", TEAL, [
-            "Clinical narratives contain domain noise: contractions, punctuation, and non-standard medical abbreviations.",
-            "Standard 5-step sequence: Cleaning, Lowercasing, Tokenization, Stop-word removal, and Lemmatization.",
+            "Clinical narratives contain abbreviations, punctuation noise, and non-standard doctor shorthand.",
+            "Implements a 5-step sequence: Cleaning, Lowercasing, Tokenization, Stop-word removal, and Lemmatization.",
             "Morphological lemmatization normalizes inflected clinical terms while preserving diagnostic root semantics."
         ]),
         ("TF-IDF Feature Representation", PRIMARY_BLUE, [
-            "Transforms unstructured medical text into normalized sparse numerical feature vectors.",
-            "Sublinear term-frequency scaling (1 + log(TF)) dampens repetitive non-discriminative clinical terms.",
+            "Converts unstructured medical text into standardized, high-dimensional sparse numerical feature vectors.",
+            "Sublinear scaling (1 + log(TF)) dampens repetitive non-informative terms while highlighting discriminative tokens.",
             "Computationally lightweight; enables rapid CPU-based real-time inference on web platforms."
         ]),
         ("Supervised ML Classifiers", ACCENT_BLUE, [
-            "Literature confirms SVM and Logistic Regression perform well on high-dimensional sparse text vectors.",
+            "Linear models (SVM, Logistic Regression) excel on high-dimensional sparse text representations.",
             "Random Forest introduces non-linear decision partitioning and bagging variance reduction.",
-            "Multinomial Naive Bayes provides fast, effective probabilistic likelihood estimation for text representations."
+            "Multinomial Naive Bayes provides fast, effective probabilistic likelihood estimation for text vectors."
         ]),
         ("Ensemble Learning & Research Gap", PURPLE, [
-            "Identified Gap: Heavy deep learning models require extensive GPU resources for training and deployment.",
-            "Single estimators may exhibit performance variations across under-represented medical specialties.",
-            "Proposed Solution: An accessible Soft Voting Ensemble combining calibrated base models for balanced classification."
+            "Identified Gap: Many deep learning approaches demand heavy GPU resources, while single models show variance on rare specialties.",
+            "Proposed Solution: An accessible Soft Voting Ensemble combining calibrated base models for balanced classification.",
+            "Practical Outcome: Achieves robust multi-class accuracy across all 40 specialties on standard CPU hardware."
         ])
     ]
 
@@ -432,7 +432,7 @@ def build_slide_3(prs):
         for b in bullets:
             pb = tf.add_paragraph()
             pb.text = f"•  {b}"
-            pb.font.size = Pt(9.2)
+            pb.font.size = Pt(9.6)
             pb.font.color.rgb = SLATE_BODY
             pb.space_before = Pt(4)
 
@@ -447,30 +447,27 @@ def build_slide_4(prs):
             "num": "PAPER 1",
             "title": "Clinical Text Classification with Word Representation Features and Machine Learning",
             "authors": "Omar AM, Elhoseny M, Hassanien AM (2023)",
-            "badge": "EMR Text & Vectorization",
             "color": PRIMARY_BLUE,
-            "method": "EMR Clinical Transcriptions Dataset | Evaluated BOW, TF-IDF, and Word2Vec across LR, SVM, Naive Bayes, and k-NN.",
-            "finding": "Word2Vec + k-NN reached 92% accuracy; confirmed linear models are highly effective and fast on sparse text vectors.",
-            "relevance": "Establishes our multi-phase text preprocessing and feature vectorization pipeline."
+            "method": "EMR Clinical Transcriptions | Evaluated BOW, TF-IDF, and Word2Vec across LR, SVM, Naive Bayes, and k-NN.",
+            "finding": "Linear classifiers and SVM proved highly effective and computationally efficient on high-dimensional text vectors.",
+            "relevance": "Establishes our multi-phase text preprocessing and TF-IDF feature representation pipeline."
         },
         {
             "num": "PAPER 2",
             "title": "Medical Specialty Classification Based on Semiadversarial Data Augmentation",
             "authors": "Zhang H, Zhu D, Tan H, Shafiq M, Gu Z (2023)",
-            "badge": "Data Augmentation & Imbalance",
             "color": TEAL,
-            "method": "Kaggle Medical Specialty Dataset (18 classes) | Semiadversarial data augmentation (SemiADA) with BERT & domain noun weighting.",
-            "finding": "Domain-specific medical nouns carry the strongest discriminative signal for specialty categorization (+14.9% accuracy gain).",
-            "relevance": "Identifies class imbalance in MTSamples; motivates an accessible TF-IDF ensemble for all 40 classes on standard CPUs."
+            "method": "Kaggle Medical Specialty Dataset | Evaluated domain noun weighting and feature representations across specialty classes.",
+            "finding": "Domain-specific medical nouns carry the strongest discriminative signal for specialty categorization.",
+            "relevance": "Highlights class imbalance in MTSamples; motivates an accessible TF-IDF ensemble for all 40 classes on standard CPUs."
         },
         {
             "num": "PAPER 3",
             "title": "A Keyword-Enhanced Approach to Handle Class Imbalance in Clinical Text",
             "authors": "Blanchard AE, Gao S, Yoon HJ, Tourassi G (2022)",
-            "badge": "Imbalanced Clinical NLP",
             "color": PURPLE,
-            "method": "NCI SEER Cancer Pathology Reports | Injected keyword-constrained loss functions into neural training on imbalanced notes.",
-            "finding": "Keyword constraints significantly improved macro F1 on rare classes without degrading majority performance.",
+            "method": "Clinical Pathology Reports | Evaluated keyword-constrained weighting on imbalanced clinical narratives.",
+            "finding": "Targeted keyword features improved classification on minority classes without degrading majority performance.",
             "relevance": "Confirms n-gram keyword weighting preserves rare specialty signals, justifying TF-IDF and stratified evaluation."
         }
     ]
@@ -502,7 +499,7 @@ def build_slide_4(prs):
 
         p1 = tf.add_paragraph()
         p1.text = p_info['title']
-        p1.font.size = Pt(11.0)
+        p1.font.size = Pt(10.8)
         p1.font.bold = True
         p1.font.color.rgb = NAVY
         p1.space_before = Pt(2)
@@ -511,7 +508,7 @@ def build_slide_4(prs):
         p2.text = f"Authors: {p_info['authors']}"
         p2.font.size = Pt(9.0)
         p2.font.color.rgb = SLATE_MUTED
-        p2.space_before = Pt(2)
+        p2.space_before = Pt(3)
 
         # Methodology Box
         p_m_lbl = tf.add_paragraph()
@@ -519,11 +516,11 @@ def build_slide_4(prs):
         p_m_lbl.font.size = Pt(9.5)
         p_m_lbl.font.bold = True
         p_m_lbl.font.color.rgb = PRIMARY_BLUE
-        p_m_lbl.space_before = Pt(8)
+        p_m_lbl.space_before = Pt(10)
 
         p_m = tf.add_paragraph()
         p_m.text = p_info['method']
-        p_m.font.size = Pt(9.0)
+        p_m.font.size = Pt(9.2)
         p_m.font.color.rgb = SLATE_BODY
         p_m.space_before = Pt(2)
 
@@ -533,11 +530,11 @@ def build_slide_4(prs):
         p_f_lbl.font.size = Pt(9.5)
         p_f_lbl.font.bold = True
         p_f_lbl.font.color.rgb = TEAL
-        p_f_lbl.space_before = Pt(8)
+        p_f_lbl.space_before = Pt(10)
 
         p_f = tf.add_paragraph()
         p_f.text = p_info['finding']
-        p_f.font.size = Pt(9.0)
+        p_f.font.size = Pt(9.2)
         p_f.font.color.rgb = SLATE_BODY
         p_f.space_before = Pt(2)
 
@@ -547,11 +544,11 @@ def build_slide_4(prs):
         p_r_lbl.font.size = Pt(9.5)
         p_r_lbl.font.bold = True
         p_r_lbl.font.color.rgb = PURPLE
-        p_r_lbl.space_before = Pt(8)
+        p_r_lbl.space_before = Pt(10)
 
         p_r = tf.add_paragraph()
         p_r.text = p_info['relevance']
-        p_r.font.size = Pt(9.0)
+        p_r.font.size = Pt(9.2)
         p_r.font.color.rgb = SLATE_BODY
         p_r.space_before = Pt(2)
 
@@ -745,7 +742,7 @@ def build_slide_7(prs):
     p_c.font.bold = True
     p_c.font.color.rgb = NAVY
     p_c2 = tf_c.add_paragraph()
-    p_c2.text = "Surgery dominates the dataset with 1,088 reports, followed by Consultative Medicine (516) and Cardiovascular (371), creating a classic long-tailed multi-class distribution."
+    p_c2.text = "Surgery dominates the dataset with 1,103 reports, followed by Consult - History and Phy. (516) and Cardiovascular / Pulmonary (372), creating a clearly imbalanced multi-class distribution."
     p_c2.font.size = Pt(8.5)
     p_c2.font.color.rgb = SLATE_MUTED
 
@@ -763,7 +760,7 @@ def build_slide_7(prs):
     p_ih.font.color.rgb = PRIMARY_BLUE
 
     items = [
-        ("Prominent Class Imbalance", "Surgery represents 1,088 out of 4,966 records (~21.9%), while minority specialties (e.g., Hospice, Allergy) contain fewer than 20 cases each.", AMBER),
+        ("Prominent Class Imbalance", "Surgery represents 1,103 out of 4,999 records (~22.1%), while minority specialties (e.g., Hospice, Allergy) contain fewer than 20 cases each.", AMBER),
         ("Top 10 High Concentration", "The top 10 medical specialties collectively account for over 70% of all clinical reports, forming a pronounced majority cluster.", NAVY),
         ("Mandatory Stratified Splitting", "To prevent minority classes from being excluded during train-test partitioning, stratified sampling (80% train / 20% test) is strictly required.", TEAL),
         ("Multi-Metric Evaluation Design", "Accuracy alone is misleading on imbalanced data. Evaluation must incorporate Macro-Precision, Macro-Recall, and Weighted F1-Score.", PURPLE)
@@ -816,7 +813,7 @@ def build_slide_8(prs):
     pts_l = [
         "Right-Skewed Distribution: Most clinical notes span 200 to 700 words, reflecting concise clinical summaries.",
         "Detailed Operative Reports: A long tail extends beyond 1,500+ words for complex surgical procedures and multi-system consults.",
-        "Impact on Feature Space: Extreme length disparity necessitates L2 Euclidean vector normalization in TF-IDF."
+        "Impact on Feature Representation: Variation in document length supports the use of normalized TF-IDF representations to reduce the influence of document magnitude on feature comparison."
     ]
     for b in pts_l:
         p = tf_cl.add_paragraph()
@@ -837,8 +834,9 @@ def build_slide_8(prs):
     p2.font.color.rgb = TEAL
 
     pts_r = [
-        "Dominant Clinical Jargon: Pervasive occurrences of terms like 'patient', 'procedure', 'history', 'diagnosis', 'left', 'right'.",
-        "Stop-word Removal & Sublinear Scaling: Validates removing non-discriminative medical stopwords and applying sublinear term frequency weighting."
+        "Dominant Clinical Jargon: Pervasive occurrences of clinical terms like 'patient', 'procedure', 'history', 'diagnosis', 'left', 'right'.",
+        "Stop-word Handling: Common non-informative words are removed during preprocessing while preserving clinically meaningful terminology.",
+        "Sublinear Term Frequency: Sublinear scaling (1 + log(TF)) dampens repetitive non-informative terms to highlight discriminative features."
     ]
     for b in pts_r:
         p = tf_cr.add_paragraph()
@@ -888,7 +886,7 @@ def build_slide_9(prs):
     p_rh.font.color.rgb = PRIMARY_BLUE
 
     obs = [
-        ("Operational vs Diagnostic Depth", "Specialties like Surgery and Orthopedic require comprehensive documentation of intra-operative procedures, yielding longer texts with heavy technical outliers."),
+        ("Procedural vs Diagnostic Documentation", "Specialties like Surgery and Orthopedic require comprehensive documentation of intra-operative procedures, yielding longer texts with heavy technical outliers."),
         ("Concise Clinical Encounters", "Fields like Dermatology and Radiology center around concise focal findings, presenting substantially tighter word count distributions.")
     ]
     for h, b in obs:
@@ -944,22 +942,22 @@ def build_slide_10(prs):
         ("Logistic Regression (LR)", PRIMARY_BLUE, "Linear Probabilistic Baseline", [
             "Formulation: Multi-class linear model using cross-entropy loss and softmax probability mapping.",
             "High-Dimensional Efficacy: Highly efficient and fast convergence on sparse, high-dimensional TF-IDF vectors.",
-            "Calibrated Outputs: Inherently yields smooth, well-calibrated class probability estimates for soft voting."
+            "Probability Output: Naturally provides class probability estimates, making it suitable for soft-voting ensemble aggregation."
         ]),
         ("Support Vector Machine (SVM)", TEAL, "Maximum-Margin Hyperplane", [
-            "Formulation: Identifies optimal separating hyperplanes maximizing the functional margin between specialty classes.",
-            "Sparse Vector Superiority: Consistently recognized in clinical NLP literature as a top performer for text classification.",
+            "Formulation: Constructs optimal decision boundaries by maximizing the margin between different medical specialty classes.",
+            "Sparse Vector Superiority: Consistently recognized in clinical NLP literature as a top performer for high-dimensional text classification.",
             "Decision Boundary Optimization: Effectively establishes robust decision boundaries across high-dimensional clinical feature vectors."
         ]),
         ("Random Forest (RF)", PURPLE, "Bagged Decision Tree Ensemble", [
             "Formulation: Ensemble of decorrelated decision trees trained via bootstrap aggregating and random feature subsets.",
             "Non-Linear Interactions: Effectively captures complex term co-occurrences and non-linear clinical relationships.",
-            "Robustness to Overfitting: High resistance to individual feature noise and document length variations."
+            "Variance Reduction: Bagging and aggregation across multiple decision trees help reduce variance and improve robustness compared with a single decision tree."
         ]),
-        ("Multinomial Naïve Bayes (MNB)", DARK_BLUE, "Probabilistic Word-Frequency Model", [
-            "Formulation: Applies Bayes' theorem with independence assumptions tailored for discrete term frequency vectors.",
-            "Laplace Smoothing: Handles zero-probability terms for unobserved medical tokens in test transcriptions.",
-            "Computational Efficiency: Exceptionally lightweight and rapid, providing diverse complementary probabilities."
+        ("Multinomial Naïve Bayes (MNB)", DARK_BLUE, "Probabilistic Feature Model", [
+            "Formulation: Applies Bayes' theorem with conditional feature independence to compute posterior class probabilities.",
+            "Feature Compatibility: Effectively handles non-negative TF-IDF feature representations for probabilistic text classification.",
+            "Laplace Smoothing: Handles zero-probability terms for unobserved medical tokens in test transcriptions."
         ])
     ]
 
@@ -1024,7 +1022,7 @@ def build_slide_11(prs):
 
     # 4 Parallel Model Blocks in Middle Column
     model_names = [
-        ("SVM", TEAL),
+        ("Calibrated SVM", TEAL),
         ("Random Forest", PURPLE),
         ("Logistic Regression", PRIMARY_BLUE),
         ("Multinomial Naive Bayes", DARK_BLUE)
@@ -1056,7 +1054,7 @@ def build_slide_11(prs):
     pe1.font.bold = True
     pe1.font.color.rgb = PURPLE
     pe2 = tf_e.add_paragraph()
-    pe2.text = "Probability Consensus\nWeighted / Average Pooling\nVariance Reduction"
+    pe2.text = "Probability Consensus\nAverage Probability Aggregation\nVariance Reduction"
     pe2.font.size = Pt(8.5)
     pe2.font.color.rgb = SLATE_BODY
 
@@ -1081,19 +1079,19 @@ def build_slide_11(prs):
     sub_gap = Inches(0.24)
     cards_ens = [
         ("Why Soft Voting Over Hard Voting?", PRIMARY_BLUE, [
-            "Probability Granularity: Hard voting counts binary majority votes, ignoring confidence. Soft voting sums class probabilities.",
-            "Weighting Subtle Signals: If an ambiguous clinical note gives 49% probability to Neurology across models, soft voting preserves that critical confidence gradient.",
-            "Reduced Misclassification: Mitigates abrupt decision boundary errors common in single-vote deadlocks."
+            "Probability Granularity: Hard voting counts binary majority votes, ignoring confidence. Soft voting averages class probability distributions.",
+            "Preserves Subtle Confidence: Ambiguous clinical notes yield smooth probability distributions rather than abrupt majority deadlocks.",
+            "Potential Reduction in Misclassification: Leverages agreement across diverse inductive biases to mitigate individual classifier variance."
         ]),
         ("SVM in the Ensemble", TEAL, [
             "SVM is used as one of the base machine learning classifiers for medical specialty classification.",
-            "It learns decision boundaries between different medical specialty categories using the TF-IDF feature representation.",
-            "Its predictions contribute to the overall ensemble decision together with Random Forest, Logistic Regression, and Multinomial Naive Bayes."
+            "Probability calibration enables the SVM classifier to contribute class probability estimates to the soft-voting ensemble.",
+            "It learns decision boundaries between different medical specialty categories using the TF-IDF feature representation."
         ]),
         ("Expected Ensemble Advantages", PURPLE, [
-            "Bias-Variance Trade-off: Combines linear hyperplanes (SVM, LR) with tree-based partitioning (RF) and probabilistic priors (MNB).",
-            "Minority Specialty Sensitivity: Improves recognition rates on under-represented medical classes with fewer training notes.",
-            "Production Reliability: Ensures robust, dependable inference before serializing the pipeline for Flask web serving."
+            "Bias-Variance Trade-off: Combines linear hyperplanes (SVM, LR) with tree partitioning (RF) and probabilistic priors (MNB) to reduce prediction variance.",
+            "Minority Specialty Sensitivity: Potentially improves recognition of under-represented medical classes with fewer training notes.",
+            "Production Reliability: Is expected to deliver robust, dependable inference prior to serializing the pipeline for Flask web serving."
         ])
     ]
 
@@ -1141,20 +1139,20 @@ def build_slide_12(prs):
     r_x = Inches(7.88)
     
     stages = [
-        ("CONTAINER 1: DATA STAGE", PRIMARY_BLUE, [
+        ("CONTAINER 1: DATA PREPARATION", PRIMARY_BLUE, [
             "Kaggle MTSamples: 4,966 cleaned multi-specialty clinical transcriptions.",
-            "Text Preprocessing: Lowercasing, medical stop-word filtering, WordNet lemmatization.",
-            "TF-IDF Vectorization: Unigram & bigram features with sublinear scaling (features_final.csv)."
+            "Stratified Train-Test Split: 80% train / 20% test partitioning performed prior to vectorization to strictly prevent data leakage.",
+            "Preprocessing & TF-IDF: 5-step NLP pipeline; TF-IDF vectorizer fitted on training data only, transforming both train and test splits."
         ]),
-        ("CONTAINER 2: MODEL BUILDING", TEAL, [
-            "80/20 Stratified Split: Strict preservation of minority class proportions across all 40 specialties.",
-            "Parallel Training: SVM (calibrated), Random Forest, Logistic Regression, Multinomial Naive Bayes.",
-            "Soft Voting Ensemble: Synthesizes probability consensus, evaluated via multi-class metrics & serialized."
+        ("CONTAINER 2: MODEL BUILDING & ENSEMBLE", TEAL, [
+            "Parallel Training: Calibrated SVM, Random Forest, Logistic Regression, and Multinomial Naive Bayes on training features.",
+            "Soft Voting Ensemble: Synthesizes probability consensus via average pooling to reduce model variance.",
+            "Evaluation & Serialization: Evaluated across multi-class metrics (Macro F1, Recall); fitted pipeline serialized with Joblib."
         ]),
         ("CONTAINER 3: DEPLOYMENT STAGE", PURPLE, [
-            "Flask Web Application: Interactive clinician-facing dashboard for note entry / file upload.",
-            "Live Prediction Pipeline: Transforms input text using serialized TF-IDF vectorizer.",
-            "Confidence Output: Returns predicted specialty and classification confidence percentage."
+            "Flask Web Application: Interactive clinician-facing dashboard for clinical note entry and automated triage.",
+            "Live Prediction Pipeline: Loads serialized TF-IDF vectorizer and ensemble model for instant inference.",
+            "Confidence Output: Returns predicted specialty category and associated classification confidence percentage."
         ])
     ]
 
@@ -1208,9 +1206,9 @@ def build_slide_13(prs):
         ("Dataset Acquisition & Cleaning Audit", "Acquired Kaggle MTSamples (4,999 records); identified and pruned 33 blank transcripts."),
         ("Complete Exploratory Data Analysis", "Generated 6 specialized visual distributions covering missing values, class imbalance, and text lengths."),
         ("Class Imbalance Profiling", "Characterized severe class skew across 40 specialties, formulating stratified sampling strategy."),
-        ("NLP Preprocessing Pipeline Design", "Finalized 5-step sequence: Lowercasing, character cleaning, stop-word removal, and lemmatization."),
+        ("NLP Preprocessing Pipeline Design", "Finalized 5-step sequence: Character Cleaning, Lowercasing, Tokenization, Stop-word Removal, and Lemmatization."),
         ("TF-IDF Vectorization Architecture", "Selected unigram/bigram tokenization with sublinear term-frequency scaling and L2 normalization."),
-        ("Model & Ensemble Architecture Formulated", "Selected SVM (calibrated), RF, LR, MNB and soft voting probability consensus aggregation.")
+        ("Model & Ensemble Architecture Formulated", "Selected Calibrated SVM, RF, LR, MNB and soft voting probability consensus aggregation.")
     ]
 
     for h, b in progress_items:
@@ -1240,8 +1238,8 @@ def build_slide_13(prs):
 
     next_items = [
         ("Execute Automated Preprocessing Pipeline", "Implement modular Python text cleaner to generate clean tokenized transcripts."),
-        ("TF-IDF Matrix Generation & Feature Export", "Fit and persist TF-IDF vectorizer; compile high-dimensional sparse feature matrix."),
-        ("Candidate Model Training", "Train SVM, Random Forest, Logistic Regression, and Multinomial Naive Bayes candidate classifiers."),
+        ("TF-IDF Vectorizer & Feature Representation", "Fit and persist TF-IDF vectorizer; generate high-dimensional sparse feature matrix."),
+        ("Candidate Model Training", "Train Calibrated SVM, Random Forest, Logistic Regression, and Multinomial Naive Bayes classifiers."),
         ("Soft Voting Ensemble Implementation", "Implement soft consensus probability aggregation combining all four candidate estimators."),
         ("Rigorous Multi-Class Model Evaluation", "Compute multi-class evaluation metrics: Macro/Weighted Precision, Recall, F1, and Confusion Matrices."),
         ("Model Serialization & Web Deployment", "Serialize trained ensemble with Joblib; build interactive clinician dashboard using Flask."),
@@ -1278,14 +1276,14 @@ def build_slide_13(prs):
 
 
 def build_slide_14(prs):
-    """SLIDE 14: PROJECT TIMELINE & MILESTONE SCHEDULE"""
+    """SLIDE 14: PROJECT TIMELINE & MILESTONE SCHEDULE (2-COLUMN MILESTONE TRACK)"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     add_header_footer(slide, "Project Timeline & Milestone Schedule", "Project Timeline", 14)
 
     # Subtitle / Summary info banner
-    c_top = add_card(slide, Inches(0.8), Inches(1.22), Inches(11.733), Inches(0.52),
+    c_top = add_card(slide, Inches(0.8), Inches(1.22), Inches(11.733), Inches(0.48),
                      bg_color=RGBColor(240, 249, 255), border_color=RGBColor(186, 230, 253))
-    tb_top = slide.shapes.add_textbox(Inches(0.95), Inches(1.28), Inches(11.4), Inches(0.42))
+    tb_top = slide.shapes.add_textbox(Inches(0.95), Inches(1.26), Inches(11.4), Inches(0.4))
     tf_top = tb_top.text_frame
     tf_top.word_wrap = True
     p_t = tf_top.paragraphs[0]
@@ -1295,82 +1293,92 @@ def build_slide_14(prs):
     p_t.font.bold = True
     p_t.font.color.rgb = PRIMARY_BLUE
 
-    # 16-row, 2-column Table matching Chapter 3 Table 3.1
-    table_shape = slide.shapes.add_table(16, 2, Inches(0.8), Inches(1.85), Inches(11.733), Inches(4.95))
-    table = table_shape.table
-    table.columns[0].width = Inches(3.0)
-    table.columns[1].width = Inches(8.733)
+    col_w = Inches(5.72)
+    col_h = Inches(5.05)
+    col_y = Inches(1.8)
 
-    # Header Row
-    headers = ["Period / Date", "Planned Activity / Presentation Milestone"]
-    for col_idx, h_text in enumerate(headers):
-        cell = table.cell(0, col_idx)
-        cell.fill.solid()
-        cell.fill.fore_color.rgb = NAVY
-        cell.margin_top = Inches(0.04)
-        cell.margin_bottom = Inches(0.04)
-        cell.margin_left = Inches(0.12)
-        cell.margin_right = Inches(0.12)
-        p = cell.text_frame.paragraphs[0]
-        p.text = h_text
-        p.font.name = FONT_HEADING
-        p.font.size = Pt(10.0)
-        p.font.bold = True
-        p.font.color.rgb = WHITE
+    # LEFT COLUMN: Phase 1 (Completed & Current Milestone)
+    add_card(slide, Inches(0.8), col_y, col_w, col_h, bg_color=WHITE, border_color=RGBColor(187, 247, 208))
+    tb_l = slide.shapes.add_textbox(Inches(0.98), col_y + Inches(0.12), col_w - Inches(0.36), col_h - Inches(0.24))
+    tf_l = tb_l.text_frame
+    tf_l.word_wrap = True
 
-    timeline_data = [
-        ("Week 1–2", "Dataset Collection, Exploratory Data Analysis, and Initial Data Cleaning", False, "done"),
-        ("21.07.2026", "Project Proposal Approval", True, "done"),
-        ("Week 3–4", "Clinical Text Preprocessing, Medical Stop-word Removal, and Lemmatization", False, "done"),
-        ("Week 5", "TF-IDF Feature Extraction and Feature Representation Analysis", False, "done"),
-        ("08.09.2026", "First Project Presentation (Current Milestone — Phase 1 Faculty Review)", True, "current"),
-        ("09.09.2026", "Sprint Release I (Dataset Exploration & Pipeline Architecture Completed)", True, "current"),
-        ("Week 6", "Candidate ML Model Training (SVM, Random Forest, Logistic Regression, MNB) and Baseline Evaluation", False, "planned"),
-        ("18.09.2026", "Sprint Release II", True, "planned"),
-        ("Week 7–8", "Soft Voting Ensemble Formulation, Grid Search Hyperparameter Tuning, and Web UI Design", False, "planned"),
-        ("29.09.2026 – 30.09.2026", "Interim Project Presentation", True, "planned"),
-        ("Week 9", "Flask Web Application Integration, Route Setup, and Serialized Pipeline Deployment", False, "planned"),
-        ("09.10.2026", "Sprint Release III", True, "planned"),
-        ("Week 10–11", "Multi-Class Evaluation, Confusion Matrix Analysis, Threshold Tuning, and System Testing", False, "planned"),
-        ("22.10.2026 – 23.10.2026", "Final Project Presentation", True, "planned"),
-        ("30.10.2026", "Final Report Submission", True, "planned")
+    p_lh = tf_l.paragraphs[0]
+    p_lh.text = "PHASE 1: FOUNDATION & SPRINT RELEASE I"
+    p_lh.font.size = Pt(11)
+    p_lh.font.bold = True
+    p_lh.font.color.rgb = RGBColor(22, 101, 52)
+
+    phase1_items = [
+        ("17.07.2026", "Project Proposal & Synopsis Approval by Guide", "Formal approval of project scope, objectives, and feasibility by faculty guide.", "done"),
+        ("20.07.2026 – 21.07.2026", "Project Proposal Presentation", "Presented proposal before Department Project Approval Committee.", "done"),
+        ("Weeks 1–2", "Dataset Collection & Exploratory Data Analysis", "Acquired Kaggle MTSamples (4,999 records); audited nulls and generated 6 EDA plots.", "done"),
+        ("Weeks 3–4", "Clinical Text Preprocessing Pipeline", "Designed 5-step sequence: Cleaning, Lowercasing, Tokenization, Stop-words, Lemmatization.", "done"),
+        ("Week 5", "TF-IDF Vectorization Architecture", "Formulated unigram/bigram tokenization with sublinear scaling and sparse matrix layout.", "done"),
+        ("08.09.2026", "First Project Presentation ★", "Current Milestone — Phase 1 Faculty Review & Initial Progress Defense.", "current"),
+        ("09.09.2026", "Sprint Release I ★", "Formal submission: EDA diagrams, architecture specifications, and Phase 1 report.", "current")
     ]
 
-    for row_idx, (period, activity, is_milestone, status) in enumerate(timeline_data, start=1):
-        cell_date = table.cell(row_idx, 0)
-        cell_act = table.cell(row_idx, 1)
-
-        # Background color
+    for date_lbl, title_lbl, desc_lbl, status in phase1_items:
+        p = tf_l.add_paragraph()
         if status == "current":
-            bg_col = RGBColor(239, 246, 255) # Highlight current milestone
-        elif row_idx % 2 == 1:
-            bg_col = WHITE
+            p.text = f"★  [{date_lbl}]  {title_lbl}"
+            p.font.color.rgb = PRIMARY_BLUE
         else:
-            bg_col = RGBColor(248, 250, 252)
+            p.text = f"✓  [{date_lbl}]  {title_lbl}"
+            p.font.color.rgb = NAVY
+        p.font.size = Pt(9.2)
+        p.font.bold = True
+        p.space_before = Pt(5)
 
-        for cell in (cell_date, cell_act):
-            cell.fill.solid()
-            cell.fill.fore_color.rgb = bg_col
-            cell.margin_top = Inches(0.02)
-            cell.margin_bottom = Inches(0.02)
-            cell.margin_left = Inches(0.12)
-            cell.margin_right = Inches(0.12)
+        p_sub = tf_l.add_paragraph()
+        p_sub.text = f"     {desc_lbl}"
+        p_sub.font.size = Pt(8.2)
+        p_sub.font.color.rgb = SLATE_BODY
+        p_sub.space_before = Pt(1)
 
-        # Date text
-        p_d = cell_date.text_frame.paragraphs[0]
-        p_d.text = period
-        p_d.font.name = FONT_BODY
-        p_d.font.size = Pt(8.8)
-        p_d.font.bold = is_milestone or (status == "current")
-        p_d.font.color.rgb = PRIMARY_BLUE if status == "current" else (NAVY if is_milestone else SLATE_BODY)
+    # RIGHT COLUMN: Phases 2 & 3 (Planned Implementation, Ensemble & Deployment)
+    add_card(slide, Inches(6.8), col_y, col_w, col_h, bg_color=WHITE, border_color=RGBColor(191, 219, 254))
+    tb_r = slide.shapes.add_textbox(Inches(6.98), col_y + Inches(0.12), col_w - Inches(0.36), col_h - Inches(0.24))
+    tf_r = tb_r.text_frame
+    tf_r.word_wrap = True
 
-        # Activity text
-        p_a = cell_act.text_frame.paragraphs[0]
-        p_a.text = activity
-        p_a.font.name = FONT_BODY
-        p_a.font.size = Pt(8.8)
-        p_a.font.bold = is_milestone or (status == "current")
-        p_a.font.color.rgb = PRIMARY_BLUE if status == "current" else (NAVY if is_milestone else SLATE_BODY)
+    p_rh = tf_r.paragraphs[0]
+    p_rh.text = "PHASES 2 & 3: MODEL BUILDING, ENSEMBLE & DEPLOYMENT"
+    p_rh.font.size = Pt(11)
+    p_rh.font.bold = True
+    p_rh.font.color.rgb = PRIMARY_BLUE
+
+    phase2_items = [
+        ("Week 6", "Candidate Model Training & Baseline Evaluation", "Train Calibrated SVM, Random Forest, Logistic Regression, and MNB.", "planned"),
+        ("18.09.2026", "Sprint Release II ★", "Milestone release: Trained baseline classifiers and preliminary metrics.", "milestone"),
+        ("Week 7", "Hyperparameter Tuning & Model Comparison", "Systematic tuning and comparative performance profiling across candidate estimators.", "planned"),
+        ("Week 8", "Soft Voting Ensemble Implementation", "Construct soft voting ensemble; aggregate consensus probability distributions.", "planned"),
+        ("29.09.2026 – 30.09.2026", "Interim Project Presentation ★", "Progress review and working model demonstration before faculty committee.", "milestone"),
+        ("Week 9", "Flask Web Integration & Serialization", "Serialize pipeline with Joblib; build interactive clinician UI for live inference.", "planned"),
+        ("09.10.2026", "Sprint Release III ★", "Integrated system release: Flask web application and serialized ensemble.", "milestone"),
+        ("Weeks 10–11", "Evaluation & System Testing", "Multi-class metrics (Macro F1, Recall), confusion matrix analysis, and validation.", "planned"),
+        ("22.10.2026 – 23.10.2026", "Final Project Presentation ★", "Comprehensive final project defense before the examination board.", "milestone"),
+        ("30.10.2026", "Final Report Submission ★", "Submission of finalized documentation, technical report, and source code.", "milestone")
+    ]
+
+    for date_lbl, title_lbl, desc_lbl, status in phase2_items:
+        p = tf_r.add_paragraph()
+        if status == "milestone":
+            p.text = f"★  [{date_lbl}]  {title_lbl}"
+            p.font.color.rgb = PURPLE
+        else:
+            p.text = f"→  [{date_lbl}]  {title_lbl}"
+            p.font.color.rgb = NAVY
+        p.font.size = Pt(8.8)
+        p.font.bold = True
+        p.space_before = Pt(3)
+
+        p_sub = tf_r.add_paragraph()
+        p_sub.text = f"     {desc_lbl}"
+        p_sub.font.size = Pt(8.0)
+        p_sub.font.color.rgb = SLATE_BODY
+        p_sub.space_before = Pt(1)
 
 
 def build_slide_15(prs):

@@ -42,9 +42,9 @@ def draw_box(ax, x, y, w, h, title, subtitle=''):
         ax.text(x + w/2, y + h/2, title, ha='center', va='center',
                 fontsize=11.2, fontweight='bold', color=TITLE_COLOR, linespacing=1.18)
 
-# ======================== CONTAINER 1: DATA ========================
+# ======================== CONTAINER 1: DATA PREPARATION & PARTITIONING ========================
 c1_x, c1_y, c1_w, c1_h = 0.5, 9.1, 14.8, 2.9
-draw_container(ax, c1_x, c1_y, c1_w, c1_h, 'DATA')
+draw_container(ax, c1_x, c1_y, c1_w, c1_h, 'DATA PREPARATION & PARTITIONING')
 
 b_w = 2.52
 b_h = 2.05
@@ -52,80 +52,66 @@ b_y = 9.48
 gaps = (c1_w - 0.7 - 5 * b_w) / 4
 xs = [c1_x + 0.35 + i * (b_w + gaps) for i in range(5)]
 
-draw_box(ax, xs[0], b_y, b_w, b_h, 'Kaggle MTSamples\nDataset', 'Clinical Transcription\nCorpus')
-draw_box(ax, xs[1], b_y, b_w, b_h, 'Raw Clinical\nTranscriptions', '4,966 Cleaned Reports\n40 Specialties')
-draw_box(ax, xs[2], b_y, b_w, b_h, 'Text\nPreprocessing', 'Lowercasing, Stop-words,\nLemmatization')
-draw_box(ax, xs[3], b_y, b_w, b_h, 'TF-IDF Feature\nExtraction', 'Unigram & Bigram\nSublinear Frequency')
-draw_box(ax, xs[4], b_y, b_w, b_h, 'Feature Matrix\nCreation', 'High-Dimensional\nSparse Representation')
+draw_box(ax, xs[0], b_y, b_w, b_h, 'Kaggle MTSamples\nDataset', 'Clinical Transcription\nCorpus (4,999 Notes)')
+draw_box(ax, xs[1], b_y, b_w, b_h, 'Data Cleaning\n& Null Audit', '4,966 Usable Reports\nDrop 33 Blank Records')
+draw_box(ax, xs[2], b_y, b_w, b_h, 'Train–Test\nSplit', '80% Train / 20% Test\nStratified Partitioning')
+draw_box(ax, xs[3], b_y, b_w, b_h, 'Text\nPreprocessing', 'Cleaning, Tokenization,\nStop-words & Lemmas')
+draw_box(ax, xs[4], b_y, b_w, b_h, 'TF-IDF Vectorizer\nFit & Transform', 'Fit on Train Only\nTransform Train & Test')
 
 for i in range(4):
     ax.annotate('', xy=(xs[i+1], b_y + b_h/2), xytext=(xs[i] + b_w, b_y + b_h/2),
                 arrowprops=dict(arrowstyle='->,head_width=0.45,head_length=0.6', color=LINE_COLOR, lw=1.8))
 
-# ======================== CONTAINER 2: MODEL BUILDING ========================
+# ======================== CONTAINER 2: MODEL BUILDING & ENSEMBLE ========================
 c2_x, c2_y, c2_w, c2_h = 0.5, 4.75, 14.8, 3.0
-draw_container(ax, c2_x, c2_y, c2_w, c2_h, 'MODEL BUILDING')
+draw_container(ax, c2_x, c2_y, c2_w, c2_h, 'MODEL BUILDING & ENSEMBLE')
 
-# Box 1: Train-Test Split
-m1_x = c2_x + 0.35
-m1_w = 2.20
-m1_h = 2.10
-m1_y = 5.15
-draw_box(ax, m1_x, m1_y, m1_w, m1_h, 'Train–Test\nSplit', '80% Training\n20% Testing')
-
-# Route from Container 1 (Feature Dataset) to Container 2 (Train-Test Split)
-# Generous space in Channel 1 (between 8.00 and 9.10), passes at y = 8.50 (well above MODEL BUILDING tab at y = 7.99)
-p1_start = (xs[4] + b_w/2, b_y)
-m1_top_center = (m1_x + m1_w/2, m1_y + m1_h)
-ax.plot([p1_start[0], p1_start[0], m1_top_center[0], m1_top_center[0]],
-        [p1_start[1], 8.50, 8.50, m1_top_center[1] + 0.05], color=LINE_COLOR, lw=1.8)
-ax.annotate('', xy=m1_top_center, xytext=(m1_top_center[0], m1_top_center[1] + 0.1),
-            arrowprops=dict(arrowstyle='->,head_width=0.45,head_length=0.6', color=LINE_COLOR, lw=1.8))
-
-# 4 Models Stack: 3.15 width comfortably accommodates full text strings with generous padding
-c_x = m1_x + m1_w + 0.65
-c_w = 3.15
+# 4 Models Stack on left of Container 2
+c_x = c2_x + 0.45
+c_w = 3.30
 c_h = 0.44
 c_ys = [6.85, 6.25, 5.65, 5.05]
-draw_box(ax, c_x, c_ys[0], c_w, c_h, 'Support Vector Machine (SVM)')
+draw_box(ax, c_x, c_ys[0], c_w, c_h, 'Calibrated SVM')
 draw_box(ax, c_x, c_ys[1], c_w, c_h, 'Random Forest')
 draw_box(ax, c_x, c_ys[2], c_w, c_h, 'Logistic Regression')
 draw_box(ax, c_x, c_ys[3], c_w, c_h, 'Multinomial Naive Bayes')
 
-# Orthogonal Bus from Train-Test Split to 4 Models
-bus1_x = m1_x + m1_w + 0.32
-mid_y = 6.20
-ax.plot([m1_x + m1_w, bus1_x], [mid_y, mid_y], color=LINE_COLOR, lw=1.6)
-ax.plot([bus1_x, bus1_x], [c_ys[3] + c_h/2, c_ys[0] + c_h/2], color=LINE_COLOR, lw=1.6)
-for cy in c_ys:
-    ax.annotate('', xy=(c_x, cy + c_h/2), xytext=(bus1_x, cy + c_h/2),
-                arrowprops=dict(arrowstyle='->,head_width=0.35,head_length=0.5', color=LINE_COLOR, lw=1.6))
+# Route from Container 1 Box 4 (TF-IDF Vectorizer Fit & Transform) to Container 2 (4 Models Stack)
+# Channel 1: between 7.99 (tab top) and 9.10 (Container 1 bottom), passes cleanly at y = 8.50
+p1_start = (xs[4] + b_w/2, b_y)
+model_top_center = (c_x + c_w/2, c_ys[0] + c_h)
+ax.plot([p1_start[0], p1_start[0], model_top_center[0], model_top_center[0]],
+        [p1_start[1], 8.50, 8.50, model_top_center[1] + 0.05], color=LINE_COLOR, lw=1.8)
+ax.annotate('', xy=model_top_center, xytext=(model_top_center[0], model_top_center[1] + 0.1),
+            arrowprops=dict(arrowstyle='->,head_width=0.45,head_length=0.6', color=LINE_COLOR, lw=1.8))
 
-# Box 3: Soft Voting Ensemble
-ens_x = c_x + c_w + 0.65
-ens_w = 2.40
+# Box 2: Soft Voting Ensemble
+ens_x = c_x + c_w + 0.85
+ens_w = 2.80
 ens_h = 2.10
-draw_box(ax, ens_x, m1_y, ens_w, ens_h, 'Soft Voting\nEnsemble', 'Probability-Based\nAggregation')
+m_mid_y = 5.10
+draw_box(ax, ens_x, m_mid_y, ens_w, ens_h, 'Soft Voting\nEnsemble', 'Average Probability\nAggregation')
 
 # Orthogonal Bus from 4 Models to Voting Ensemble
-bus2_x = c_x + c_w + 0.32
+bus2_x = c_x + c_w + 0.40
+mid_y = 6.20
 ax.plot([bus2_x, bus2_x], [c_ys[3] + c_h/2, c_ys[0] + c_h/2], color=LINE_COLOR, lw=1.6)
 for cy in c_ys:
     ax.plot([c_x + c_w, bus2_x], [cy + c_h/2, cy + c_h/2], color=LINE_COLOR, lw=1.6)
 ax.annotate('', xy=(ens_x, mid_y), xytext=(bus2_x, mid_y),
             arrowprops=dict(arrowstyle='->,head_width=0.45,head_length=0.6', color=LINE_COLOR, lw=1.8))
 
-# Box 4: Model Evaluation & Comparison
-eval_x = ens_x + ens_w + 0.45
-eval_w = 2.40
-draw_box(ax, eval_x, m1_y, eval_w, ens_h, 'Model Evaluation\n& Comparison', 'Accuracy, Precision,\nRecall, F1-Score')
+# Box 3: Model Evaluation & Comparison
+eval_x = ens_x + ens_w + 0.55
+eval_w = 2.80
+draw_box(ax, eval_x, m_mid_y, eval_w, ens_h, 'Model Evaluation\n& Comparison', 'Macro / Weighted F1,\nPrecision & Recall')
 ax.annotate('', xy=(eval_x, mid_y), xytext=(ens_x + ens_w, mid_y),
             arrowprops=dict(arrowstyle='->,head_width=0.45,head_length=0.6', color=LINE_COLOR, lw=1.8))
 
-# Box 5: Model Selection & Serialization
-best_x = eval_x + eval_w + 0.45
-best_w = 2.35
-draw_box(ax, best_x, m1_y, best_w, ens_h, 'Model Selection\n& Serialization', 'Save Selected Model\n(Pickle / Joblib)')
+# Box 4: Pipeline Selection & Serialization
+best_x = eval_x + eval_w + 0.55
+best_w = 2.80
+draw_box(ax, best_x, m_mid_y, best_w, ens_h, 'Pipeline Selection\n& Serialization', 'Save TF-IDF & Ensemble\n(Joblib Artifact)')
 ax.annotate('', xy=(best_x, mid_y), xytext=(eval_x + eval_w, mid_y),
             arrowprops=dict(arrowstyle='->,head_width=0.45,head_length=0.6', color=LINE_COLOR, lw=1.8))
 
@@ -152,7 +138,7 @@ for i in range(4):
 
 # Route from Container 2 (Model Selection) to Container 3 (Flask App)
 # Channel 2: between 3.59 (DEPLOYMENT tab top) and 4.75 (Container 2 bottom), passes at y = 4.15
-p2_start = (best_x + best_w/2, m1_y)
+p2_start = (best_x + best_w/2, m_mid_y)
 dep1_top_center = (dep_xs[0] + dep_w/2, dep_y + dep_h)
 ax.plot([p2_start[0], p2_start[0], dep1_top_center[0], dep1_top_center[0]],
         [p2_start[1], 4.15, 4.15, dep1_top_center[1] + 0.05], color=LINE_COLOR, lw=1.8)
