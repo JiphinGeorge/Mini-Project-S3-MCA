@@ -72,28 +72,19 @@ p.font.color.rgb = WHITE
 p.alignment = PP_ALIGN.CENTER
 
 # Project Main Title
-title_box = s1.shapes.add_textbox(Inches(0.90), Inches(1.50), Inches(11.50), Inches(1.70))
+title_box = s1.shapes.add_textbox(Inches(0.90), Inches(1.50), Inches(11.50), Inches(1.80))
 tf_tb = title_box.text_frame
 tf_tb.word_wrap = True
 p = tf_tb.paragraphs[0]
 p.text = "Medical Specialty Classification Using TF-IDF\nand Ensemble Machine Learning"
 p.font.name = "Cambria"
-p.font.size = Pt(34)
+p.font.size = Pt(36)
 p.font.bold = True
 p.font.color.rgb = WHITE
 
-# Subtitle
-sub_box = s1.shapes.add_textbox(Inches(0.90), Inches(3.30), Inches(11.50), Inches(0.45))
-p = sub_box.text_frame.paragraphs[0]
-p.text = "Clinical NLP & Supervised Multi-Class Learning on MTSamples Medical Corpus"
-p.font.name = "Calibri"
-p.font.size = Pt(16)
-p.font.bold = False
-p.font.color.rgb = CYAN_LIGHT
-
-# Two Vibrant Cards: Presenter & Guide
+# Two Vibrant Cards: Presenter & Guide (Positioned nicely with balanced spacing)
 # Presenter Card (Left)
-c_pres = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.90), Inches(4.05), Inches(5.50), Inches(2.20))
+c_pres = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.90), Inches(3.75), Inches(5.50), Inches(2.35))
 c_pres.fill.solid()
 c_pres.fill.fore_color.rgb = NAVY_CARD
 c_pres.line.color.rgb = CYAN_BRIGHT
@@ -102,7 +93,7 @@ c_pres.line.width = Pt(2)
 tf_cp = c_pres.text_frame
 tf_cp.word_wrap = True
 tf_cp.margin_left = Inches(0.30)
-tf_cp.margin_top = Inches(0.20)
+tf_cp.margin_top = Inches(0.22)
 
 p = tf_cp.paragraphs[0]
 p.text = "PRESENTED BY"
@@ -110,15 +101,15 @@ p.font.name = "Calibri"
 p.font.size = Pt(11)
 p.font.bold = True
 p.font.color.rgb = CYAN_LIGHT
-p.space_after = Pt(4)
+p.space_after = Pt(6)
 
 p = tf_cp.add_paragraph()
 p.text = "Jiphin George"
 p.font.name = "Cambria"
-p.font.size = Pt(22)
+p.font.size = Pt(24)
 p.font.bold = True
 p.font.color.rgb = WHITE
-p.space_after = Pt(4)
+p.space_after = Pt(6)
 
 p = tf_cp.add_paragraph()
 p.text = "Register No: MAC25MCA-2033"
@@ -126,7 +117,7 @@ p.font.name = "Calibri"
 p.font.size = Pt(13)
 p.font.bold = False
 p.font.color.rgb = ICE_WHITE
-p.space_after = Pt(2)
+p.space_after = Pt(3)
 
 p = tf_cp.add_paragraph()
 p.text = "Course: Master of Computer Applications (MCA)"
@@ -136,7 +127,7 @@ p.font.bold = False
 p.font.color.rgb = MUTED_SLATE
 
 # Guide Card (Right)
-c_guide = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.75), Inches(4.05), Inches(5.65), Inches(2.20))
+c_guide = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.75), Inches(3.75), Inches(5.65), Inches(2.35))
 c_guide.fill.solid()
 c_guide.fill.fore_color.rgb = NAVY_CARD
 c_guide.line.color.rgb = GREEN_CHECK
@@ -145,7 +136,7 @@ c_guide.line.width = Pt(2)
 tf_cg = c_guide.text_frame
 tf_cg.word_wrap = True
 tf_cg.margin_left = Inches(0.30)
-tf_cg.margin_top = Inches(0.20)
+tf_cg.margin_top = Inches(0.22)
 
 p = tf_cg.paragraphs[0]
 p.text = "PROJECT GUIDE"
@@ -153,15 +144,15 @@ p.font.name = "Calibri"
 p.font.size = Pt(11)
 p.font.bold = True
 p.font.color.rgb = GREEN_CHECK
-p.space_after = Pt(4)
+p.space_after = Pt(6)
 
 p = tf_cg.add_paragraph()
 p.text = "Prof. Biju Skaria"
 p.font.name = "Cambria"
-p.font.size = Pt(22)
+p.font.size = Pt(24)
 p.font.bold = True
 p.font.color.rgb = WHITE
-p.space_after = Pt(4)
+p.space_after = Pt(6)
 
 p = tf_cg.add_paragraph()
 p.text = "Department of Computer Applications"
@@ -169,7 +160,7 @@ p.font.name = "Calibri"
 p.font.size = Pt(13)
 p.font.bold = False
 p.font.color.rgb = ICE_WHITE
-p.space_after = Pt(2)
+p.space_after = Pt(3)
 
 p = tf_cg.add_paragraph()
 p.text = "Mar Athanasius College of Engineering, Kothamangalam"
@@ -184,7 +175,7 @@ b_w = Inches(2.20)
 b_gap = Inches(0.12)
 b_start = Inches(0.90)
 for i, badge_txt in enumerate(badges):
-    bx = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, b_start + i * (b_w + b_gap), Inches(6.50), b_w, Inches(0.40))
+    bx = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, b_start + i * (b_w + b_gap), Inches(6.45), b_w, Inches(0.42))
     bx.fill.solid()
     bx.fill.fore_color.rgb = RGBColor(0x13, 0x32, 0x54)
     bx.line.color.rgb = CYAN_BRIGHT
