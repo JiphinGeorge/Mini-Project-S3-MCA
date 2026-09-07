@@ -1,0 +1,485 @@
+=== SLIDE 1 ===
+  MCA MINI PROJECT
+  Medical Specialty Classification Using TF-IDF and Ensemble Machine Learning
+  First Project Presentation
+  Department of Computer Applications
+  Mar Athanasius College of Engineering, Kothamangalam
+  NLP
+  TF-IDF
+  Ensemble ML
+  Flask Deployment
+=== SLIDE 2 ===
+  MCA MINI PROJECT | INTRODUCTION
+  Problem Statement & Objectives
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 2 of 20
+  !
+  Problem
+  Clinical transcription data is unstructured and can belong to any of several medical specialties, making manual categorization by medical coders slow, inconsistent, and prone to human error as patient volumes grow.
+  →
+  Objective
+  Develop an automated NLP and Ensemble Machine Learning system that predicts the correct medical specialty from a clinical transcription, reducing administrative overhead and speeding up document routing.
+  Key Project Objectives
+  EDA
+  Explore & Analyze
+  Conduct EDA on the Kaggle MTSamples clinical transcription dataset.
+  NLP
+  Preprocess Text
+  Clean, tokenize, remove stop-words and lemmatize clinical narratives.
+  TF
+  Extract Features
+  Vectorize clinical text into numeric form using TF-IDF.
+  ⊕
+  Ensemble & Deploy
+  Combine SVM, RF, LR, MNB via Voting; deploy on a Flask web app.
+=== SLIDE 3 ===
+  MCA MINI PROJECT | SUPPORTING LITERATURE
+  Literature Review
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 3 of 20
+  Paper 1 • 2023
+  Omar et al. — iJOE
+  METHOD
+  BOW / TF-IDF / Word2Vec + LR, SVM, Naive Bayes, k-NN
+  KEY FINDING
+  Word2Vec + k-NN achieved the highest accuracy of 92%, but k-NN scales poorly for large databases.
+  RELEVANCE TO THIS PROJECT
+  Establishes the standard 4-phase text preprocessing & vectorization pipeline used in this project.
+  Paper 2 • 2023
+  Zhang et al. — Hindawi CIN
+  METHOD
+  SemiADA synthetic data augmentation + BERT, on an 18-class MTSamples subset
+  KEY FINDING
+  Achieved a +14.9% average gain in accuracy and F1-score over baseline, but needs GPU-heavy BERT fine-tuning.
+  RELEVANCE TO THIS PROJECT
+  Highlights class imbalance in MTSamples and motivates a lightweight TF-IDF + ensemble alternative.
+  Paper 3 • 2022
+  Blanchard et al. — IEEE JBHI
+  METHOD
+  CNN with keyword-constrained loss on the NCI SEER pathology registry
+  KEY FINDING
+  Keyword injection improved macro F1 and recall on rare classes without hurting majority performance.
+  RELEVANCE TO THIS PROJECT
+  Justifies using TF-IDF keyword / n-gram weighting to preserve signal for rare specialty classes.
+=== SLIDE 4 ===
+  MCA MINI PROJECT | DATA ANALYSIS
+  Dataset Overview
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 4 of 20
+  Kaggle Medical Transcriptions (MTSamples) Dataset
+  Source: kaggle.com/datasets/tboyle10/medicaltranscriptions
+  Authentic clinical dictations covering patient histories, diagnostic evaluations, physical exams, and surgical procedures across many healthcare sub-disciplines.
+  4,999
+  Clinical Records
+  40
+  Medical Specialties
+  6
+  Dataset Columns
+  Dataset Columns
+  Unnamed: 0
+  Record index / row identifier
+  description
+  Short one–two sentence clinical abstract
+  medical_specialty
+  Target label — 40 specialty classes
+  sample_name
+  Dictation / report title
+  transcription
+  Primary clinical narrative (input feature)
+  keywords
+  Comma-delimited extracted clinical terms
+  IN
+  Input Variable
+  transcription — the primary clinical narrative text
+  Y
+  Target Variable
+  medical_specialty — 40 unique clinical specialty classes
+  Sparsity: transcription is 99.3% complete (33 missing); medical_specialty has zero missing values.
+=== SLIDE 5 ===
+  MCA MINI PROJECT | DATA ANALYSIS
+  Statistical Analysis of the Dataset
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 5 of 20
+  Libraries Used
+  pandas
+  numpy
+  Exploration Functions Applied
+  shape
+  .info()
+  .dtypes
+  .describe()
+  .head()
+  .columns
+  Key Findings
+  4,999 rows × 6 columns confirmed via shape and info() — no structural corruption
+  medical_specialty (target) has zero missing values across all 4,999 records
+  transcription has 33 missing records (0.66%)
+  keywords has 1,068 missing records — too sparse for primary modeling
+  describe() confirms transcription is free-form text of variable length
+  df.info()  —  representative output
+  Column
+  Dtype
+  Missing
+  Unnamed: 0
+  int64
+  0
+  description
+  object
+  6
+  medical_specialty
+  object
+  0
+  sample_name
+  object
+  0
+  transcription
+  object
+  33
+  keywords
+  object
+  1,068
+  Total: 4,999 entries, 6 columns (RangeIndex 0–4998)
+=== SLIDE 6 ===
+  MCA MINI PROJECT | DATA ANALYSIS
+  Exploratory Data Analysis: Data Quality
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 6 of 20
+  Figure: Missing Values by Dataset Attribute (isnull().sum())
+  Functions & Libraries
+  pandas: .isnull().sum(), .duplicated()
+  matplotlib / seaborn for the bar chart
+  Observations
+  transcription: 33 missing records (0.66%) — dropped during cleaning
+  keywords: 1,068 missing records — excluded from primary features
+  description: 6 missing records
+  medical_specialty (target): 0 missing values
+  Duplicate check via .duplicated() confirmed no duplicate clinical reports in the corpus
+=== SLIDE 7 ===
+  MCA MINI PROJECT | DATA VISUALIZATION
+  Class Distribution Across 40 Specialties
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 7 of 20
+  Figure: Full Distribution of Medical Specialties (40 classes)
+  Library: Matplotlib / Seaborn
+  1,103
+  Surgery — largest class
+  2
+  Autopsy & Executive Evaluation — smallest classes
+  Insight
+  The dataset exhibits severe class imbalance — majority classes contain hundreds to over a thousand records while minority specialties have under 10. This motivates stratified 80:20 train-test splitting to preserve class proportions, and soft-voting ensemble consensus to avoid bias toward majority classes.
+=== SLIDE 8 ===
+  MCA MINI PROJECT | DATA VISUALIZATION
+  Clinical Transcription Text Analysis
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 8 of 20
+  Library: Matplotlib / Seaborn / WordCloud
+  Fig: Transcription Length Distribution
+  Fig: Word Cloud of Common Clinical Terms
+  Key Insights
+  Median narrative length is ~350–500 words; distribution is right-skewed, extending up to ~3,000 words
+  Frequent terms (“placed”, “noted”, “used”, “time”, “removed”) are generic clinical-documentation vocabulary shared across specialties
+  Variable length and generic high-frequency terms motivate TF-IDF's IDF weighting and L2 normalization to emphasize specialty-specific vocabulary
+=== SLIDE 9 ===
+  MCA MINI PROJECT | DATA ANALYSIS
+  EDA Insights & Conclusions
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 9 of 20
+  ⚠
+  Severe Class Imbalance
+  Surgery (1,103) vs. Autopsy (2) — requires stratified splitting & ensemble voting.
+  ↔
+  Variable Text Length
+  200–3,000 words per report — needs TF-IDF with L2 normalization.
+  ≡
+  High-Dimensional Text
+  Large free-text vocabulary → sparse, high-dimensional TF-IDF vectors.
+  ⊘
+  Generic Vocabulary Noise
+  Common words dominate raw counts → IDF weighting needed to surface specialty terms.
+  ✗
+  Sparse Keywords Field
+  1,068 missing keyword entries — excluded from the primary feature set.
+  ✓
+  Multi-Metric Evaluation
+  Accuracy alone is misleading under imbalance — use precision, recall & F1.
+=== SLIDE 10 ===
+  MCA MINI PROJECT | DATA PREPROCESSING
+  Clinical Text Data Cleaning Pipeline
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 10 of 20
+  Eight sequential operations transform raw, noisy clinical dictations into clean input suitable for TF-IDF vectorization.
+  1
+  Remove Missing Values
+  Drop 33 records with empty transcription
+  2
+  Remove Duplicates
+  Verify no duplicate clinical reports exist
+  3
+  Lowercasing
+  Standardize character casing
+  4
+  Remove Punctuation
+  Strip commas, periods, symbols
+  5
+  Remove Special Characters
+  Remove digits & non-alphanumeric symbols
+  6
+  Tokenization
+  Segment narratives into word tokens
+  7
+  Stop-Word Removal
+  Filter generic words, preserve clinical terms
+  8
+  Lemmatization
+  Map tokens to base form (WordNet Lemmatizer)
+=== SLIDE 11 ===
+  MCA MINI PROJECT | DATA PREPROCESSING
+  Feature Extraction Using TF-IDF
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 11 of 20
+  TF-IDF (Term Frequency – Inverse Document Frequency) converts preprocessed clinical text into high-dimensional numeric feature vectors that machine learning classifiers can use.
+  Term Frequency
+  TF(t,d) = 1 + log( fₜ,d )
+  Inverse Document Frequency
+  IDF(t,D) = log( (1+|D|) / (1+df(t)) ) + 1
+  TF-IDF Weight
+  TF-IDF(t,d,D) = TF(t,d) × IDF(t,D)
+  Vectorization Flow
+  Clinical
+  Text
+  Text
+  Preprocessing
+  TF-IDF
+  Vectorizer
+  Sparse Feature
+  Matrix (L2-norm)
+  ⚠  TF-IDF is a feature extraction / vectorization technique — it is NOT a classification algorithm. It transforms text into numeric vectors; SVM, Random Forest, Logistic Regression and Multinomial Naive Bayes are the classifiers that use these vectors to predict a specialty. The vectorizer also extracts unigrams and bigrams (e.g. “coronary artery”) and applies sublinear TF scaling with Euclidean L2 normalization.
+=== SLIDE 12 ===
+  MCA MINI PROJECT | DATA ANALYSIS
+  Pre-Processed Dataset Structure
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 12 of 20
+  CURRENT: Explored & Cleaned Dataset
+  PROPOSED: Fully Text-Preprocessed Output
+  After removing 33 records with missing transcription (Table 6 audit):
+  shape
+  (4,966, 6)
+  columns
+  6 fields
+  target classes
+  40
+  dtypes
+  Unnamed: 0
+  int64
+  description
+  object
+  medical_specialty
+  object
+  sample_name
+  object
+  transcription
+  object
+  keywords
+  object
+  Once the full 8-step cleaning pipeline (Slide 10) and lemmatization are executed, the transcription column will hold clean, lowercase, lemmatized token text — ready for TF-IDF fitting.
+  Planned verification functions:
+  head() / tail() — preview cleaned narrative text
+  shape — confirm 4,966 rows retained post-cleaning
+  info() / dtypes — confirm object dtype for text columns
+  describe() — summarize categorical target distribution
+  This stage is a proposed methodology step — not yet executed as final results. It will be implemented in the upcoming model-development phase.
+=== SLIDE 13 ===
+  MCA MINI PROJECT | PROPOSED ALGORITHMS
+  Proposed Machine Learning Algorithms
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 13 of 20
+  SVM
+  Support Vector Machine
+  Finds the maximum-margin hyperplane; excels on sparse, high-dimensional TF-IDF vectors with natural linear separability.
+  RF
+  Random Forest
+  Aggregates many decision trees via bagging; captures non-linear keyword interactions other models may miss.
+  LR
+  Logistic Regression
+  Multinomial Softmax baseline; highly interpretable odds ratios for clinical term importance.
+  MNB
+  Multinomial Naive Bayes
+  Probabilistic, count-based model; computationally efficient and reliable even on smaller class subsets.
+  FEATURE EXTRACTION
+  TF-IDF
+  CLASSIFICATION
+  SVM + Random Forest + Logistic Regression + Multinomial NB
+  ENSEMBLE
+  Voting Classifier (Soft Voting)
+  ℹ  Soft voting requires calibrated probability estimates from every base classifier. Standard Linear SVM outputs uncalibrated decision-margin distances, so its scores are planned to be calibrated (e.g. via CalibratedClassifierCV / Platt scaling) before joining the soft-voting aggregation.
+=== SLIDE 14 ===
+  MCA MINI PROJECT | PROPOSED ALGORITHMS
+  Training Workflow — Avoiding Data Leakage
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 14 of 20
+  1
+  Dataset (4,999 records)
+  2
+  Initial Data Cleaning & Null Audit
+  3
+  Stratified Train–Test Split (80:20)
+  4
+  Text Preprocessing (train & test)
+  5
+  Fit TF-IDF Vectorizer on Training Data Only
+  6
+  Transform Training & Test Data
+  7
+  Train Base Classifiers: SVM, RF, LR, MNB
+  8
+  Soft-Voting Ensemble Aggregation
+  9
+  Model Evaluation (Accuracy, Precision, Recall, F1)
+  10
+  Final Serialized Pipeline
+=== SLIDE 15 ===
+  MCA MINI PROJECT | PROPOSED ALGORITHMS
+  Step-by-Step Algorithm Working
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 15 of 20
+  1
+  Load the clinical transcription dataset (4,999 records).
+  2
+  Clean the data — remove missing transcriptions and verify no duplicates.
+  3
+  Split the dataset using stratified 80:20 train-test partitioning.
+  4
+  Apply text preprocessing: lowercase, clean, tokenize, remove stop-words, lemmatize.
+  5
+  Fit the TF-IDF vectorizer using the training partition only.
+  6
+  Transform both training and testing text into numeric feature vectors.
+  7
+  Train SVM, Random Forest, Logistic Regression & Multinomial Naive Bayes.
+  8
+  Combine the classifiers using a soft-voting ensemble.
+  9
+  Evaluate the model using accuracy, precision, recall & F1-score.
+  10
+  Serialize and use the selected pipeline for specialty prediction.
+=== SLIDE 16 ===
+  MCA MINI PROJECT | PROPOSED ALGORITHMS
+  Role of the Proposed Algorithms in the Project
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 16 of 20
+  Clinical Transcription
+  Raw free-text clinical narrative input
+  Text Preprocessing
+  Cleaning, tokenization, stop-words, lemmatization
+  TF-IDF Feature Extraction
+  Converts clean text into a numeric sparse vector
+  SVM
+  Random
+  Forest
+  Logistic
+  Regression
+  Multinomial
+  Naive Bayes
+  Voting Ensemble  →  Predicted Medical Specialty
+=== SLIDE 17 ===
+  MCA MINI PROJECT | PROJECT PIPELINE
+  Complete End-to-End Project Pipeline
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 17 of 20
+  Three-stage pipeline: Data Preparation & Partitioning → Model Building & Ensemble → Deployment. TF-IDF is fit strictly on training data; the Flask deployment stage reuses the saved preprocessing + TF-IDF + ensemble pipeline.
+=== SLIDE 18 ===
+  MCA MINI PROJECT | GUI DESIGN
+  Proposed Web Application — Wireframe
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 18 of 20
+  Medical Specialty Classifier — Web App (Proposed)
+  Medical Specialty Classifier
+  Paste a clinical transcription below to predict its medical specialty
+  Paste or type clinical transcription text here...
+  ↑  Upload File (optional)
+  Predict Specialty
+  Predicted Medical Specialty
+  Cardiovascular / Pulmonary
+  (example output — illustrative only)
+  Confidence Score
+=== SLIDE 19 ===
+  MCA MINI PROJECT | GUI DESIGN
+  GUI Components & Current Project Progress
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 19 of 20
+  GUI Components
+  1
+  Text Input Area
+  Large text box for pasting clinical transcription narratives.
+  2
+  Upload / Input Component
+  Optional file upload for batch or document-based input.
+  3
+  Predict Button
+  Triggers preprocessing, TF-IDF transform & ensemble inference.
+  4
+  Prediction Result Panel
+  Displays the predicted medical specialty label.
+  5
+  Confidence Display
+  Shows the ensemble's probability score for the prediction.
+  Current Project Progress
+  COMPLETED
+  ✓
+  Literature Review
+  ✓
+  Dataset Collection
+  ✓
+  Statistical & Exploratory Data Analysis
+  ✓
+  Data Visualization
+  ✓
+  Preprocessing & TF-IDF Design
+  ✓
+  Algorithm Selection & Architecture
+  UPCOMING
+  Full Preprocessing Implementation
+  TF-IDF Vectorization Implementation
+  Model Training (SVM, RF, LR, MNB)
+  Hyperparameter Tuning
+  Voting Ensemble Development
+  Model Evaluation (metrics)
+  Flask GUI Development & Deployment
+=== SLIDE 20 ===
+  MCA MINI PROJECT | CONCLUSION
+  Conclusion & Future Work
+  Department of Computer Applications | MACE
+  Mar Athanasius College of Engineering, Kothamangalam
+  Slide 20 of 20
+  Summary
+  Addressed the problem of automating medical specialty classification from unstructured clinical transcriptions
+  Completed dataset exploration & statistical analysis of 4,999 MTSamples clinical records across 40 specialties
+  Identified class imbalance, variable text length and vocabulary noise through EDA
+  Proposed an 8-step text preprocessing pipeline and TF-IDF feature extraction
+  Proposed a 4-model Voting Ensemble (SVM, RF, LR, MNB) for classification
+  Future Work
+  Implement the full preprocessing pipeline & fit TF-IDF on training data
+  Train and hyperparameter-tune SVM, Random Forest, Logistic Regression & MNB
+  Calibrate SVM probabilities and build the Soft Voting Ensemble
+  Evaluate using accuracy, precision, recall & F1-score across all 40 specialties
+  Develop and deploy the Flask web application for real-time prediction
+  THANK YOU
+  Questions?
