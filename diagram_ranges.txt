@@ -1,0 +1,217 @@
+
+=== PAGE 25 ===
+y=(37.7 - 48.7), x=(171.8 - 523.3): Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+y=(80.7 - 88.7), x=(297.8 - 323.3): START
+y=(105.1 - 113.1), x=(260.2 - 360.9): Input Training TF-IDF Vectors
+y=(130.2 - 138.2), x=(256.8 - 364.3): Determine Decision Hyperplanes
+y=(154.0 - 163.6), x=(272.3 - 341.4): Calculate Margin ( 2
+y=(155.7 - 166.0), x=(334.9 - 348.7): ∥w∥)
+y=(182.1 - 190.1), x=(257.4 - 363.7): Identify Critical Support Vectors
+y=(207.2 - 215.2), x=(255.7 - 365.4): Optimize Hyperplane and Margin
+y=(261.0 - 269.0), x=(291.6 - 329.5): Converged?
+y=(315.6 - 323.5), x=(256.4 - 364.6): Trained Multi-Class SVM Model
+y=(339.9 - 347.9), x=(256.8 - 364.3): Input New Clinical Transcription
+y=(363.8 - 374.0), x=(238.6 - 361.4): Compute Decision Values fk(x) = wT
+y=(365.1 - 375.6), x=(358.0 - 381.9): k x + bk
+y=(390.2 - 398.1), x=(243.6 - 377.5): Select Maximum Margin Class (argmax)
+y=(413.9 - 421.9), x=(285.5 - 335.6): Predicted Med-
+y=(428.1 - 436.1), x=(288.6 - 332.5): ical Specialty
+y=(452.5 - 460.5), x=(302.1 - 319.0): END
+y=(256.3 - 262.3), x=(231.9 - 239.2): No
+y=(303.2 - 309.2), x=(314.8 - 323.5): Yes
+y=(472.1 - 484.1), x=(164.2 - 431.1): Figure 7: Activity Diagram of Support Vector Machine
+y=(516.8 - 528.7), x=(72.0 - 190.4): 2. Random Forest (RF)
+y=(545.5 - 557.5), x=(72.0 - 523.3): Random Forest is a high-performance ensemble learning algorithm based on de
+y=(567.2 - 579.1), x=(72.0 - 523.3): gregation. It constructs a multitude of uncorrelated decision trees during 
+y=(588.9 - 600.8), x=(72.0 - 523.3): the ensemble consensus. By combining Bootstrap Aggregation (Bagging) with r
+y=(610.5 - 622.5), x=(72.0 - 498.1): subspace selection, Random Forest mitigates variance without increasing pre
+y=(652.7 - 664.9), x=(72.0 - 523.3): A. Architectural Mechanics and Ensemble Formulation Given a training datase
+y=(674.4 - 686.5), x=(72.0 - 523.3): ical transcription records, Random Forest generates B bootstrap samples by 
+y=(696.0 - 709.4), x=(72.0 - 523.3): placement. For each bootstrap sample, an individual decision tree Tb(x) is 
+y=(717.6 - 729.9), x=(72.0 - 307.6): split node of every tree, a random subset of m =
+y=(707.4 - 719.3), x=(310.6 - 320.6): √
+y=(717.7 - 729.9), x=(320.6 - 523.3): d TF-IDF features is evaluated to identify
+y=(739.6 - 751.5), x=(72.0 - 152.7): the optimal split.
+y=(794.5 - 805.4), x=(72.0 - 523.3): Department of Computer Applications,MACE 25
+
+=== PAGE 27 ===
+y=(37.7 - 48.7), x=(171.8 - 523.3): Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+y=(77.8 - 89.8), x=(72.0 - 523.3): D. Hyperparameter Optimization The primary hyperparameters tuned for Random
+y=(99.5 - 111.5), x=(72.0 - 110.5): include:
+y=(131.7 - 144.2), x=(91.2 - 429.1): • n estimators (B): Number of decision trees (typically 100 to 300).
+y=(162.5 - 174.7), x=(91.2 - 499.2): • max depth: Maximum depth of decision trees to prevent single-tree memoriz
+y=(193.1 - 205.3), x=(91.2 - 460.5): • min samples split: Minimum samples required to split an internal node.
+y=(223.6 - 235.9), x=(91.2 - 448.3): • min samples leaf: Minimum samples required at a terminal leaf node.
+y=(256.0 - 268.0), x=(72.0 - 523.3): Random Forest captures complex non-linear keyword interactions that linear 
+y=(277.7 - 289.6), x=(72.0 - 305.3): look, adding structural diversity to the ensemble.
+y=(307.8 - 315.8), x=(297.8 - 323.3): START
+y=(332.2 - 340.2), x=(260.2 - 360.9): Input Training TF-IDF Vectors
+y=(357.4 - 365.3), x=(266.1 - 355.0): Generate Bootstrap Sample
+y=(383.4 - 391.6), x=(242.8 - 362.1): Select Random Feature Subset (m =
+y=(376.6 - 384.6), x=(364.6 - 371.2): √
+y=(383.5 - 391.6), x=(371.2 - 378.3): d)
+y=(407.6 - 415.6), x=(254.2 - 366.9): Build Decision Tree via Gini Split
+y=(461.4 - 469.4), x=(290.1 - 331.0): More Trees?
+y=(513.5 - 521.5), x=(251.6 - 369.4): Forest of Decision Trees Completed
+y=(538.7 - 546.6), x=(256.8 - 364.3): Input New Clinical Transcription
+y=(564.6 - 572.6), x=(253.6 - 367.5): Obtain Predictions from Each Tree
+y=(588.9 - 596.9), x=(263.7 - 357.3): Apply Probability Averaging
+y=(612.7 - 620.6), x=(285.5 - 335.6): Predicted Med-
+y=(626.9 - 634.8), x=(288.6 - 332.5): ical Specialty
+y=(651.3 - 659.2), x=(302.1 - 319.0): END
+y=(455.9 - 461.9), x=(231.6 - 240.3): Yes
+y=(502.0 - 508.0), x=(314.8 - 322.1): No
+y=(670.9 - 682.9), x=(186.1 - 409.2): Figure 8: Activity Diagram of Random Forest
+y=(713.4 - 725.3), x=(72.0 - 211.3): 3. Logistic Regression (LR)
+y=(742.1 - 754.1), x=(72.0 - 523.3): Logistic Regression is a foundational statistical learning algorithm for cl
+y=(763.8 - 775.8), x=(72.0 - 523.3): Belonging to the family of Generalized Linear Models (GLMs), it is extended
+y=(794.5 - 805.4), x=(72.0 - 523.3): Department of Computer Applications,MACE 27
+
+=== PAGE 29 ===
+y=(37.7 - 48.7), x=(171.8 - 523.3): Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+y=(80.7 - 88.7), x=(297.8 - 323.3): START
+y=(105.1 - 113.1), x=(260.2 - 360.9): Input Training TF-IDF Vectors
+y=(130.2 - 138.2), x=(263.3 - 357.8): Initialize Weights and Biases
+y=(154.1 - 164.8), x=(246.5 - 353.0): Calculate Linear Scores zk = wT
+y=(155.4 - 165.9), x=(349.7 - 374.0): k x + bk
+y=(180.5 - 188.5), x=(252.3 - 368.8): Apply Softmax Activation Function
+y=(205.6 - 213.6), x=(262.1 - 359.0): Calculate Cross-Entropy Loss
+y=(230.8 - 238.7), x=(249.1 - 372.0): Update Weights via Gradient Descent
+y=(284.5 - 292.5), x=(291.6 - 329.5): Converged?
+y=(338.3 - 346.3), x=(253.2 - 367.9): Trained Logistic Regression Model
+y=(363.4 - 371.4), x=(256.8 - 364.3): Input New Clinical Transcription
+y=(388.4 - 396.7), x=(245.1 - 376.0): Calculate Class Probabilities P(y = k|x)
+y=(413.7 - 421.7), x=(258.1 - 363.0): Select Highest Probability Class
+y=(437.4 - 445.4), x=(285.5 - 335.6): Predicted Med-
+y=(451.6 - 459.6), x=(288.6 - 332.5): ical Specialty
+y=(476.0 - 484.0), x=(302.1 - 319.0): END
+y=(279.8 - 285.8), x=(231.9 - 239.2): No
+y=(326.8 - 332.8), x=(314.8 - 323.5): Yes
+y=(495.6 - 507.7), x=(175.1 - 420.2): Figure 9: Activity Diagram of Logistic Regression
+y=(540.3 - 552.3), x=(72.0 - 252.0): 4. Multinomial Naive Bayes (MNB)
+y=(569.1 - 581.0), x=(72.0 - 523.3): Multinomial Naive Bayes is a specialized probabilistic classification algor
+y=(590.7 - 602.7), x=(72.0 - 523.3): Theorem, specifically formulated for discrete word counts and term frequenc
+y=(612.4 - 624.4), x=(72.0 - 219.6): document categorization tasks.
+y=(654.7 - 666.7), x=(72.0 - 523.3): A. Probabilistic Foundation and Bayes’ Theorem The algorithm computes the p
+y=(676.2 - 689.6), x=(72.0 - 523.3): probability of clinical transcription x = (x1,...,xm) belonging to medical 
+y=(698.1 - 710.1), x=(72.0 - 523.3): Bayes’ rule alongside the assumption of conditional feature independence gi
+y=(737.3 - 750.5), x=(234.0 - 305.6): P(c | x) ∝P(c)
+y=(727.1 - 761.3), x=(306.9 - 321.1): m ∏ i=1
+y=(737.3 - 751.0), x=(322.4 - 523.3): P(xi | c) (18)
+y=(794.5 - 805.4), x=(72.0 - 523.3): Department of Computer Applications,MACE 29
+
+=== PAGE 30 ===
+y=(37.7 - 48.7), x=(171.8 - 523.3): Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+y=(77.6 - 89.8), x=(72.0 - 523.3): where P(c) is the prior probability of specialty c (derived from training c
+y=(99.1 - 112.9), x=(72.0 - 313.9): P(xi | c) is the class-conditional feature likelihood.
+y=(141.8 - 153.9), x=(72.0 - 523.3): B. Feature Likelihood and Laplace Smoothing To prevent zero-probability pen
+y=(163.6 - 175.6), x=(72.0 - 523.3): clinical terms absent in the training split of a specific specialty, Laplac
+y=(185.3 - 197.2), x=(72.0 - 121.5): is applied:
+y=(198.6 - 228.6), x=(245.7 - 523.3): P(xi | c) = Nci +α Nc +α|V| (19)
+y=(238.1 - 252.1), x=(72.0 - 523.3): where Nci is the cumulative occurrence count of term xi in specialty class 
+y=(259.6 - 272.9), x=(72.0 - 523.3): count across all records in class c, |V| is the vocabulary size, and α = 1.
+y=(281.7 - 293.6), x=(72.0 - 149.3): hyperparameter.
+y=(323.9 - 336.0), x=(72.0 - 523.3): C. Computational Efficiency and Role in Medical Text Classification Multino
+y=(345.7 - 357.7), x=(72.0 - 523.3): Bayes executes in linear time with minimal memory overhead. It functions re
+y=(367.4 - 379.3), x=(72.0 - 523.3): clinical training subsets, providing an efficient baseline that contributes
+y=(389.0 - 401.0), x=(72.0 - 150.0): to the ensemble.
+y=(418.9 - 426.9), x=(284.9 - 310.4): START
+y=(443.3 - 451.3), x=(247.3 - 348.0): Input Training TF-IDF Vectors
+y=(468.4 - 476.5), x=(245.6 - 349.7): Calculate Prior Probability P(c)
+y=(493.6 - 501.5), x=(238.9 - 356.4): Compute Term Frequency per Class
+y=(518.5 - 527.3), x=(225.6 - 369.7): Apply Additive Laplace Smoothing (α = 1)
+y=(543.8 - 551.8), x=(251.9 - 343.4): Trained Naive Bayes Model
+y=(569.0 - 576.9), x=(243.9 - 351.4): Input New Clinical Transcription
+y=(594.1 - 602.1), x=(228.2 - 367.1): Apply Bayes’ Theorem for Posterior Prob.
+y=(619.2 - 627.2), x=(241.0 - 354.3): Select Maximum Probability Class
+y=(643.0 - 650.9), x=(272.6 - 322.6): Predicted Med-
+y=(657.2 - 665.1), x=(275.7 - 319.6): ical Specialty
+y=(681.6 - 689.6), x=(289.2 - 306.1): END
+y=(701.2 - 713.2), x=(158.1 - 437.1): Figure 10: Activity Diagram of Multinomial Naive Bayes
+y=(794.5 - 805.4), x=(72.0 - 523.3): Department of Computer Applications,MACE 30
+
+=== PAGE 32 ===
+y=(37.7 - 48.7), x=(171.8 - 523.3): Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+y=(80.7 - 88.7), x=(284.9 - 310.4): START
+y=(105.1 - 113.1), x=(248.8 - 346.5): Input Cleaned Text Narratives
+y=(131.0 - 139.0), x=(246.9 - 348.4): Tokenize & Generate N-Grams
+y=(155.4 - 163.3), x=(246.6 - 348.7): Compute Term Frequency (TF)
+y=(180.5 - 188.5), x=(233.7 - 361.5): Compute Inverse Doc Frequency (IDF)
+y=(205.3 - 213.6), x=(233.8 - 361.5): Calculate Composite Score (TF × IDF)
+y=(230.6 - 240.0), x=(240.8 - 354.5): Apply Euclidean L2 Normalization
+y=(255.9 - 263.9), x=(244.7 - 350.5): Construct Sparse Feature Matrix
+y=(281.7 - 289.7), x=(289.2 - 306.1): END
+y=(301.3 - 313.4), x=(155.6 - 439.7): Figure 11: Activity Diagram of TF-IDF Feature Vectorizer
+y=(346.0 - 357.9), x=(72.0 - 221.6): 6. Voting Ensemble Classifier
+y=(374.7 - 386.7), x=(72.0 - 523.3): The Voting Ensemble Classifier is the final meta-classification mechanism i
+y=(396.4 - 408.4), x=(72.0 - 523.3): tem. Rather than relying on a single learning algorithm that may exhibit in
+y=(418.1 - 430.0), x=(72.0 - 523.3): imbalanced specialties, the ensemble combines predictions from diverse cand
+y=(439.8 - 451.7), x=(72.0 - 523.3): gistic Regression, Linear SVM, Random Forest, and Multinomial Naive Bayes) 
+y=(461.4 - 473.4), x=(72.0 - 166.3): consensus decision.
+y=(503.7 - 515.8), x=(72.0 - 523.3): A. Ensemble Mechanics and Soft-Voting Aggregation Soft voting requires cali
+y=(525.0 - 537.4), x=(72.0 - 523.3): probability estimates (P(y = k | x)) across all candidate base estimators. 
+y=(547.1 - 559.1), x=(72.0 - 523.3): gression, Random Forest, and Multinomial Naive Bayes intrinsically output c
+y=(568.8 - 580.8), x=(72.0 - 523.3): ties, standard Linear SVM outputs uncalibrated margin distances. Therefore,
+y=(590.5 - 602.7), x=(72.0 - 523.4): decision scores are calibrated using CalibratedClassifierCV to produce reli
+y=(612.1 - 624.1), x=(72.0 - 523.3): probability estimates before soft-voting aggregation. In the soft-voting co
+y=(633.4 - 645.8), x=(72.0 - 523.3): calibrated base classifier m ∈{1,...,M} generates a posterior class probabi
+y=(655.1 - 668.4), x=(72.0 - 523.3): Pm(y = k | x) indicating the likelihood that a given clinical transcription
+y=(676.9 - 689.1), x=(72.0 - 523.3): specialty k. The ensemble then computes the arithmetic mean of these poster
+y=(698.6 - 710.8), x=(72.0 - 185.7): across all M estimators:
+y=(730.3 - 751.7), x=(198.5 - 311.3): Pensemble(y = k | x) = 1
+y=(746.4 - 758.4), x=(303.1 - 313.1): M
+y=(727.8 - 762.1), x=(316.1 - 334.0): M ∑ m=1
+y=(738.0 - 751.3), x=(335.3 - 523.3): Pm(y = k | x) (24)
+y=(794.5 - 805.4), x=(72.0 - 523.3): Department of Computer Applications,MACE 32
+
+=== PAGE 33 ===
+y=(37.7 - 48.7), x=(171.8 - 523.3): Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+y=(77.7 - 89.8), x=(72.0 - 523.3): B. Final Multi-Class Specialty Prediction The final predicted medical speci
+y=(99.5 - 111.5), x=(72.0 - 399.0): as the category that maximizes the aggregated ensemble probability:
+y=(138.7 - 159.2), x=(213.2 - 523.3): ˆy = arg max k∈{1,...,K}Pensemble(y = k | x) (25)
+y=(182.6 - 194.7), x=(72.0 - 523.3): C. Variance Reduction and Synergy of Diverse Estimators By integrating line
+y=(204.4 - 216.4), x=(72.0 - 525.6): bilistic modeling (Logistic Regression), maximum-margin geometric boundarie
+y=(226.1 - 238.0), x=(72.0 - 523.3): non-linear decision trees (Random Forest), and conditional frequency modeli
+y=(247.7 - 259.7), x=(72.0 - 523.3): Naive Bayes), the ensemble offsets the individual weaknesses of each classi
+y=(269.4 - 281.4), x=(72.0 - 519.7): dictive variance, and improves overall classification stability across all 
+y=(301.7 - 309.7), x=(284.9 - 310.4): START
+y=(329.8 - 337.7), x=(250.5 - 344.8): TF-IDF Feature Vector Input
+y=(377.1 - 385.1), x=(157.0 - 183.1): Logistic
+y=(391.3 - 399.3), x=(152.4 - 187.7): Regression
+y=(377.1 - 385.1), x=(244.7 - 265.5): Linear
+y=(391.3 - 399.3), x=(235.0 - 275.3): SVC / SVM
+y=(377.1 - 385.1), x=(326.7 - 353.7): Random
+y=(391.3 - 399.3), x=(330.3 - 350.1): Forest
+y=(377.1 - 385.1), x=(405.3 - 445.1): Multinomial
+y=(391.3 - 399.3), x=(404.8 - 445.6): Naive Bayes
+y=(432.1 - 440.1), x=(233.4 - 361.8): Collect Predictions from All Classifiers
+y=(460.8 - 468.7), x=(232.1 - 363.2): Apply Soft-Voting Aggregation Strategy
+y=(490.2 - 498.2), x=(235.7 - 359.5): Select Final Predicted Class (argmax)
+y=(517.7 - 525.6), x=(272.6 - 322.6): Predicted Med-
+y=(531.9 - 539.8), x=(275.7 - 319.6): ical Specialty
+y=(559.4 - 567.4), x=(289.2 - 306.0): END
+y=(579.0 - 591.1), x=(154.7 - 440.6): Figure 12: Activity Diagram of Voting Ensemble Classifier
+y=(623.7 - 635.6), x=(72.0 - 260.2): Working of the Proposed Algorithms
+y=(652.4 - 664.4), x=(72.0 - 523.3): The proposed machine learning classification framework will execute through
+y=(674.1 - 686.1), x=(72.0 - 174.3): nine sequential steps:
+y=(709.6 - 721.7), x=(86.4 - 523.3): 1. Dataset Ingestion: Ingesting the raw Kaggle MTSamples dataset containing
+y=(731.4 - 743.3), x=(101.3 - 301.1): ical records across 40 medical specialties.
+y=(762.9 - 775.0), x=(86.4 - 523.3): 2. Data Cleaning & Null Audit: Auditing and removing records with missing c
+y=(794.5 - 805.4), x=(72.0 - 523.3): Department of Computer Applications,MACE 33
+
+=== PAGE 35 ===
+y=(37.7 - 48.7), x=(171.8 - 523.3): Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+y=(77.9 - 89.8), x=(72.0 - 523.3): learning model development and voting ensemble aggregation, and finally med
+y=(99.5 - 111.5), x=(72.0 - 523.3): prediction through a user-friendly Flask web application. Each stage plays 
+y=(121.2 - 133.2), x=(72.0 - 523.3): in ensuring accurate and reliable classification across all 40 medical spec
+y=(142.9 - 154.8), x=(72.0 - 111.5): leakage.
+y=(535.4 - 547.4), x=(104.6 - 490.7): Figure 13: Project Pipeline Diagram of Medical Specialty Classification Sys
+y=(579.1 - 591.0), x=(72.0 - 324.4): The project pipeline consists of the following stages:
+y=(614.1 - 626.2), x=(86.4 - 529.1): 1. Dataset: The Kaggle MTSamples Medical Transcription Dataset containing 4
+y=(635.9 - 647.8), x=(101.3 - 445.9): clinical reports across 40 medical specialties is used as the input corpus.
+y=(667.2 - 679.3), x=(86.4 - 523.3): 2. Exploratory Data Analysis (EDA): The distribution of transcription lengt
+y=(689.0 - 701.0), x=(101.3 - 523.3): specialty frequencies, vocabulary counts, and class imbalances is systemati
+y=(710.7 - 722.6), x=(101.3 - 219.2): and statistically profiled.
+y=(742.0 - 754.1), x=(86.4 - 523.3): 3. Data Cleaning & Pruning: Raw clinical notes are audited for null values;
+y=(763.8 - 775.8), x=(101.3 - 509.3): with missing transcription narratives are removed, leaving 4,966 high-quali
+y=(794.5 - 805.4), x=(72.0 - 523.3): Department of Computer Applications,MACE 35
