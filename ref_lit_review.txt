@@ -1,0 +1,88 @@
+=== SLIDE 3 ===
+[TextBox 1] (left=0.80, top=0.28, w=6.00, h=0.30):
+   MCA MINI PROJECT  |  LITERATURE REVIEW
+[TextBox 2] (left=5.50, top=0.28, w=7.03, h=0.30):
+   Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+[TextBox 3] (left=0.80, top=0.55, w=11.73, h=0.50):
+   Literature Review: Background & Research Landscape
+[TextBox 6] (left=0.80, top=7.02, w=6.00, h=0.30):
+   Department of Computer Applications | MACE
+[TextBox 7] (left=4.50, top=7.02, w=4.50, h=0.30):
+   Mar Athanasius College of Engineering, Kothamangalam
+[TextBox 8] (left=9.53, top=7.02, w=3.00, h=0.30):
+   Slide 3 of 15
+[TextBox 10] (left=0.90, top=1.30, w=2.58, h=0.75):
+   1. Prior Literature
+   Validation of ML for clinical text
+[TextBox 12] (left=3.88, top=1.30, w=2.58, h=0.75):
+   2. Key Methodologies
+   TF-IDF vectorization & linear classifiers
+[TextBox 14] (left=6.86, top=1.30, w=2.58, h=0.75):
+   3. Identified Gap
+   High compute requirements & model variance
+[TextBox 16] (left=9.84, top=1.30, w=2.58, h=0.75):
+   4. Proposed Architecture
+   Lightweight soft voting ensemble on web
+[TextBox 19] (left=1.05, top=2.47, w=5.32, h=1.90):
+   Clinical NLP & Preprocessing
+   •  Clinical narratives contain abbreviations, punctuation noise, and non-standard doctor shorthand.
+   •  Implements a 5-step sequence: Cleaning, Lowercasing, Tokenization, Stop-word removal, and Lemmatization.
+   •  Morphological lemmatization normalizes inflected clinical terms while preserving diagnostic root semantics.
+[TextBox 22] (left=7.05, top=2.47, w=5.32, h=1.90):
+   TF-IDF Feature Representation
+   •  Converts unstructured medical text into standardized, high-dimensional sparse numerical feature vectors.
+   •  Sublinear scaling (1 + log(TF)) dampens repetitive non-informative terms while highlighting discriminative tokens.
+   •  Computationally lightweight; enables rapid CPU-based real-time inference on web platforms.
+[TextBox 25] (left=1.05, top=4.77, w=5.32, h=1.90):
+   Supervised ML Classifiers
+   •  Linear models (SVM, Logistic Regression) excel on high-dimensional sparse text representations.
+   •  Random Forest introduces non-linear decision partitioning and bagging variance reduction.
+   •  Multinomial Naive Bayes provides fast, effective probabilistic likelihood estimation for text vectors.
+[TextBox 28] (left=7.05, top=4.77, w=5.32, h=1.90):
+   Ensemble Learning & Research Gap
+   •  Identified Gap: Many deep learning approaches demand heavy GPU resources, while single models show variance on rare specialties.
+   •  Proposed Solution: An accessible Soft Voting Ensemble combining calibrated base models for balanced classification.
+   •  Practical Outcome: Achieves robust multi-class accuracy across all 40 specialties on standard CPU hardware.
+=== SLIDE 4 ===
+[TextBox 1] (left=0.80, top=0.28, w=6.00, h=0.30):
+   MCA MINI PROJECT  |  LITERATURE REVIEW
+[TextBox 2] (left=5.50, top=0.28, w=7.03, h=0.30):
+   Medical Specialty Classification using TF-IDF and Ensemble Machine Learning
+[TextBox 3] (left=0.80, top=0.55, w=11.73, h=0.50):
+   Summary of Key Research Papers
+[TextBox 6] (left=0.80, top=7.02, w=6.00, h=0.30):
+   Department of Computer Applications | MACE
+[TextBox 7] (left=4.50, top=7.02, w=4.50, h=0.30):
+   Mar Athanasius College of Engineering, Kothamangalam
+[TextBox 8] (left=9.53, top=7.02, w=3.00, h=0.30):
+   Slide 4 of 15
+[TextBox 11] (left=1.00, top=1.50, w=3.35, h=5.08):
+   PAPER 1
+   Clinical Text Classification with Word Representation Features and Machine Learning
+   Authors: Omar AM, Elhoseny M, Hassanien AM (2023)
+   METHODOLOGY & DATASET:
+   EMR Clinical Transcriptions | Evaluated BOW, TF-IDF, and Word2Vec across LR, SVM, Naive Bayes, and k-NN.
+   KEY RESEARCH FINDING:
+   Linear classifiers and SVM proved highly effective and computationally efficient on high-dimensional text vectors.
+   DIRECT RELEVANCE TO OUR SYSTEM:
+   Establishes our multi-phase text preprocessing and TF-IDF feature representation pipeline.
+[TextBox 14] (left=4.99, top=1.50, w=3.35, h=5.08):
+   PAPER 2
+   Medical Specialty Classification Based on Semiadversarial Data Augmentation
+   Authors: Zhang H, Zhu D, Tan H, Shafiq M, Gu Z (2023)
+   METHODOLOGY & DATASET:
+   Kaggle Medical Specialty Dataset | Evaluated domain noun weighting and feature representations across specialty classes.
+   KEY RESEARCH FINDING:
+   Domain-specific medical nouns carry the strongest discriminative signal for specialty categorization.
+   DIRECT RELEVANCE TO OUR SYSTEM:
+   Highlights class imbalance in MTSamples; motivates an accessible TF-IDF ensemble for all 40 classes on standard CPUs.
+[TextBox 17] (left=8.98, top=1.50, w=3.35, h=5.08):
+   PAPER 3
+   A Keyword-Enhanced Approach to Handle Class Imbalance in Clinical Text
+   Authors: Blanchard AE, Gao S, Yoon HJ, Tourassi G (2022)
+   METHODOLOGY & DATASET:
+   Clinical Pathology Reports | Evaluated keyword-constrained weighting on imbalanced clinical narratives.
+   KEY RESEARCH FINDING:
+   Targeted keyword features improved classification on minority classes without degrading majority performance.
+   DIRECT RELEVANCE TO OUR SYSTEM:
+   Confirms n-gram keyword weighting preserves rare specialty signals, justifying TF-IDF and stratified evaluation.
