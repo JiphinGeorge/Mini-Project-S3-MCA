@@ -1,0 +1,912 @@
+
+==================== SLIDE 1 ====================
+[Text 4] (left=0.90, top=1.05, w=3.10, h=0.40):
+  'MCA MINI PROJECT'
+[Text 5] (left=0.90, top=1.75, w=10.40, h=2.00):
+  'Medical Specialty Classification Using TF-IDF and Ensemble Machine Learning'
+[Text 7] (left=0.90, top=4.15, w=8.00, h=0.50):
+  'First Project Presentation'
+[Text 8] (left=0.90, top=5.90, w=8.00, h=0.40):
+  'Department of Computer Applications'
+[Text 9] (left=0.90, top=6.28, w=8.00, h=0.40):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 11] (left=0.90, top=6.85, w=0.72, h=0.34):
+  'NLP'
+[Text 13] (left=1.80, top=6.85, w=1.02, h=0.34):
+  'TF-IDF'
+[Text 15] (left=3.00, top=6.85, w=1.52, h=0.34):
+  'Ensemble ML'
+[Text 17] (left=4.70, top=6.85, w=2.02, h=0.34):
+  'Flask Deployment'
+
+==================== SLIDE 2 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | INTRODUCTION'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Problem Statement & Objectives'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 2 of 20'
+[Text 8] (left=0.84, top=2.01, w=0.62, h=0.62):
+  '!'
+[Text 9] (left=1.55, top=2.00, w=4.60, h=0.40):
+  'Problem'
+[Text 10] (left=0.85, top=2.55, w=5.25, h=1.20):
+  'Clinical transcription data is unstructured and can belong to any of several medical specialties, making manual categorization by medical coders slow, inconsistent, and prone to human error as patient volumes grow.'
+[Text 13] (left=6.94, top=2.01, w=0.62, h=0.62):
+  '→'
+[Text 14] (left=7.65, top=2.00, w=5.00, h=0.40):
+  'Objective'
+[Text 15] (left=6.95, top=2.55, w=5.60, h=1.20):
+  'Develop an automated NLP and Ensemble Machine Learning system that predicts the correct medical specialty from a clinical transcription, reducing administrative overhead and speeding up document routing.'
+[Text 16] (left=0.50, top=4.15, w=6.00, h=0.35):
+  'Key Project Objectives'
+[Text 19] (left=1.73, top=4.84, w=0.55, h=0.55):
+  'EDA'
+[Text 20] (left=0.62, top=5.54, w=2.76, h=0.35):
+  'Explore & Analyze'
+[Text 21] (left=0.64, top=5.90, w=2.72, h=0.78):
+  'Conduct EDA on the Kaggle MTSamples clinical transcription dataset.'
+[Text 24] (left=4.88, top=4.84, w=0.55, h=0.55):
+  'NLP'
+[Text 25] (left=3.77, top=5.54, w=2.76, h=0.35):
+  'Preprocess Text'
+[Text 26] (left=3.79, top=5.90, w=2.72, h=0.78):
+  'Clean, tokenize, remove stop-words and lemmatize clinical narratives.'
+[Text 29] (left=8.03, top=4.84, w=0.55, h=0.55):
+  'TF'
+[Text 30] (left=6.92, top=5.54, w=2.76, h=0.35):
+  'Extract Features'
+[Text 31] (left=6.94, top=5.90, w=2.72, h=0.78):
+  'Vectorize clinical text into numeric form using TF-IDF.'
+[Text 34] (left=11.18, top=4.84, w=0.55, h=0.55):
+  '⊕'
+[Text 35] (left=10.07, top=5.54, w=2.76, h=0.35):
+  'Ensemble & Deploy'
+[Text 36] (left=10.09, top=5.90, w=2.72, h=0.78):
+  'Combine SVM, RF, LR, MNB via Voting; deploy on a Flask web app.'
+
+==================== SLIDE 3 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | SUPPORTING LITERATURE'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Literature Review'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 3 of 20'
+[Text 8] (left=0.75, top=1.93, w=3.52, h=0.32):
+  'Paper 1 • 2023'
+[Text 9] (left=0.75, top=2.36, w=3.52, h=0.55):
+  'Omar et al. — iJOE'
+[Text 10] (left=0.75, top=3.00, w=3.52, h=0.24):
+  'METHOD'
+[Text 11] (left=0.75, top=3.24, w=3.52, h=0.62):
+  'BOW / TF-IDF / Word2Vec + LR, SVM, Naive Bayes, k-NN'
+[Text 12] (left=0.75, top=4.00, w=3.52, h=0.24):
+  'KEY FINDING'
+[Text 13] (left=0.75, top=4.24, w=3.52, h=0.72):
+  'Word2Vec + k-NN achieved the highest accuracy of 92%, but k-NN scales poorly for large databases.'
+[Text 14] (left=0.75, top=5.10, w=3.52, h=0.24):
+  'RELEVANCE TO THIS PROJECT'
+[Text 15] (left=0.75, top=5.34, w=3.52, h=0.80):
+  'Establishes the standard 4-phase text preprocessing & vectorization pipeline used in this project.'
+[Text 18] (left=4.90, top=1.93, w=3.52, h=0.32):
+  'Paper 2 • 2023'
+[Text 19] (left=4.90, top=2.36, w=3.52, h=0.55):
+  'Zhang et al. — Hindawi CIN'
+[Text 20] (left=4.90, top=3.00, w=3.52, h=0.24):
+  'METHOD'
+[Text 21] (left=4.90, top=3.24, w=3.52, h=0.62):
+  'SemiADA synthetic data augmentation + BERT, on an 18-class MTSamples subset'
+[Text 22] (left=4.90, top=4.00, w=3.52, h=0.24):
+  'KEY FINDING'
+[Text 23] (left=4.90, top=4.24, w=3.52, h=0.72):
+  'Achieved a +14.9% average gain in accuracy and F1-score over baseline, but needs GPU-heavy BERT fine-tuning.'
+[Text 24] (left=4.90, top=5.10, w=3.52, h=0.24):
+  'RELEVANCE TO THIS PROJECT'
+[Text 25] (left=4.90, top=5.34, w=3.52, h=0.80):
+  'Highlights class imbalance in MTSamples and motivates a lightweight TF-IDF + ensemble alternative.'
+[Text 28] (left=9.05, top=1.93, w=3.52, h=0.32):
+  'Paper 3 • 2022'
+[Text 29] (left=9.05, top=2.36, w=3.52, h=0.55):
+  'Blanchard et al. — IEEE JBHI'
+[Text 30] (left=9.05, top=3.00, w=3.52, h=0.24):
+  'METHOD'
+[Text 31] (left=9.05, top=3.24, w=3.52, h=0.62):
+  'CNN with keyword-constrained loss on the NCI SEER pathology registry'
+[Text 32] (left=9.05, top=4.00, w=3.52, h=0.24):
+  'KEY FINDING'
+[Text 33] (left=9.05, top=4.24, w=3.52, h=0.72):
+  'Keyword injection improved macro F1 and recall on rare classes without hurting majority performance.'
+[Text 34] (left=9.05, top=5.10, w=3.52, h=0.24):
+  'RELEVANCE TO THIS PROJECT'
+[Text 35] (left=9.05, top=5.34, w=3.52, h=0.80):
+  'Justifies using TF-IDF keyword / n-gram weighting to preserve signal for rare specialty classes.'
+
+==================== SLIDE 4 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | DATA ANALYSIS'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Dataset Overview'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 4 of 20'
+[Text 7] (left=0.85, top=1.85, w=8.50, h=0.40):
+  'Kaggle Medical Transcriptions (MTSamples) Dataset'
+[Text 8] (left=0.85, top=2.28, w=8.50, h=0.30):
+  'Source: kaggle.com/datasets/tboyle10/medicaltranscriptions'
+[Text 9] (left=0.85, top=2.62, w=8.40, h=0.50):
+  'Authentic clinical dictations covering patient histories, diagnostic evaluations, physical exams, and surgical procedures across many healthcare sub-disciplines.'
+[Text 10] (left=9.55, top=1.72, w=1.05, h=0.55):
+  '4,999'
+[Text 11] (left=9.40, top=2.28, w=1.35, h=0.55):
+  'Clinical Records'
+[Text 12] (left=10.70, top=1.72, w=1.05, h=0.55):
+  '40'
+[Text 13] (left=10.55, top=2.28, w=1.35, h=0.55):
+  'Medical Specialties'
+[Text 14] (left=11.85, top=1.72, w=1.05, h=0.55):
+  '6'
+[Text 15] (left=11.70, top=2.28, w=1.35, h=0.55):
+  'Dataset Columns'
+[Text 16] (left=0.50, top=3.50, w=5.00, h=0.35):
+  'Dataset Columns'
+[Text 18] (left=0.68, top=3.95, w=1.90, h=0.42):
+  'Unnamed: 0'
+[Text 19] (left=2.60, top=3.95, w=3.90, h=0.42):
+  'Record index / row identifier'
+[Text 20] (left=0.68, top=4.37, w=1.90, h=0.42):
+  'description'
+[Text 21] (left=2.60, top=4.37, w=3.90, h=0.42):
+  'Short one–two sentence clinical abstract'
+[Text 23] (left=0.68, top=4.79, w=1.90, h=0.42):
+  'medical_specialty'
+[Text 24] (left=2.60, top=4.79, w=3.90, h=0.42):
+  'Target label — 40 specialty classes'
+[Text 25] (left=0.68, top=5.21, w=1.90, h=0.42):
+  'sample_name'
+[Text 26] (left=2.60, top=5.21, w=3.90, h=0.42):
+  'Dictation / report title'
+[Text 28] (left=0.68, top=5.63, w=1.90, h=0.42):
+  'transcription'
+[Text 29] (left=2.60, top=5.63, w=3.90, h=0.42):
+  'Primary clinical narrative (input feature)'
+[Text 30] (left=0.68, top=6.05, w=1.90, h=0.42):
+  'keywords'
+[Text 31] (left=2.60, top=6.05, w=3.90, h=0.42):
+  'Comma-delimited extracted clinical terms'
+[Text 34] (left=7.30, top=3.82, w=0.50, h=0.50):
+  'IN'
+[Text 35] (left=7.95, top=3.66, w=4.70, h=0.30):
+  'Input Variable'
+[Text 36] (left=7.95, top=3.95, w=4.70, h=0.50):
+  'transcription — the primary clinical narrative text'
+[Text 39] (left=7.30, top=5.10, w=0.50, h=0.50):
+  'Y'
+[Text 40] (left=7.95, top=4.94, w=4.70, h=0.30):
+  'Target Variable'
+[Text 41] (left=7.95, top=5.23, w=4.70, h=0.50):
+  'medical_specialty — 40 unique clinical specialty classes'
+[Text 43] (left=7.20, top=6.08, w=5.40, h=0.85):
+  'Sparsity: transcription is 99.3% complete (33 missing); medical_specialty has zero missing values.'
+
+==================== SLIDE 5 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | DATA ANALYSIS'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Statistical Analysis of the Dataset'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 5 of 20'
+[Text 6] (left=0.50, top=1.62, w=3.60, h=0.32):
+  'Libraries Used'
+[Text 8] (left=0.50, top=2.00, w=1.38, h=0.40):
+  'pandas'
+[Text 10] (left=2.03, top=2.00, w=1.30, h=0.40):
+  'numpy'
+[Text 11] (left=0.50, top=2.62, w=3.60, h=0.30):
+  'Exploration Functions Applied'
+[Text 13] (left=0.50, top=3.00, w=1.75, h=0.40):
+  'shape'
+[Text 15] (left=2.38, top=3.00, w=1.75, h=0.40):
+  '.info()'
+[Text 17] (left=4.26, top=3.00, w=1.75, h=0.40):
+  '.dtypes'
+[Text 19] (left=0.50, top=3.46, w=1.75, h=0.40):
+  '.describe()'
+[Text 21] (left=2.38, top=3.46, w=1.75, h=0.40):
+  '.head()'
+[Text 23] (left=4.26, top=3.46, w=1.75, h=0.40):
+  '.columns'
+[Text 25] (left=0.75, top=4.32, w=5.50, h=0.30):
+  'Key Findings'
+[Text 26] (left=0.75, top=4.65, w=5.50, h=1.95):
+  '4,999 rows × 6 columns confirmed via shape and info() — no structural corruption\nmedical_specialty (target) has zero missing values across all 4,999 records\ntranscription has 33 missing records (0.66%)\nkeywords has 1,068 missing records — too sparse for primary modeling\ndescribe() confirms transcription is free-form text of variable length'
+[Text 28] (left=7.10, top=1.78, w=5.50, h=0.30):
+  'df.info()  —  representative output'
+[Text 30] (left=7.25, top=2.20, w=2.50, h=0.42):
+  'Column'
+[Text 31] (left=9.80, top=2.20, w=1.30, h=0.42):
+  'Dtype'
+[Text 32] (left=11.05, top=2.20, w=1.40, h=0.42):
+  'Missing'
+[Text 34] (left=7.25, top=2.62, w=2.50, h=0.42):
+  'Unnamed: 0'
+[Text 35] (left=9.80, top=2.62, w=1.30, h=0.42):
+  'int64'
+[Text 36] (left=11.05, top=2.62, w=1.40, h=0.42):
+  '0'
+[Text 38] (left=7.25, top=3.04, w=2.50, h=0.42):
+  'description'
+[Text 39] (left=9.80, top=3.04, w=1.30, h=0.42):
+  'object'
+[Text 40] (left=11.05, top=3.04, w=1.40, h=0.42):
+  '6'
+[Text 42] (left=7.25, top=3.46, w=2.50, h=0.42):
+  'medical_specialty'
+[Text 43] (left=9.80, top=3.46, w=1.30, h=0.42):
+  'object'
+[Text 44] (left=11.05, top=3.46, w=1.40, h=0.42):
+  '0'
+[Text 46] (left=7.25, top=3.88, w=2.50, h=0.42):
+  'sample_name'
+[Text 47] (left=9.80, top=3.88, w=1.30, h=0.42):
+  'object'
+[Text 48] (left=11.05, top=3.88, w=1.40, h=0.42):
+  '0'
+[Text 50] (left=7.25, top=4.30, w=2.50, h=0.42):
+  'transcription'
+[Text 51] (left=9.80, top=4.30, w=1.30, h=0.42):
+  'object'
+[Text 52] (left=11.05, top=4.30, w=1.40, h=0.42):
+  '33'
+[Text 54] (left=7.25, top=4.72, w=2.50, h=0.42):
+  'keywords'
+[Text 55] (left=9.80, top=4.72, w=1.30, h=0.42):
+  'object'
+[Text 56] (left=11.05, top=4.72, w=1.40, h=0.42):
+  '1,068'
+[Text 57] (left=7.10, top=5.29, w=5.50, h=0.35):
+  'Total: 4,999 entries, 6 columns (RangeIndex 0–4998)'
+
+==================== SLIDE 6 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | DATA ANALYSIS'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Exploratory Data Analysis: Data Quality'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 6 of 20'
+[Text 7] (left=0.75, top=6.10, w=6.80, h=0.60):
+  'Figure: Missing Values by Dataset Attribute (isnull().sum())'
+[Text 8] (left=8.05, top=1.65, w=4.80, h=0.32):
+  'Functions & Libraries'
+[Text 9] (left=8.05, top=2.00, w=4.80, h=0.90):
+  'pandas: .isnull().sum(), .duplicated()\nmatplotlib / seaborn for the bar chart'
+[Text 11] (left=8.30, top=3.10, w=4.30, h=0.30):
+  'Observations'
+[Text 12] (left=8.30, top=3.45, w=4.30, h=3.25):
+  'transcription: 33 missing records (0.66%) — dropped during cleaning\nkeywords: 1,068 missing records — excluded from primary features\ndescription: 6 missing records\nmedical_specialty (target): 0 missing values\nDuplicate check via .duplicated() confirmed no duplicate clinical reports in the corpus'
+
+==================== SLIDE 7 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | DATA VISUALIZATION'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Class Distribution Across 40 Specialties'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 7 of 20'
+[Text 7] (left=0.70, top=6.50, w=7.10, h=0.30):
+  'Figure: Full Distribution of Medical Specialties (40 classes)'
+[Text 8] (left=8.28, top=1.65, w=4.55, h=0.30):
+  'Library: Matplotlib / Seaborn'
+[Text 10] (left=8.50, top=2.15, w=1.60, h=0.55):
+  '1,103'
+[Text 11] (left=8.50, top=2.72, w=3.90, h=0.40):
+  'Surgery — largest class'
+[Text 13] (left=8.50, top=3.42, w=1.60, h=0.55):
+  '2'
+[Text 14] (left=8.50, top=3.99, w=3.90, h=0.42):
+  'Autopsy & Executive Evaluation — smallest classes'
+[Text 16] (left=8.53, top=4.74, w=4.00, h=0.30):
+  'Insight'
+[Text 17] (left=8.53, top=5.08, w=4.05, h=1.85):
+  'The dataset exhibits severe class imbalance — majority classes contain hundreds to over a thousand records while minority specialties have under 10. This motivates stratified 80:20 train-test splitting to preserve class proportions, and soft-voting ensemble consensus to avoid bias toward majority classes.'
+
+==================== SLIDE 8 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | DATA VISUALIZATION'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Clinical Transcription Text Analysis'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 8 of 20'
+[Text 6] (left=0.50, top=1.55, w=6.00, h=0.30):
+  'Library: Matplotlib / Seaborn / WordCloud'
+[Text 8] (left=0.60, top=4.63, w=6.00, h=0.25):
+  'Fig: Transcription Length Distribution'
+[Text 10] (left=6.93, top=4.63, w=5.80, h=0.25):
+  'Fig: Word Cloud of Common Clinical Terms'
+[Text 12] (left=0.75, top=5.28, w=4.00, h=0.30):
+  'Key Insights'
+[Text 13] (left=0.75, top=5.60, w=11.85, h=1.20):
+  "Median narrative length is ~350–500 words; distribution is right-skewed, extending up to ~3,000 words\nFrequent terms (“placed”, “noted”, “used”, “time”, “removed”) are generic clinical-documentation vocabulary shared across specialties\nVariable length and generic high-frequency terms motivate TF-IDF's IDF weighting and L2 normalization to emphasize specialty-specific vocabulary"
+
+==================== SLIDE 9 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | DATA ANALYSIS'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'EDA Insights & Conclusions'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 9 of 20'
+[Text 8] (left=0.70, top=1.92, w=0.60, h=0.60):
+  '⚠'
+[Text 9] (left=1.40, top=1.94, w=2.88, h=0.60):
+  'Severe Class Imbalance'
+[Text 10] (left=0.78, top=2.64, w=3.42, h=1.30):
+  'Surgery (1,103) vs. Autopsy (2) — requires stratified splitting & ensemble voting.'
+[Text 13] (left=4.83, top=1.92, w=0.60, h=0.60):
+  '↔'
+[Text 14] (left=5.53, top=1.94, w=2.88, h=0.60):
+  'Variable Text Length'
+[Text 15] (left=4.91, top=2.64, w=3.42, h=1.30):
+  '200–3,000 words per report — needs TF-IDF with L2 normalization.'
+[Text 18] (left=8.96, top=1.92, w=0.60, h=0.60):
+  '≡'
+[Text 19] (left=9.66, top=1.94, w=2.88, h=0.60):
+  'High-Dimensional Text'
+[Text 20] (left=9.04, top=2.64, w=3.42, h=1.30):
+  'Large free-text vocabulary → sparse, high-dimensional TF-IDF vectors.'
+[Text 23] (left=0.70, top=4.42, w=0.60, h=0.60):
+  '⊘'
+[Text 24] (left=1.40, top=4.44, w=2.88, h=0.60):
+  'Generic Vocabulary Noise'
+[Text 25] (left=0.78, top=5.14, w=3.42, h=1.30):
+  'Common words dominate raw counts → IDF weighting needed to surface specialty terms.'
+[Text 28] (left=4.83, top=4.42, w=0.60, h=0.60):
+  '✗'
+[Text 29] (left=5.53, top=4.44, w=2.88, h=0.60):
+  'Sparse Keywords Field'
+[Text 30] (left=4.91, top=5.14, w=3.42, h=1.30):
+  '1,068 missing keyword entries — excluded from the primary feature set.'
+[Text 33] (left=8.96, top=4.42, w=0.60, h=0.60):
+  '✓'
+[Text 34] (left=9.66, top=4.44, w=2.88, h=0.60):
+  'Multi-Metric Evaluation'
+[Text 35] (left=9.04, top=5.14, w=3.42, h=1.30):
+  'Accuracy alone is misleading under imbalance — use precision, recall & F1.'
+
+==================== SLIDE 10 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | DATA PREPROCESSING'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Clinical Text Data Cleaning Pipeline'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 10 of 20'
+[Text 6] (left=0.50, top=1.55, w=12.30, h=0.40):
+  'Eight sequential operations transform raw, noisy clinical dictations into clean input suitable for TF-IDF vectorization.'
+[Text 9] (left=0.68, top=2.33, w=0.50, h=0.50):
+  '1'
+[Text 10] (left=0.70, top=2.93, w=2.53, h=0.55):
+  'Remove Missing Values'
+[Text 11] (left=0.70, top=3.47, w=2.53, h=0.65):
+  'Drop 33 records with empty transcription'
+[Text 15] (left=3.73, top=2.33, w=0.50, h=0.50):
+  '2'
+[Text 16] (left=3.75, top=2.93, w=2.53, h=0.55):
+  'Remove Duplicates'
+[Text 17] (left=3.75, top=3.47, w=2.53, h=0.65):
+  'Verify no duplicate clinical reports exist'
+[Text 21] (left=6.78, top=2.33, w=0.50, h=0.50):
+  '3'
+[Text 22] (left=6.80, top=2.93, w=2.53, h=0.55):
+  'Lowercasing'
+[Text 23] (left=6.80, top=3.47, w=2.53, h=0.65):
+  'Standardize character casing'
+[Text 27] (left=9.83, top=2.33, w=0.50, h=0.50):
+  '4'
+[Text 28] (left=9.85, top=2.93, w=2.53, h=0.55):
+  'Remove Punctuation'
+[Text 29] (left=9.85, top=3.47, w=2.53, h=0.65):
+  'Strip commas, periods, symbols'
+[Text 32] (left=0.68, top=4.73, w=0.50, h=0.50):
+  '5'
+[Text 33] (left=0.70, top=5.33, w=2.53, h=0.55):
+  'Remove Special Characters'
+[Text 34] (left=0.70, top=5.87, w=2.53, h=0.65):
+  'Remove digits & non-alphanumeric symbols'
+[Text 38] (left=3.73, top=4.73, w=0.50, h=0.50):
+  '6'
+[Text 39] (left=3.75, top=5.33, w=2.53, h=0.55):
+  'Tokenization'
+[Text 40] (left=3.75, top=5.87, w=2.53, h=0.65):
+  'Segment narratives into word tokens'
+[Text 44] (left=6.78, top=4.73, w=0.50, h=0.50):
+  '7'
+[Text 45] (left=6.80, top=5.33, w=2.53, h=0.55):
+  'Stop-Word Removal'
+[Text 46] (left=6.80, top=5.87, w=2.53, h=0.65):
+  'Filter generic words, preserve clinical terms'
+[Text 50] (left=9.83, top=4.73, w=0.50, h=0.50):
+  '8'
+[Text 51] (left=9.85, top=5.33, w=2.53, h=0.55):
+  'Lemmatization'
+[Text 52] (left=9.85, top=5.87, w=2.53, h=0.65):
+  'Map tokens to base form (WordNet Lemmatizer)'
+
+==================== SLIDE 11 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | DATA PREPROCESSING'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Feature Extraction Using TF-IDF'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 11 of 20'
+[Text 6] (left=0.50, top=1.55, w=12.30, h=0.55):
+  'TF-IDF (Term Frequency – Inverse Document Frequency) converts preprocessed clinical text into high-dimensional numeric feature vectors that machine learning classifiers can use.'
+[Text 9] (left=0.78, top=2.44, w=3.52, h=0.35):
+  'Term Frequency'
+[Text 10] (left=0.78, top=2.85, w=3.52, h=0.65):
+  'TF(t,d) = 1 + log( fₜ,d )'
+[Text 13] (left=4.93, top=2.44, w=3.52, h=0.35):
+  'Inverse Document Frequency'
+[Text 14] (left=4.93, top=2.85, w=3.52, h=0.65):
+  'IDF(t,D) = log( (1+|D|) / (1+df(t)) ) + 1'
+[Text 17] (left=9.08, top=2.44, w=3.52, h=0.35):
+  'TF-IDF Weight'
+[Text 18] (left=9.08, top=2.85, w=3.52, h=0.65):
+  'TF-IDF(t,d,D) = TF(t,d) × IDF(t,D)'
+[Text 19] (left=0.50, top=3.95, w=5.00, h=0.32):
+  'Vectorization Flow'
+[Text 21] (left=0.50, top=4.35, w=2.55, h=1.00):
+  'Clinical\nText'
+[Text 24] (left=3.60, top=4.35, w=2.55, h=1.00):
+  'Text\nPreprocessing'
+[Text 27] (left=6.70, top=4.35, w=2.55, h=1.00):
+  'TF-IDF\nVectorizer'
+[Text 30] (left=9.80, top=4.35, w=2.55, h=1.00):
+  'Sparse Feature\nMatrix (L2-norm)'
+[Text 32] (left=0.75, top=5.78, w=11.85, h=0.98):
+  '⚠  TF-IDF is a feature extraction / vectorization technique — it is NOT a classification algorithm. It transforms text into numeric vectors; SVM, Random Forest, Logistic Regression and Multinomial Naive Bayes are the classifiers that use these vectors to predict a specialty. The vectorizer also extracts unigrams and bigrams (e.g. “coronary artery”) and applies sublinear TF scaling with Euclidean L2 normalization.'
+
+==================== SLIDE 12 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | DATA ANALYSIS'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Pre-Processed Dataset Structure'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 12 of 20'
+[Text 7] (left=0.50, top=1.60, w=6.00, h=0.62):
+  'CURRENT: Explored & Cleaned Dataset'
+[Text 9] (left=6.80, top=1.60, w=6.03, h=0.62):
+  'PROPOSED: Fully Text-Preprocessed Output'
+[Text 11] (left=0.75, top=2.58, w=5.50, h=0.40):
+  'After removing 33 records with missing transcription (Table 6 audit):'
+[Text 12] (left=0.75, top=3.05, w=2.20, h=0.34):
+  'shape'
+[Text 13] (left=2.95, top=3.05, w=3.20, h=0.34):
+  '(4,966, 6)'
+[Text 14] (left=0.75, top=3.45, w=2.20, h=0.34):
+  'columns'
+[Text 15] (left=2.95, top=3.45, w=3.20, h=0.34):
+  '6 fields'
+[Text 16] (left=0.75, top=3.85, w=2.20, h=0.34):
+  'target classes'
+[Text 17] (left=2.95, top=3.85, w=3.20, h=0.34):
+  '40'
+[Text 18] (left=0.75, top=4.33, w=5.40, h=0.30):
+  'dtypes'
+[Text 20] (left=0.85, top=4.67, w=3.20, h=0.30):
+  'Unnamed: 0'
+[Text 21] (left=4.10, top=4.67, w=2.00, h=0.30):
+  'int64'
+[Text 22] (left=0.85, top=4.97, w=3.20, h=0.30):
+  'description'
+[Text 23] (left=4.10, top=4.97, w=2.00, h=0.30):
+  'object'
+[Text 25] (left=0.85, top=5.27, w=3.20, h=0.30):
+  'medical_specialty'
+[Text 26] (left=4.10, top=5.27, w=2.00, h=0.30):
+  'object'
+[Text 27] (left=0.85, top=5.57, w=3.20, h=0.30):
+  'sample_name'
+[Text 28] (left=4.10, top=5.57, w=2.00, h=0.30):
+  'object'
+[Text 30] (left=0.85, top=5.87, w=3.20, h=0.30):
+  'transcription'
+[Text 31] (left=4.10, top=5.87, w=2.00, h=0.30):
+  'object'
+[Text 32] (left=0.85, top=6.17, w=3.20, h=0.30):
+  'keywords'
+[Text 33] (left=4.10, top=6.17, w=2.00, h=0.30):
+  'object'
+[Text 35] (left=7.05, top=2.58, w=5.50, h=0.75):
+  'Once the full 8-step cleaning pipeline (Slide 10) and lemmatization are executed, the transcription column will hold clean, lowercase, lemmatized token text — ready for TF-IDF fitting.'
+[Text 36] (left=7.05, top=3.42, w=5.50, h=0.30):
+  'Planned verification functions:'
+[Text 37] (left=7.05, top=3.78, w=5.50, h=1.60):
+  'head() / tail() — preview cleaned narrative text\nshape — confirm 4,966 rows retained post-cleaning\ninfo() / dtypes — confirm object dtype for text columns\ndescribe() — summarize categorical target distribution'
+[Text 39] (left=7.05, top=5.68, w=5.55, h=0.90):
+  'This stage is a proposed methodology step — not yet executed as final results. It will be implemented in the upcoming model-development phase.'
+
+==================== SLIDE 13 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | PROPOSED ALGORITHMS'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Proposed Machine Learning Algorithms'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 13 of 20'
+[Text 8] (left=1.63, top=1.84, w=0.72, h=0.72):
+  'SVM'
+[Text 9] (left=0.65, top=2.67, w=2.68, h=0.55):
+  'Support Vector Machine'
+[Text 10] (left=0.68, top=3.20, w=2.62, h=0.95):
+  'Finds the maximum-margin hyperplane; excels on sparse, high-dimensional TF-IDF vectors with natural linear separability.'
+[Text 13] (left=4.74, top=1.84, w=0.72, h=0.72):
+  'RF'
+[Text 14] (left=3.76, top=2.67, w=2.68, h=0.55):
+  'Random Forest'
+[Text 15] (left=3.79, top=3.20, w=2.62, h=0.95):
+  'Aggregates many decision trees via bagging; captures non-linear keyword interactions other models may miss.'
+[Text 18] (left=7.85, top=1.84, w=0.72, h=0.72):
+  'LR'
+[Text 19] (left=6.87, top=2.67, w=2.68, h=0.55):
+  'Logistic Regression'
+[Text 20] (left=6.90, top=3.20, w=2.62, h=0.95):
+  'Multinomial Softmax baseline; highly interpretable odds ratios for clinical term importance.'
+[Text 23] (left=10.96, top=1.84, w=0.72, h=0.72):
+  'MNB'
+[Text 24] (left=9.98, top=2.67, w=2.68, h=0.55):
+  'Multinomial Naive Bayes'
+[Text 25] (left=10.01, top=3.20, w=2.62, h=0.95):
+  'Probabilistic, count-based model; computationally efficient and reliable even on smaller class subsets.'
+[Text 27] (left=0.65, top=4.57, w=2.30, h=0.28):
+  'FEATURE EXTRACTION'
+[Text 28] (left=0.65, top=4.85, w=2.30, h=0.60):
+  'TF-IDF'
+[Text 30] (left=3.31, top=4.57, w=6.30, h=0.28):
+  'CLASSIFICATION'
+[Text 31] (left=3.31, top=4.85, w=6.30, h=0.60):
+  'SVM + Random Forest + Logistic Regression + Multinomial NB'
+[Text 33] (left=9.98, top=4.57, w=2.83, h=0.28):
+  'ENSEMBLE'
+[Text 34] (left=9.98, top=4.85, w=2.83, h=0.60):
+  'Voting Classifier (Soft Voting)'
+[Text 36] (left=0.75, top=5.75, w=11.85, h=1.00):
+  'ℹ  Soft voting requires calibrated probability estimates from every base classifier. Standard Linear SVM outputs uncalibrated decision-margin distances, so its scores are planned to be calibrated (e.g. via CalibratedClassifierCV / Platt scaling) before joining the soft-voting aggregation.'
+
+==================== SLIDE 14 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | PROPOSED ALGORITHMS'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Training Workflow — Avoiding Data Leakage'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 14 of 20'
+[Text 8] (left=3.70, top=1.68, w=0.34, h=0.34):
+  '1'
+[Text 9] (left=4.16, top=1.62, w=5.43, h=0.46):
+  'Dataset (4,999 records)'
+[Text 13] (left=3.70, top=2.21, w=0.34, h=0.34):
+  '2'
+[Text 14] (left=4.16, top=2.15, w=5.43, h=0.46):
+  'Initial Data Cleaning & Null Audit'
+[Text 18] (left=3.70, top=2.75, w=0.34, h=0.34):
+  '3'
+[Text 19] (left=4.16, top=2.69, w=5.43, h=0.46):
+  'Stratified Train–Test Split (80:20)'
+[Text 23] (left=3.70, top=3.29, w=0.34, h=0.34):
+  '4'
+[Text 24] (left=4.16, top=3.23, w=5.43, h=0.46):
+  'Text Preprocessing (train & test)'
+[Text 28] (left=3.70, top=3.82, w=0.34, h=0.34):
+  '5'
+[Text 29] (left=4.16, top=3.76, w=5.43, h=0.46):
+  'Fit TF-IDF Vectorizer on Training Data Only'
+[Text 33] (left=3.70, top=4.36, w=0.34, h=0.34):
+  '6'
+[Text 34] (left=4.16, top=4.29, w=5.43, h=0.46):
+  'Transform Training & Test Data'
+[Text 38] (left=3.70, top=4.89, w=0.34, h=0.34):
+  '7'
+[Text 39] (left=4.16, top=4.83, w=5.43, h=0.46):
+  'Train Base Classifiers: SVM, RF, LR, MNB'
+[Text 43] (left=3.70, top=5.42, w=0.34, h=0.34):
+  '8'
+[Text 44] (left=4.16, top=5.37, w=5.43, h=0.46):
+  'Soft-Voting Ensemble Aggregation'
+[Text 48] (left=3.70, top=5.96, w=0.34, h=0.34):
+  '9'
+[Text 49] (left=4.16, top=5.90, w=5.43, h=0.46):
+  'Model Evaluation (Accuracy, Precision, Recall, F1)'
+[Text 53] (left=3.70, top=6.50, w=0.34, h=0.34):
+  '10'
+[Text 54] (left=4.16, top=6.43, w=5.43, h=0.46):
+  'Final Serialized Pipeline'
+
+==================== SLIDE 15 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | PROPOSED ALGORITHMS'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Step-by-Step Algorithm Working'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 15 of 20'
+[Text 8] (left=0.66, top=1.88, w=0.44, h=0.44):
+  '1'
+[Text 9] (left=1.24, top=1.75, w=5.03, h=0.70):
+  'Load the clinical transcription dataset (4,999 records).'
+[Text 12] (left=0.66, top=2.94, w=0.44, h=0.44):
+  '2'
+[Text 13] (left=1.24, top=2.81, w=5.03, h=0.70):
+  'Clean the data — remove missing transcriptions and verify no duplicates.'
+[Text 16] (left=0.66, top=4.00, w=0.44, h=0.44):
+  '3'
+[Text 17] (left=1.24, top=3.87, w=5.03, h=0.70):
+  'Split the dataset using stratified 80:20 train-test partitioning.'
+[Text 20] (left=0.66, top=5.06, w=0.44, h=0.44):
+  '4'
+[Text 21] (left=1.24, top=4.93, w=5.03, h=0.70):
+  'Apply text preprocessing: lowercase, clean, tokenize, remove stop-words, lemmatize.'
+[Text 24] (left=0.66, top=6.12, w=0.44, h=0.44):
+  '5'
+[Text 25] (left=1.24, top=5.99, w=5.03, h=0.70):
+  'Fit the TF-IDF vectorizer using the training partition only.'
+[Text 28] (left=6.99, top=1.88, w=0.44, h=0.44):
+  '6'
+[Text 29] (left=7.57, top=1.75, w=5.03, h=0.70):
+  'Transform both training and testing text into numeric feature vectors.'
+[Text 32] (left=6.99, top=2.94, w=0.44, h=0.44):
+  '7'
+[Text 33] (left=7.57, top=2.81, w=5.03, h=0.70):
+  'Train SVM, Random Forest, Logistic Regression & Multinomial Naive Bayes.'
+[Text 36] (left=6.99, top=4.00, w=0.44, h=0.44):
+  '8'
+[Text 37] (left=7.57, top=3.87, w=5.03, h=0.70):
+  'Combine the classifiers using a soft-voting ensemble.'
+[Text 40] (left=6.99, top=5.06, w=0.44, h=0.44):
+  '9'
+[Text 41] (left=7.57, top=4.93, w=5.03, h=0.70):
+  'Evaluate the model using accuracy, precision, recall & F1-score.'
+[Text 44] (left=6.99, top=6.12, w=0.44, h=0.44):
+  '10'
+[Text 45] (left=7.57, top=5.99, w=5.03, h=0.70):
+  'Serialize and use the selected pipeline for specialty prediction.'
+
+==================== SLIDE 16 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | PROPOSED ALGORITHMS'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Role of the Proposed Algorithms in the Project'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 16 of 20'
+[Text 7] (left=0.80, top=1.73, w=5.00, h=0.35):
+  'Clinical Transcription'
+[Text 8] (left=0.80, top=2.07, w=11.00, h=0.35):
+  'Raw free-text clinical narrative input'
+[Text 10] (left=0.80, top=2.74, w=5.00, h=0.35):
+  'Text Preprocessing'
+[Text 11] (left=0.80, top=3.08, w=11.00, h=0.35):
+  'Cleaning, tokenization, stop-words, lemmatization'
+[Text 13] (left=0.80, top=3.75, w=5.00, h=0.35):
+  'TF-IDF Feature Extraction'
+[Text 14] (left=0.80, top=4.09, w=11.00, h=0.35):
+  'Converts clean text into a numeric sparse vector'
+[Text 17] (left=0.50, top=4.96, w=2.93, h=0.75):
+  'SVM'
+[Text 19] (left=3.56, top=4.96, w=2.93, h=0.75):
+  'Random\nForest'
+[Text 21] (left=6.62, top=4.96, w=2.93, h=0.75):
+  'Logistic\nRegression'
+[Text 23] (left=9.68, top=4.96, w=2.93, h=0.75):
+  'Multinomial\nNaive Bayes'
+[Text 26] (left=0.80, top=6.15, w=11.70, h=0.65):
+  'Voting Ensemble  →  Predicted Medical Specialty'
+
+==================== SLIDE 17 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | PROJECT PIPELINE'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Complete End-to-End Project Pipeline'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 17 of 20'
+[Text 7] (left=0.85, top=6.34, w=11.60, h=0.50):
+  'Three-stage pipeline: Data Preparation & Partitioning → Model Building & Ensemble → Deployment. TF-IDF is fit strictly on training data; the Flask deployment stage reuses the saved preprocessing + TF-IDF + ensemble pipeline.'
+
+==================== SLIDE 18 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | GUI DESIGN'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Proposed Web Application — Wireframe'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 18 of 20'
+[Text 12] (left=3.30, top=1.65, w=7.53, h=0.50):
+  'Medical Specialty Classifier — Web App (Proposed)'
+[Text 13] (left=2.70, top=2.33, w=7.93, h=0.45):
+  'Medical Specialty Classifier'
+[Text 14] (left=2.70, top=2.77, w=7.93, h=0.30):
+  'Paste a clinical transcription below to predict its medical specialty'
+[Text 16] (left=2.90, top=3.35, w=7.53, h=0.50):
+  'Paste or type clinical transcription text here...'
+[Text 18] (left=2.70, top=4.93, w=2.30, h=0.48):
+  '↑  Upload File (optional)'
+[Text 20] (left=8.73, top=4.93, w=1.90, h=0.48):
+  'Predict Specialty'
+[Text 22] (left=2.95, top=5.73, w=4.00, h=0.30):
+  'Predicted Medical Specialty'
+[Text 23] (left=2.95, top=6.01, w=5.00, h=0.40):
+  'Cardiovascular / Pulmonary'
+[Text 24] (left=2.95, top=6.43, w=5.00, h=0.28):
+  '(example output — illustrative only)'
+[Text 25] (left=7.93, top=5.73, w=2.70, h=0.30):
+  'Confidence Score'
+
+==================== SLIDE 19 ====================
+[Text 1] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | GUI DESIGN'
+[Text 2] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'GUI Components & Current Project Progress'
+[Text 3] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 4] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 5] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 19 of 20'
+[Text 7] (left=0.75, top=1.80, w=5.40, h=0.35):
+  'GUI Components'
+[Text 9] (left=0.89, top=2.33, w=0.42, h=0.42):
+  '1'
+[Text 10] (left=1.45, top=2.30, w=4.75, h=0.28):
+  'Text Input Area'
+[Text 11] (left=1.45, top=2.58, w=4.75, h=0.50):
+  'Large text box for pasting clinical transcription narratives.'
+[Text 13] (left=0.89, top=3.25, w=0.42, h=0.42):
+  '2'
+[Text 14] (left=1.45, top=3.22, w=4.75, h=0.28):
+  'Upload / Input Component'
+[Text 15] (left=1.45, top=3.50, w=4.75, h=0.50):
+  'Optional file upload for batch or document-based input.'
+[Text 17] (left=0.89, top=4.17, w=0.42, h=0.42):
+  '3'
+[Text 18] (left=1.45, top=4.14, w=4.75, h=0.28):
+  'Predict Button'
+[Text 19] (left=1.45, top=4.42, w=4.75, h=0.50):
+  'Triggers preprocessing, TF-IDF transform & ensemble inference.'
+[Text 21] (left=0.89, top=5.09, w=0.42, h=0.42):
+  '4'
+[Text 22] (left=1.45, top=5.06, w=4.75, h=0.28):
+  'Prediction Result Panel'
+[Text 23] (left=1.45, top=5.34, w=4.75, h=0.50):
+  'Displays the predicted medical specialty label.'
+[Text 25] (left=0.89, top=6.01, w=0.42, h=0.42):
+  '5'
+[Text 26] (left=1.45, top=5.98, w=4.75, h=0.28):
+  'Confidence Display'
+[Text 27] (left=1.45, top=6.26, w=4.75, h=0.50):
+  "Shows the ensemble's probability score for the prediction."
+[Text 29] (left=6.80, top=1.80, w=5.80, h=0.35):
+  'Current Project Progress'
+[Text 30] (left=6.80, top=2.26, w=3.00, h=0.26):
+  'COMPLETED'
+[Text 31] (left=6.80, top=2.56, w=0.30, h=0.27):
+  '✓'
+[Text 32] (left=7.12, top=2.56, w=5.50, h=0.27):
+  'Literature Review'
+[Text 33] (left=6.80, top=2.83, w=0.30, h=0.27):
+  '✓'
+[Text 34] (left=7.12, top=2.83, w=5.50, h=0.27):
+  'Dataset Collection'
+[Text 35] (left=6.80, top=3.11, w=0.30, h=0.27):
+  '✓'
+[Text 36] (left=7.12, top=3.11, w=5.50, h=0.27):
+  'Statistical & Exploratory Data Analysis'
+[Text 37] (left=6.80, top=3.38, w=0.30, h=0.27):
+  '✓'
+[Text 38] (left=7.12, top=3.38, w=5.50, h=0.27):
+  'Data Visualization'
+[Text 39] (left=6.80, top=3.66, w=0.30, h=0.27):
+  '✓'
+[Text 40] (left=7.12, top=3.66, w=5.50, h=0.27):
+  'Preprocessing & TF-IDF Design'
+[Text 41] (left=6.80, top=3.94, w=0.30, h=0.27):
+  '✓'
+[Text 42] (left=7.12, top=3.94, w=5.50, h=0.27):
+  'Algorithm Selection & Architecture'
+[Text 43] (left=6.80, top=4.31, w=3.00, h=0.26):
+  'UPCOMING'
+[Text 45] (left=7.12, top=4.63, w=5.50, h=0.26):
+  'Full Preprocessing Implementation'
+[Text 47] (left=7.12, top=4.88, w=5.50, h=0.26):
+  'TF-IDF Vectorization Implementation'
+[Text 49] (left=7.12, top=5.14, w=5.50, h=0.26):
+  'Model Training (SVM, RF, LR, MNB)'
+[Text 51] (left=7.12, top=5.39, w=5.50, h=0.26):
+  'Hyperparameter Tuning'
+[Text 53] (left=7.12, top=5.65, w=5.50, h=0.26):
+  'Voting Ensemble Development'
+[Text 55] (left=7.12, top=5.91, w=5.50, h=0.26):
+  'Model Evaluation (metrics)'
+[Text 57] (left=7.12, top=6.16, w=5.50, h=0.26):
+  'Flask GUI Development & Deployment'
+
+==================== SLIDE 20 ====================
+[Text 3] (left=0.50, top=0.35, w=4.60, h=0.32):
+  'MCA MINI PROJECT | CONCLUSION'
+[Text 4] (left=0.50, top=0.74, w=12.30, h=0.72):
+  'Conclusion & Future Work'
+[Text 5] (left=0.50, top=7.13, w=4.60, h=0.30):
+  'Department of Computer Applications | MACE'
+[Text 6] (left=4.00, top=7.13, w=5.33, h=0.30):
+  'Mar Athanasius College of Engineering, Kothamangalam'
+[Text 7] (left=9.90, top=7.13, w=2.93, h=0.30):
+  'Slide 20 of 20'
+[Text 9] (left=0.78, top=1.92, w=5.40, h=0.35):
+  'Summary'
+[Text 10] (left=0.78, top=2.30, w=5.40, h=3.60):
+  'Addressed the problem of automating medical specialty classification from unstructured clinical transcriptions\nCompleted dataset exploration & statistical analysis of 4,999 MTSamples clinical records across 40 specialties\nIdentified class imbalance, variable text length and vocabulary noise through EDA\nProposed an 8-step text preprocessing pipeline and TF-IDF feature extraction\nProposed a 4-model Voting Ensemble (SVM, RF, LR, MNB) for classification'
+[Text 12] (left=7.10, top=1.92, w=5.40, h=0.35):
+  'Future Work'
+[Text 13] (left=7.10, top=2.30, w=5.40, h=3.60):
+  'Implement the full preprocessing pipeline & fit TF-IDF on training data\nTrain and hyperparameter-tune SVM, Random Forest, Logistic Regression & MNB\nCalibrate SVM probabilities and build the Soft Voting Ensemble\nEvaluate using accuracy, precision, recall & F1-score across all 40 specialties\nDevelop and deploy the Flask web application for real-time prediction'
+[Text 14] (left=0.50, top=6.25, w=8.00, h=0.60):
+  'THANK YOU'
+[Text 15] (left=0.50, top=6.85, w=8.00, h=0.40):
+  'Questions?'
