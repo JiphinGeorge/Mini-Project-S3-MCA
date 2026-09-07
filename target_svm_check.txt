@@ -1,1 +1,0 @@
-Slide 13: [Text 36] -> ℹ  Soft voting requires calibrated probability estimates from every base classifier. Standard Linear SVM outputs uncalibrated decision-margin distances, so its scores are planned to be calibrated (e.g. via CalibratedClassifierCV / Platt scaling) before joining the soft-voting aggregation.
