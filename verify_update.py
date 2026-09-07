@@ -11,4 +11,5 @@ for idx in [0, 12, 17, 18, 19]:
             print(f"[{sh.name}] left={sh.left/914400:.2f} in, top={sh.top/914400:.2f} in, w={sh.width/914400:.2f} in, h={sh.height/914400:.2f} in:")
             for p in sh.text_frame.paragraphs[:4]:
                 if p.text.strip():
-                    print(f"   {p.text.strip()[:65]}")
+                    txt = p.text.strip()[:70].encode('ascii', 'replace').decode('ascii')
+                    print(f"   {txt}")
