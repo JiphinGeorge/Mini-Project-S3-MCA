@@ -43,7 +43,7 @@ def set_slide_background(slide, color):
 
 def add_header(slide, pill_text, title_text, slide_num, total_slides=16):
     # Pill Badge
-    pill = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.6), Inches(0.32), Inches(4.3), Inches(0.34))
+    pill = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.6), Inches(0.32), Inches(4.5), Inches(0.34))
     pill.fill.solid()
     pill.fill.fore_color.rgb = TEAL_ACCENT
     pill.line.fill.background()
@@ -117,13 +117,21 @@ def add_card(slide, left, top, width, height, bg_color=CARD_BG, border_color=CAR
         card.line.fill.background()
     return card
 
+card_w = Inches(5.9)
+card_h = Inches(2.45)
+coords = [
+    (Inches(0.6), Inches(1.5)),
+    (Inches(6.8), Inches(1.5)),
+    (Inches(0.6), Inches(4.2)),
+    (Inches(6.8), Inches(4.2))
+]
+
 # ==============================================================================
 # SLIDE 1: Title Slide (Dark Theme)
 # ==============================================================================
 s1 = prs.slides.add_slide(blank_layout)
 set_slide_background(s1, DARK_BG)
 
-# College Banner
 t1 = s1.shapes.add_textbox(Inches(0.9), Inches(0.50), Inches(11.53), Inches(0.40))
 tf1 = t1.text_frame
 p1 = tf1.paragraphs[0]
@@ -133,8 +141,7 @@ p1.font.size = Pt(13)
 p1.font.bold = True
 p1.font.color.rgb = RGBColor(0x94, 0xA3, 0xB8)
 
-# Badge Pill
-pill1 = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(1.05), Inches(5.2), Inches(0.42))
+pill1 = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(1.05), Inches(5.4), Inches(0.42))
 pill1.fill.solid()
 pill1.fill.fore_color.rgb = TEAL_ACCENT
 pill1.line.fill.background()
@@ -147,7 +154,6 @@ p_p1.font.size = Pt(12)
 p_p1.font.bold = True
 p_p1.font.color.rgb = TEXT_WHITE
 
-# Project Title
 t_title = s1.shapes.add_textbox(Inches(0.9), Inches(1.65), Inches(11.53), Inches(1.6))
 tf_title = t_title.text_frame
 tf_title.word_wrap = True
@@ -159,13 +165,12 @@ p_title.font.bold = True
 p_title.font.color.rgb = TEXT_WHITE
 
 p_sub = tf_title.add_paragraph()
-p_sub.text = "Phase 2: Model Training, Ensemble Evaluation & Empirical Findings"
+p_sub.text = "Phase 2: Model Training, Class Imbalance Mitigation & Ensemble Evaluation"
 p_sub.font.name = FONT_BODY
-p_sub.font.size = Pt(18)
-p_sub.font.color.rgb = RGBColor(0x38, 0xBD, 0xF8) # Bright Sky Blue
+p_sub.font.size = Pt(17)
+p_sub.font.color.rgb = RGBColor(0x38, 0xBD, 0xF8)
 p_sub.space_before = Pt(8)
 
-# Presenter Card (Left)
 c_pres = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(3.60), Inches(5.6), Inches(2.35))
 c_pres.fill.solid()
 c_pres.fill.fore_color.rgb = DARK_CARD
@@ -189,13 +194,12 @@ p_name.font.color.rgb = TEXT_WHITE
 p_name.space_before = Pt(4)
 
 p_reg = tf_pr.add_paragraph()
-p_reg.text = "Register No: MAC25MCA-2033\nCourse: Master of Computer Applications (MCA)\nSemester: 3 | Academic Year: 2026-2027"
+p_reg.text = "Register No: MAC25MCA-2033\nCourse: Master of Computer Applications (MCA)\nDepartment of Computer Applications"
 p_reg.font.name = FONT_BODY
 p_reg.font.size = Pt(12)
 p_reg.font.color.rgb = RGBColor(0xCB, 0xD5, 0xE1)
 p_reg.space_before = Pt(6)
 
-# Guide Card (Right)
 c_guide = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(6.83), Inches(3.60), Inches(5.6), Inches(2.35))
 c_guide.fill.solid()
 c_guide.fill.fore_color.rgb = DARK_CARD
@@ -219,14 +223,13 @@ p_gname.font.color.rgb = TEXT_WHITE
 p_gname.space_before = Pt(4)
 
 p_gdept = tf_g.add_paragraph()
-p_gdept.text = "Department of Computer Applications\nMar Athanasius College of Engineering, Kothamangalam\nAffiliated to APJ Abdul Kalam Technological University"
+p_gdept.text = "Department of Computer Applications\nMar Athanasius College of Engineering, Kothamangalam\nDate of Presentation: 30-09-2026"
 p_gdept.font.name = FONT_BODY
 p_gdept.font.size = Pt(12)
 p_gdept.font.color.rgb = RGBColor(0xCB, 0xD5, 0xE1)
 p_gdept.space_before = Pt(6)
 
-# Bottom Feature Badges
-tags = ["Clinical NLP", "TF-IDF (8k Features)", "4 Base Classifiers", "Soft Voting Ensemble", "Milestone: 30-09-2026"]
+tags = ["Clinical NLP", "Imbalance Mitigation", "LR, SVM, RF, MNB", "Voting Ensembles", "Date: 30-09-2026"]
 tag_w = Inches(2.23)
 for i, tag in enumerate(tags):
     tg = s1.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9 + i * 2.35), Inches(6.25), tag_w, Inches(0.42))
@@ -243,224 +246,51 @@ for i, tag in enumerate(tags):
     p_t.font.color.rgb = RGBColor(0x38, 0xBD, 0xF8)
 
 # ==============================================================================
-# SLIDE 2: Project Recap & Phase 2 Objectives
+# SLIDE 2: Project Recap & Phase 1 Bridge
 # ==============================================================================
 s2 = prs.slides.add_slide(blank_layout)
 set_slide_background(s2, LIGHT_BG)
-add_header(s2, "MCA MINI PROJECT | RECAP & OBJECTIVES", "Project Recap & Phase 2 Objectives", 2)
+add_header(s2, "MCA MINI PROJECT | PROJECT RECAP & BRIDGE", "Project Recap & Phase 1 Bridge", 2)
 
-# Left Column: Phase 1 Recap & Baseline Challenge
-add_card(s2, Inches(0.6), Inches(1.5), Inches(5.9), Inches(5.3))
-t_s2_l = s2.shapes.add_textbox(Inches(0.85), Inches(1.7), Inches(5.4), Inches(4.9))
+# Flow banner
+banner2 = s2.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.6), Inches(1.45), Inches(12.13), Inches(0.65))
+banner2.fill.solid()
+banner2.fill.fore_color.rgb = LIGHT_BLUE_BG
+banner2.line.color.rgb = TEAL_ACCENT
+tf_b2 = banner2.text_frame
+p_b2 = tf_b2.paragraphs[0]
+p_b2.text = "Phase 1: EDA & Problem Identification  →  Phase 2: Preprocessing → Baselines → Refinement → ML Training → Ensemble Evaluation"
+p_b2.font.name = FONT_BODY
+p_b2.font.size = Pt(12)
+p_b2.font.bold = True
+p_b2.font.color.rgb = NAVY_TITLE
+p_b2.alignment = PP_ALIGN.CENTER
+
+# Left Card: Phase 1 Scope
+add_card(s2, Inches(0.6), Inches(2.3), Inches(5.9), Inches(4.5))
+t_s2_l = s2.shapes.add_textbox(Inches(0.85), Inches(2.45), Inches(5.4), Inches(4.2))
 tf_s2_l = t_s2_l.text_frame
 tf_s2_l.word_wrap = True
 
 p = tf_s2_l.paragraphs[0]
-p.text = "Phase 1: Exploration & The 40-Class Baseline"
+p.text = "Phase 1: Exploratory Data Analysis (Completed)"
 p.font.name = FONT_TITLE
-p.font.size = Pt(15)
+p.font.size = Pt(14)
 p.font.bold = True
 p.font.color.rgb = NAVY_TITLE
 
-bullets_l = [
-    ("Exploratory Foundation (Phase 1)", "Analyzed Kaggle MTSamples clinical transcriptions (4,999 raw records) and built text cleaning, tokenization, and stop-word filtering routines."),
-    ("The 40-Class Baseline Barrier", "Initial candidate model training across all 40 raw categories yielded poor accuracy, ranging between 7.85% and 27.39%."),
-    ("Root Causes of Baseline Collapse", "1. Extreme Class Skew: 1,103 Surgery records vs 2 Autopsy records.\n2. Document Format Artifacts: SOAP notes, consults, and discharge summaries masquerading as specialties.\n3. High Dimensionality: Over 310,000 unconstrained TF-IDF n-grams diluting clinical signal.")
+p1_points = [
+    ("Focus of Phase 1", "Phase 1 focused strictly on Exploratory Data Analysis of the Kaggle MTSamples clinical dataset."),
+    ("Dataset Collection & Inspection", "Audited 4,999 raw records across 6 attributes; identified and pruned 33 null transcription records (leaving 4,966 cleaned rows)."),
+    ("Feature & Column Profiling", "Analyzed distributions of clinical text length, vocabulary density, and missing keyword attributes."),
+    ("Class Frequency Audit", "Uncovered severe class imbalance across the raw 40 categorical labels (Surgery with 1,103 samples vs micro-classes with ≤ 10 samples)."),
+    ("Scope Boundary", "NO model training, NO baseline evaluation, and NO ensemble experiments were conducted in Phase 1.")
 ]
-for title, desc in bullets_l:
+for title, desc in p1_points:
     p_b = tf_s2_l.add_paragraph()
     p_b.text = f"• {title}: "
     p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(11.5)
-    p_b.font.bold = True
-    p_b.font.color.rgb = NAVY_TITLE
-    p_b.space_before = Pt(8)
-    
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
-
-# Right Column: Phase 2 Objectives
-add_card(s2, Inches(6.8), Inches(1.5), Inches(5.93), Inches(5.3))
-t_s2_r = s2.shapes.add_textbox(Inches(7.05), Inches(1.7), Inches(5.43), Inches(4.9))
-tf_s2_r = t_s2_r.text_frame
-tf_s2_r.word_wrap = True
-
-p = tf_s2_r.paragraphs[0]
-p.text = "Phase 2: Refinement, Training & Evaluation"
-p.font.name = FONT_TITLE
-p.font.size = Pt(15)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-bullets_r = [
-    ("Curate Mutually Exclusive Specialties", "Refine the dataset to 8 core clinical specialties (1,663 records) eliminating procedural overlap and administrative formats."),
-    ("Constrain TF-IDF Representation", "Fit an 8,000-feature unigram/bigram vectorizer strictly on training data with sublinear term-frequency scaling and L2 normalization."),
-    ("Train 4 Core Supervised ML Models", "Train and tune Linear SVM, Logistic Regression, Random Forest, and Multinomial Naive Bayes using balanced class weighting."),
-    ("Ensemble Probability Calibration", "Calibrate SVM via Platt scaling and formulate Hard Voting and Weighted Soft Voting (weights: LR=2, SVM=2, RF=1, MNB=1)."),
-    ("Target Benchmark", "Exceed the required 75.0% target accuracy threshold with robust macro/weighted F1-scores on 333 held-out test records.")
-]
-for title, desc in bullets_r:
-    p_b = tf_s2_r.add_paragraph()
-    p_b.text = f"✓ {title}: "
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(11.5)
-    p_b.font.bold = True
-    p_b.font.color.rgb = ACCENT_GREEN
-    p_b.space_before = Pt(8)
-    
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
-
-# ==============================================================================
-# SLIDE 3: Dataset Refinement & Clinical Specialty Selection
-# ==============================================================================
-s3 = prs.slides.add_slide(blank_layout)
-set_slide_background(s3, LIGHT_BG)
-add_header(s3, "MCA MINI PROJECT | DATASET CURATION", "Dataset Refinement & Clinical Specialty Selection", 3)
-
-# 3 Column Cards
-c_w = Inches(3.85)
-gap = Inches(0.28)
-
-# Col 1: Cleaned Dataset
-add_card(s3, Inches(0.6), Inches(1.5), c_w, Inches(5.3))
-t_c1 = s3.shapes.add_textbox(Inches(0.75), Inches(1.7), c_w - Inches(0.3), Inches(4.9))
-tf_c1 = t_c1.text_frame
-tf_c1.word_wrap = True
-p = tf_c1.paragraphs[0]
-p.text = "1. Cleaned Dataset (MTSamples)"
-p.font.name = FONT_TITLE
-p.font.size = Pt(14)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-col1_points = [
-    ("4,966 Cleaned Records", "Filtered from 4,999 after removing 33 empty transcription records."),
-    ("40 Original Categories", "Encompassed entire range of dictation types in hospital archives."),
-    ("Massive Majority Class", "Surgery contained 1,103 records (22.2% of the entire corpus)."),
-    ("Target Whitespace Sanitization", "Leading/trailing whitespace in category strings stripped to ensure clean categorical indexing.")
-]
-for title, desc in col1_points:
-    p_b = tf_c1.add_paragraph()
-    p_b.text = f"• {title}:\n"
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(11)
-    p_b.font.bold = True
-    p_b.font.color.rgb = NAVY_TITLE
-    p_b.space_before = Pt(8)
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
-
-# Col 2: Identified Problems
-add_card(s3, Inches(0.6 + c_w + gap), Inches(1.5), c_w, Inches(5.3))
-t_c2 = s3.shapes.add_textbox(Inches(0.75 + c_w + gap), Inches(1.7), c_w - Inches(0.3), Inches(4.9))
-tf_c2 = t_c2.text_frame
-tf_c2.word_wrap = True
-p = tf_c2.paragraphs[0]
-p.text = "2. Structural Data Issues"
-p.font.name = FONT_TITLE
-p.font.size = Pt(14)
-p.font.bold = True
-p.font.color.rgb = RED_ACCENT
-
-col2_points = [
-    ("Severe Class Imbalance", "Majority classes had 1,000+ records while small classes had <10 samples (Autopsy: 2, Lab Medicine: 8)."),
-    ("Administrative Document Types", "Non-specialty document formats:\n• Consult - H&P: 516 records\n• SOAP / Progress Notes: 166 records\n• Discharge Summary: 108 records\n• Emergency Room Reports: 75 records\n• Office Notes: 50 records"),
-    ("Procedural Overlap", "Surgery acted as an umbrella category spanning cardiac, orthopedic, and abdominal procedures, causing severe cross-class confusion.")
-]
-for title, desc in col2_points:
-    p_b = tf_c2.add_paragraph()
-    p_b.text = f"⚠ {title}:\n"
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(11)
-    p_b.font.bold = True
-    p_b.font.color.rgb = RED_ACCENT
-    p_b.space_before = Pt(8)
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
-
-# Col 3: Curated 8 Specialties
-add_card(s3, Inches(0.6 + 2 * (c_w + gap)), Inches(1.5), c_w, Inches(5.3))
-t_c3 = s3.shapes.add_textbox(Inches(0.75 + 2 * (c_w + gap)), Inches(1.7), c_w - Inches(0.3), Inches(4.9))
-tf_c3 = t_c3.text_frame
-tf_c3.word_wrap = True
-p = tf_c3.paragraphs[0]
-p.text = "3. Curated Clinical Dataset"
-p.font.name = FONT_TITLE
-p.font.size = Pt(14)
-p.font.bold = True
-p.font.color.rgb = ACCENT_GREEN
-
-specs = [
-    ("Cardiovascular / Pulmonary", "371 records"),
-    ("Orthopedic", "355 records"),
-    ("Gastroenterology", "224 records"),
-    ("Neurology", "223 records"),
-    ("Urology", "156 records"),
-    ("Obstetrics / Gynecology", "155 records"),
-    ("ENT (Otolaryngology)", "96 records"),
-    ("Ophthalmology", "83 records")
-]
-p_sub = tf_c3.add_paragraph()
-p_sub.text = "1,663 records across 8 core organ-system specialties with distinct clinical vocabularies:"
-p_sub.font.name = FONT_BODY
-p_sub.font.size = Pt(10.5)
-p_sub.font.color.rgb = TEXT_DARK
-p_sub.space_before = Pt(4)
-
-for sp_name, cnt in specs:
-    p_s = tf_c3.add_paragraph()
-    p_s.text = f"✓ {sp_name}: "
-    p_s.font.name = FONT_BODY
-    p_s.font.size = Pt(10)
-    p_s.font.bold = True
-    p_s.font.color.rgb = NAVY_TITLE
-    p_s.space_before = Pt(3)
-    r = p_s.add_run()
-    r.text = cnt
-    r.font.bold = True
-    r.font.color.rgb = ACCENT_GREEN
-
-# ==============================================================================
-# SLIDE 4: Clinical Text Preprocessing & TF-IDF Vectorization
-# ==============================================================================
-s4 = prs.slides.add_slide(blank_layout)
-set_slide_background(s4, LIGHT_BG)
-add_header(s4, "MCA MINI PROJECT | FEATURE EXTRACTION", "Clinical Text Preprocessing & TF-IDF Vectorization", 4)
-
-# Left Card: Text Enrichment & Preprocessing
-add_card(s4, Inches(0.6), Inches(1.5), Inches(5.9), Inches(5.3))
-t_s4_l = s4.shapes.add_textbox(Inches(0.85), Inches(1.7), Inches(5.4), Inches(4.9))
-tf_s4_l = t_s4_l.text_frame
-tf_s4_l.word_wrap = True
-
-p = tf_s4_l.paragraphs[0]
-p.text = "Clinical NLP Preprocessing Pipeline"
-p.font.name = FONT_TITLE
-p.font.size = Pt(15)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-pipe_steps = [
-    ("Narrative Text Enrichment", "Concatenated clinical 'description' (summary abstract) with 'transcription' (full narrative) to capture comprehensive diagnostic vocabulary."),
-    ("Lowercasing & Cleaning", "Standardized all text to lowercase; stripped punctuation, non-ASCII formatting noise, and special escape characters."),
-    ("Alphanumeric Filtering", "Preserved alphanumeric clinical tokens (e.g., anatomical sites, dosage markers, surgical instruments)."),
-    ("Medical Stop-Word Removal", "Removed general English stop-words and non-informative clinical filler tokens while protecting diagnostic terminology."),
-    ("Morphological Lemmatization", "Reduced inflected medical terms to base morphological root forms using WordNetLemmatizer, consolidating singular/plural variants.")
-]
-for title, desc in pipe_steps:
-    p_b = tf_s4_l.add_paragraph()
-    p_b.text = f"• {title}: "
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(11)
+    p_b.font.size = Pt(10.5)
     p_b.font.bold = True
     p_b.font.color.rgb = NAVY_TITLE
     p_b.space_before = Pt(6)
@@ -469,76 +299,67 @@ for title, desc in pipe_steps:
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
-# Right Card: TF-IDF Architecture Parameters
-add_card(s4, Inches(6.8), Inches(1.5), Inches(5.93), Inches(5.3))
-t_s4_r = s4.shapes.add_textbox(Inches(7.05), Inches(1.7), Inches(5.43), Inches(4.9))
-tf_s4_r = t_s4_r.text_frame
-tf_s4_r.word_wrap = True
+# Right Card: Phase 2 Scope & Transition
+add_card(s2, Inches(6.8), Inches(2.3), Inches(5.93), Inches(4.5))
+t_s2_r = s2.shapes.add_textbox(Inches(7.05), Inches(2.45), Inches(5.43), Inches(4.2))
+tf_s2_r = t_s2_r.text_frame
+tf_s2_r.word_wrap = True
 
-p = tf_s4_r.paragraphs[0]
-p.text = "TF-IDF Vectorizer Configuration"
+p = tf_s2_r.paragraphs[0]
+p.text = "Phase 2: Full Machine Learning Pipeline"
 p.font.name = FONT_TITLE
-p.font.size = Pt(15)
+p.font.size = Pt(14)
 p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
+p.font.color.rgb = ACCENT_GREEN
 
-tfidf_params = [
-    ("max_features = 8000", "Constrained vocabulary to the top 8,000 most discriminative tokens, preventing the curse of dimensionality and memory exhaustion."),
-    ("ngram_range = (1, 2)", "Extracted both unigrams (single terms like 'cataract', 'stent') and bigrams (phrase compounds like 'coronary artery', 'lumbar spine')."),
-    ("sublinear_tf = True", "Replaced raw TF with (1 + log(TF)) scaling to dampen the influence of overly repetitive clinical tokens."),
-    ("min_df = 2, max_df = 0.7", "Pruned singleton words occurring < 2 times and filtered ubiquitous terms occurring in > 70% of documents."),
-    ("norm = 'l2' (L2 Normalization)", "Normalized all vector lengths to unit hypersphere, making representation invariant to report length variation."),
-    ("Strict Anti-Leakage Fitting", "Vectorizer fit strictly on training set (1,330 samples); test set (333 samples) only transformed.")
+p2_points = [
+    ("Phase 2 Transition", "Phase 2 began by converting EDA findings into a complete, executable machine-learning classification pipeline."),
+    ("All ML Started in Phase 2", "All text preprocessing, 40-class baselines, failure diagnosis, dataset refinement, model training, and ensembles were executed in Phase 2."),
+    ("Initial Baseline Experimentation", "Tested raw 40-class classifiers; identified extreme collapse (7.85%–27.39% accuracy)."),
+    ("Systematic Refinement", "Addressed high dimensionality (310k features) and label ambiguity, progressing from 40 classes → 20 classes → 8 clinical specialties."),
+    ("Final Optimization & Evaluation", "Balanced feature matrices, trained LR, Linear SVM, RF, and MNB, and built Voting Ensembles targeting ≥ 75% accuracy.")
 ]
-for title, desc in tfidf_params:
-    p_b = tf_s4_r.add_paragraph()
+for title, desc in p2_points:
+    p_b = tf_s2_r.add_paragraph()
     p_b.text = f"✓ {title}: "
     p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(11)
+    p_b.font.size = Pt(10.5)
     p_b.font.bold = True
     p_b.font.color.rgb = ACCENT_GREEN
-    p_b.space_before = Pt(5)
+    p_b.space_before = Pt(6)
     r = p_b.add_run()
     r.text = desc
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
 # ==============================================================================
-# SLIDE 5: Stratified Train-Test Dataset Partitioning (80:20 Split)
+# SLIDE 3: Phase 2: Initial Baseline Experiment
 # ==============================================================================
-s5 = prs.slides.add_slide(blank_layout)
-set_slide_background(s5, LIGHT_BG)
-add_header(s5, "MCA MINI PROJECT | MODEL PLANNING", "Stratified Train-Test Dataset Partitioning (80:20 Split)", 5)
+s3 = prs.slides.add_slide(blank_layout)
+set_slide_background(s3, LIGHT_BG)
+add_header(s3, "MCA MINI PROJECT | PHASE 2 BASELINE EXPERIMENT", "Phase 2: Initial 40-Class Baseline Experiment", 3)
 
-# Left: Table Card
-add_card(s5, Inches(0.6), Inches(1.5), Inches(7.5), Inches(5.3))
-t_table_title = s5.shapes.add_textbox(Inches(0.85), Inches(1.65), Inches(7.0), Inches(0.4))
-tf_tt = t_table_title.text_frame
-p = tf_tt.paragraphs[0]
-p.text = "Stratified Split Class Distribution (80:20 Ratio)"
+# Left Side: Table of Baseline Results
+add_card(s3, Inches(0.6), Inches(1.5), Inches(6.1), Inches(5.3))
+t_s3_tbl = s3.shapes.add_textbox(Inches(0.85), Inches(1.65), Inches(5.6), Inches(0.4))
+tf_s3t = t_s3_tbl.text_frame
+p = tf_s3t.paragraphs[0]
+p.text = "Initial 40-Class Model Accuracy (Phase 2 Experiment)"
 p.font.name = FONT_TITLE
-p.font.size = Pt(14)
+p.font.size = Pt(13.5)
 p.font.bold = True
 p.font.color.rgb = NAVY_TITLE
 
-# Create Table
-rows = 10
-cols = 4
-left_t = Inches(0.85)
-top_t = Inches(2.1)
-width_t = Inches(7.0)
-height_t = Inches(4.4)
+t3_rows = 7
+t3_cols = 2
+tbl_shape3 = s3.shapes.add_table(t3_rows, t3_cols, Inches(0.85), Inches(2.1), Inches(5.6), Inches(3.4))
+tbl3 = tbl_shape3.table
+tbl3.columns[0].width = Inches(3.8)
+tbl3.columns[1].width = Inches(1.8)
 
-table_shape = s5.shapes.add_table(rows, cols, left_t, top_t, width_t, height_t)
-tbl = table_shape.table
-tbl.columns[0].width = Inches(3.2)
-tbl.columns[1].width = Inches(1.2)
-tbl.columns[2].width = Inches(1.3)
-tbl.columns[3].width = Inches(1.3)
-
-headers = ["Medical Specialty Class", "Total", "Train (80%)", "Test (20%)"]
-for j, h in enumerate(headers):
-    cell = tbl.cell(0, j)
+headers3 = ["Candidate Baseline Model", "Test Accuracy"]
+for j, h in enumerate(headers3):
+    cell = tbl3.cell(0, j)
     cell.fill.solid()
     cell.fill.fore_color.rgb = NAVY_TITLE
     cell.vertical_anchor = MSO_ANCHOR.MIDDLE
@@ -551,265 +372,181 @@ for j, h in enumerate(headers):
     if j > 0:
         p.alignment = PP_ALIGN.RIGHT
 
-data_s5 = [
-    ("Cardiovascular / Pulmonary", "371", "297", "74"),
-    ("Orthopedic", "355", "284", "71"),
-    ("Gastroenterology", "224", "179", "45"),
-    ("Neurology", "223", "178", "45"),
-    ("Urology", "156", "125", "31"),
-    ("Obstetrics / Gynecology", "155", "124", "31"),
-    ("ENT (Otolaryngology)", "96", "77", "19"),
-    ("Ophthalmology", "83", "66", "17"),
-    ("Total Curated Dataset", "1,663", "1,330", "333")
+data_s3 = [
+    ("Random Forest", "7.85%"),
+    ("Linear SVM", "10.67%"),
+    ("Balanced Linear SVM", "10.07%"),
+    ("Logistic Regression", "22.96%"),
+    ("Weighted Multinomial Naive Bayes", "27.09%"),
+    ("Balanced Logistic Regression", "27.39%")
 ]
-for i, row in enumerate(data_s5):
+for i, row in enumerate(data_s3):
     for j, val in enumerate(row):
-        cell = tbl.cell(i+1, j)
+        cell = tbl3.cell(i+1, j)
         cell.vertical_anchor = MSO_ANCHOR.MIDDLE
-        if i == len(data_s5)-1:
+        if "Balanced" in row[0] or "Weighted" in row[0]:
             cell.fill.solid()
             cell.fill.fore_color.rgb = LIGHT_BLUE_BG
         p = cell.text_frame.paragraphs[0]
         p.text = val
         p.font.name = FONT_BODY
-        p.font.size = Pt(9.5)
-        if i == len(data_s5)-1:
-            p.font.bold = True
-            p.font.color.rgb = NAVY_TITLE
-        else:
-            p.font.color.rgb = TEXT_DARK
+        p.font.size = Pt(10)
+        p.font.color.rgb = RED_ACCENT if j == 1 and float(val.replace('%','')) < 15 else NAVY_TITLE
         if j > 0:
             p.alignment = PP_ALIGN.RIGHT
+            p.font.bold = True
 
-# Right: Methodology & Benefits Card
-add_card(s5, Inches(8.35), Inches(1.5), Inches(4.38), Inches(5.3))
-t_s5_r = s5.shapes.add_textbox(Inches(8.55), Inches(1.7), Inches(3.98), Inches(4.9))
-tf_s5_r = t_s5_r.text_frame
-tf_s5_r.word_wrap = True
+t_callout = s3.shapes.add_textbox(Inches(0.85), Inches(5.65), Inches(5.6), Inches(0.95))
+tf_co = t_callout.text_frame
+tf_co.word_wrap = True
+p = tf_co.paragraphs[0]
+p.text = "⚠ Empirical Finding: The raw 40-class formulation was completely unsuitable for clinical deployment, with every model failing to exceed 27.4% accuracy."
+p.font.name = FONT_BODY
+p.font.size = Pt(10)
+p.font.bold = True
+p.font.color.rgb = RED_ACCENT
 
-p = tf_s5_r.paragraphs[0]
-p.text = "Stratified Sampling Rationale"
+# Right Side: Why the Baseline Failed
+add_card(s3, Inches(6.9), Inches(1.5), Inches(5.83), Inches(5.3))
+t_s3_r = s3.shapes.add_textbox(Inches(7.15), Inches(1.7), Inches(5.33), Inches(4.9))
+tf_s3_r = t_s3_r.text_frame
+tf_s3_r.word_wrap = True
+
+p = tf_s3_r.paragraphs[0]
+p.text = "Baseline Failure Observations"
 p.font.name = FONT_TITLE
 p.font.size = Pt(14)
 p.font.bold = True
 p.font.color.rgb = NAVY_TITLE
 
-split_points = [
-    ("Proportional Preservation", "Guarantees that each of the 8 specialties has exactly 80% representation in training and 20% in testing, avoiding artificial sample starvation in minority classes like Ophthalmology."),
-    ("333 Held-Out Test Records", "Evaluation is conducted on a strictly quarantined 20% partition (333 records) never exposed to TF-IDF vocabulary construction or model fitting."),
-    ("Class Imbalance Shield", "Without stratification, random partitioning would produce high variance in rare classes. Stratification ensures true real-world diagnostic balance."),
-    ("Fixed Random State (seed=42)", "Ensures complete reproducibility of splits across candidate models and ensemble benchmarks.")
+base_fails = [
+    ("Unconstrained Feature Explosion", "TF-IDF generated 310,298 unigram and bigram features for only 3,971 training samples, causing severe sparsity and overfitting."),
+    ("Trivial Majority Prediction", "Unweighted Logistic Regression predicted 'Surgery' almost exclusively, securing 22.96% accuracy simply because Surgery represented 22.2% of the dataset."),
+    ("Tree-Based Model Collapse", "Random Forest collapsed to 7.85% accuracy as random feature subsets in a 310k-dimension space almost never contained discriminative terms."),
+    ("Non-Specialty Document Contamination", "Classes like 'SOAP Notes' and 'Discharge Summary' contained vocabulary identical to true clinical specialties, making mathematical separation impossible.")
 ]
-for title, desc in split_points:
-    p_b = tf_s5_r.add_paragraph()
-    p_b.text = f"• {title}: "
+for title, desc in base_fails:
+    p_b = tf_s3_r.add_paragraph()
+    p_b.text = f"• {title}:\n"
     p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(10.5)
+    p_b.font.size = Pt(10)
     p_b.font.bold = True
     p_b.font.color.rgb = NAVY_TITLE
-    p_b.space_before = Pt(8)
+    p_b.space_before = Pt(6)
     r = p_b.add_run()
     r.text = desc
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
 # ==============================================================================
-# SLIDE 6: Four Candidate Machine Learning Classifiers
+# SLIDE 4: Baseline Problem Diagnosis
 # ==============================================================================
-s6 = prs.slides.add_slide(blank_layout)
-set_slide_background(s6, LIGHT_BG)
-add_header(s6, "MCA MINI PROJECT | MODEL TRAINING", "Four Candidate Machine Learning Classifiers", 6)
+s4 = prs.slides.add_slide(blank_layout)
+set_slide_background(s4, LIGHT_BG)
+add_header(s4, "MCA MINI PROJECT | PROBLEM DIAGNOSIS", "Baseline Problem Diagnosis: Three Core Obstacles", 4)
 
-models_data = [
-    ("Support Vector Machine (LinearSVC)", "C = 1.0, class_weight = 'balanced', max_iter = 3000",
-     "• Mathematical Principle: Maximum-margin separation hyperplane in 8,000-dimensional sparse feature space.\n• Advantage: Highly resilient to overfitting in high-dimensional text; finds optimal linear decision boundaries.\n• Imbalance Handling: Automatically adjusts penalty inversely proportional to class frequencies."),
+diag_cards = [
+    ("1. Severe Class Imbalance", RED_ACCENT,
+     "• 40 raw categories with extreme distribution skew.\n• Surgery alone comprised 1,103 samples (22.2%).\n• Minority classes had as few as 2–10 samples:\n  - Autopsy: 2 samples\n  - Executive Evaluation: 2 samples\n  - Lab Medicine: 8 samples\n• Imbalance ratio exceeded 184:1, starving minority classes of gradient and decision updates during training."),
     
-    ("Logistic Regression (Multinomial)", "Multinomial Softmax, class_weight = 'balanced', max_iter = 1000",
-     "• Mathematical Principle: Multinomial cross-entropy with L2 regularization penalty.\n• Advantage: Highly calibrated probability estimation with direct interpretability of clinical token odds.\n• Imbalance Handling: 'balanced' class weights compensate for majority dominance in gradient updates."),
+    ("2. High-Dimensional TF-IDF", GOLD_ACCENT,
+     "• Unconstrained vocabulary generated 310,298 features.\n• Only 3,971 training records in the 80% split.\n• Massive feature-to-sample ratio (> 78:1) created severe data sparsity.\n• Non-informative filler words and rare typographical tokens diluted diagnostic signal, crippling distance- and tree-based estimators."),
     
-    ("Random Forest Classifier", "n_estimators = 100, max_depth = 25, class_weight = 'balanced'",
-     "• Mathematical Principle: Bagging ensemble of 100 decorrelated decision trees with random feature subsampling.\n• Advantage: Captures complex non-linear keyword interactions and hierarchy.\n• Imbalance Handling: Class-weighted Gini impurity criterion guides split selections."),
-    
-    ("Multinomial Naive Bayes (MNB)", "alpha = 0.5 (Additive Laplace Smoothing)",
-     "• Mathematical Principle: Conditional word-frequency likelihood estimation via Bayes' Theorem.\n• Advantage: Extremely fast training and low memory footprint; established text classification baseline.\n• Smoothing: alpha=0.5 prevents zero-frequency zero probability traps for unseen diagnostic terms.")
+    ("3. Clinical Label Ambiguity", TEAL_ACCENT,
+     "• Inherent conflict between clinical specialties and document formats:\n  - Consult - History and Phy.: 516 records\n  - SOAP / Progress Notes: 166 records\n  - Discharge Summary: 108 records\n  - Emergency Room Reports: 75 records\n  - Office Notes: 50 records\n• These describe document structures, not medical organ specialties, introducing overlapping vocabularies across domains.")
 ]
 
-card_w = Inches(5.9)
-card_h = Inches(2.45)
-coords = [
-    (Inches(0.6), Inches(1.5)),
-    (Inches(6.8), Inches(1.5)),
-    (Inches(0.6), Inches(4.2)),
-    (Inches(6.8), Inches(4.2))
-]
-
-for idx, (title, params, details) in enumerate(models_data):
-    cx, cy = coords[idx]
-    add_card(s6, cx, cy, card_w, card_h)
-    tb = s6.shapes.add_textbox(cx + Inches(0.2), cy + Inches(0.15), card_w - Inches(0.4), card_h - Inches(0.3))
-    tf_m = tb.text_frame
-    tf_m.word_wrap = True
+c_w4 = Inches(3.85)
+gap4 = Inches(0.28)
+for idx, (title, color_h, body) in enumerate(diag_cards):
+    cx = Inches(0.6 + idx * (c_w4 + gap4))
+    add_card(s4, cx, Inches(1.5), c_w4, Inches(5.3))
+    tb = s4.shapes.add_textbox(cx + Inches(0.2), Inches(1.7), c_w4 - Inches(0.4), Inches(4.9))
+    tf_d = tb.text_frame
+    tf_d.word_wrap = True
     
-    p = tf_m.paragraphs[0]
+    p = tf_d.paragraphs[0]
     p.text = title
     p.font.name = FONT_TITLE
     p.font.size = Pt(13.5)
     p.font.bold = True
-    p.font.color.rgb = NAVY_TITLE
+    p.font.color.rgb = color_h
     
-    p_p = tf_m.add_paragraph()
-    p_p.text = f"Config: {params}"
-    p_p.font.name = FONT_BODY
-    p_p.font.size = Pt(10)
-    p_p.font.bold = True
-    p_p.font.color.rgb = TEAL_ACCENT
-    p_p.space_before = Pt(2)
+    p_b = tf_d.add_paragraph()
+    p_b.text = body
+    p_b.font.name = FONT_BODY
+    p_b.font.size = Pt(10)
+    p_b.font.color.rgb = TEXT_DARK
+    p_b.space_before = Pt(8)
+
+# ==============================================================================
+# SLIDE 5: Phase 2 Dataset Refinement (Iterative Process)
+# ==============================================================================
+s5 = prs.slides.add_slide(blank_layout)
+set_slide_background(s5, LIGHT_BG)
+add_header(s5, "MCA MINI PROJECT | DATASET REFINEMENT", "Phase 2 Dataset Refinement: Iterative Optimization", 5)
+
+steps_refine = [
+    ("Iteration 1: 40 Raw Classes (Baseline)", RED_ACCENT,
+     "• Scope: All 4,966 cleaned records across 40 raw categories.\n• Outcome: Severe model collapse (7.85% to 27.39% accuracy).\n• Diagnosis: Severe 184:1 imbalance, 310k unconstrained features, and procedural/document label overlap made accurate learning impossible."),
     
-    p_d = tf_m.add_paragraph()
-    p_d.text = details
-    p_d.font.name = FONT_BODY
-    p_d.font.size = Pt(9.5)
-    p_d.font.color.rgb = TEXT_DARK
-    p_d.space_before = Pt(4)
-
-# Bottom Note on Imbalance Handling
-bot_card = s6.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.6), Inches(6.75), Inches(12.13), Inches(0.22))
-bot_card.fill.solid()
-bot_card.fill.fore_color.rgb = LIGHT_BLUE_BG
-bot_card.line.fill.background()
-tf_bot = bot_card.text_frame
-p_bot = tf_bot.paragraphs[0]
-p_bot.text = "Note: Handled class imbalance natively using class_weight='balanced' cost-function penalization across LR, SVM, and RF."
-p_bot.font.name = FONT_BODY
-p_bot.font.size = Pt(9)
-p_bot.font.color.rgb = NAVY_TITLE
-p_bot.alignment = PP_ALIGN.CENTER
-
-# ==============================================================================
-# SLIDE 7: Hard & Weighted Soft Voting Architecture
-# ==============================================================================
-s7 = prs.slides.add_slide(blank_layout)
-set_slide_background(s7, LIGHT_BG)
-add_header(s7, "MCA MINI PROJECT | ENSEMBLE ARCHITECTURE", "Hard & Weighted Soft Voting Architecture", 7)
-
-# Left Card: Probability Calibration via Platt Scaling
-add_card(s7, Inches(0.6), Inches(1.5), Inches(5.9), Inches(5.3))
-t_s7_l = s7.shapes.add_textbox(Inches(0.85), Inches(1.7), Inches(5.4), Inches(4.9))
-tf_s7_l = t_s7_l.text_frame
-tf_s7_l.word_wrap = True
-
-p = tf_s7_l.paragraphs[0]
-p.text = "Probability Calibration: Platt Scaling"
-p.font.name = FONT_TITLE
-p.font.size = Pt(15)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-calib_points = [
-    ("The Non-Probabilistic SVM Challenge", "LinearSVC optimizes a margin hyperplane and outputs uncalibrated signed distances (decision function), not bounded probabilities."),
-    ("CalibratedClassifierCV Integration", "Wrapped the trained LinearSVC in CalibratedClassifierCV using sigmoid Platt scaling:\n  P(y=c | f(x)) = 1 / (1 + exp(A·f(x) + B))\nThis transforms raw margin scores into true posterior class probabilities summing to 1.0."),
-    ("Algorithmic Harmonization", "Enables seamless integration with naturally probabilistic models (Logistic Regression Softmax, Naive Bayes likelihood, and Random Forest vote fractions)."),
-    ("Hard Voting Baseline", "Also benchmarked majority-rule Hard Voting as a non-probabilistic consensus baseline across all 4 candidate classifiers.")
+    ("Iteration 2: 20-Class Threshold Filtering", GOLD_ACCENT,
+     "• Scope: Pruned micro-classes with fewer than 50 samples.\n• Retained 20 moderate-to-large categories (~3,800 records).\n• Outcome: Accuracy improved marginally into the 40%–50% range.\n• Remaining Issue: Heavy semantic overlap persisted between 'Surgery' and individual operative specialties, along with document-type noise ('Consults', 'SOAP Notes')."),
+    
+    ("Iteration 3: 8 Focused Clinical Specialties", ACCENT_GREEN,
+     "• Scope: Curated 8 core mutually exclusive organ-system specialties (1,663 records).\n• Removed umbrella procedural labels ('Surgery') and administrative document formats.\n• Outcome: Dramatic performance jump to 77.48%–88.59% accuracy across all models.\n• Clinical Significance: Clear anatomical boundaries provide pristine diagnostic separation.")
 ]
-for title, desc in calib_points:
-    p_b = tf_s7_l.add_paragraph()
-    p_b.text = f"• {title}: "
+
+for idx, (title, color_h, body) in enumerate(steps_refine):
+    cx = Inches(0.6 + idx * (c_w4 + gap4))
+    add_card(s5, cx, Inches(1.5), c_w4, Inches(5.3))
+    tb = s5.shapes.add_textbox(cx + Inches(0.2), Inches(1.7), c_w4 - Inches(0.4), Inches(4.9))
+    tf_r = tb.text_frame
+    tf_r.word_wrap = True
+    
+    p = tf_r.paragraphs[0]
+    p.text = title
+    p.font.name = FONT_TITLE
+    p.font.size = Pt(13)
+    p.font.bold = True
+    p.font.color.rgb = color_h
+    
+    p_b = tf_r.add_paragraph()
+    p_b.text = body
     p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(11)
-    p_b.font.bold = True
-    p_b.font.color.rgb = NAVY_TITLE
+    p_b.font.size = Pt(10)
+    p_b.font.color.rgb = TEXT_DARK
     p_b.space_before = Pt(8)
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
-
-# Right Card: Weighted Soft Voting Formulation
-add_card(s7, Inches(6.8), Inches(1.5), Inches(5.93), Inches(5.3))
-t_s7_r = s7.shapes.add_textbox(Inches(7.05), Inches(1.7), Inches(5.43), Inches(4.9))
-tf_s7_r = t_s7_r.text_frame
-tf_s7_r.word_wrap = True
-
-p = tf_s7_r.paragraphs[0]
-p.text = "Weighted Soft Voting Consensus"
-p.font.name = FONT_TITLE
-p.font.size = Pt(15)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-p_formula = tf_s7_r.add_paragraph()
-p_formula.text = "Documented Implementation Weights:\nLR = 2  |  SVM = 2  |  RF = 1  |  MNB = 1"
-p_formula.font.name = FONT_BODY
-p_formula.font.size = Pt(11)
-p_formula.font.bold = True
-p_formula.font.color.rgb = TEAL_ACCENT
-p_formula.space_before = Pt(6)
-
-p_math = tf_s7_r.add_paragraph()
-p_math.text = "Mathematical Consensus Formula:\n  P_ensemble(c | x) = [2·P_LR + 2·P_SVM + P_RF + P_MNB] / 6"
-p_math.font.name = FONT_TITLE
-p_math.font.size = Pt(11.5)
-p_math.font.bold = True
-p_math.font.color.rgb = NAVY_TITLE
-p_math.space_before = Pt(6)
-
-p_rule = tf_s7_r.add_paragraph()
-p_rule.text = "Final Argmax Decision Rule:\n  ŷ = argmax P_ensemble(c | x)"
-p_rule.font.name = FONT_TITLE
-p_rule.font.size = Pt(11.5)
-p_rule.font.bold = True
-p_rule.font.color.rgb = ACCENT_GREEN
-p_rule.space_before = Pt(6)
-
-soft_points = [
-    ("Rationale for 2:2:1:1 Weights", "Empirical performance showed high-dimensional text is best partitioned linearly; higher weights are assigned to top performers (LR & SVM) while still incorporating tree and Bayesian diversity."),
-    ("Variance & Blindspot Reduction", "Averages confidence across 4 distinct algorithmic paradigms, preventing single-model misclassifications on ambiguous border clinical narratives.")
-]
-for title, desc in soft_points:
-    p_b = tf_s7_r.add_paragraph()
-    p_b.text = f"✓ {title}: "
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(10.5)
-    p_b.font.bold = True
-    p_b.font.color.rgb = NAVY_TITLE
-    p_b.space_before = Pt(8)
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
 
 # ==============================================================================
-# SLIDE 8: Model Performance Comparison (with Diagram)
+# SLIDE 6: Final 8-Specialty Dataset
 # ==============================================================================
-s8 = prs.slides.add_slide(blank_layout)
-set_slide_background(s8, LIGHT_BG)
-add_header(s8, "MCA MINI PROJECT | RESULTS & COMPARISON", "Model Performance Comparison & Benchmark", 8)
+s6 = prs.slides.add_slide(blank_layout)
+set_slide_background(s6, LIGHT_BG)
+add_header(s6, "MCA MINI PROJECT | CURATED DATASET", "Final 8-Specialty Clinical Dataset (1,663 Records)", 6)
 
-# Left Side: Table
-add_card(s8, Inches(0.6), Inches(1.5), Inches(6.4), Inches(5.3))
-t_s8_tbl = s8.shapes.add_textbox(Inches(0.75), Inches(1.65), Inches(6.1), Inches(0.4))
-tf_s8t = t_s8_tbl.text_frame
-p = tf_s8t.paragraphs[0]
-p.text = "Model Evaluation Benchmark (333 Held-Out Test Records)"
+# Left: 8 Specialties Breakdown Table
+add_card(s6, Inches(0.6), Inches(1.5), Inches(6.8), Inches(5.3))
+t_s6_tbl = s6.shapes.add_textbox(Inches(0.85), Inches(1.65), Inches(6.3), Inches(0.4))
+tf_s6t = t_s6_tbl.text_frame
+p = tf_s6t.paragraphs[0]
+p.text = "Curated Mutually Exclusive Clinical Specialties"
 p.font.name = FONT_TITLE
 p.font.size = Pt(13.5)
 p.font.bold = True
 p.font.color.rgb = NAVY_TITLE
 
-# Create Evaluation Table
-t_rows = 7
-t_cols = 5
-tbl_shape8 = s8.shapes.add_table(t_rows, t_cols, Inches(0.75), Inches(2.1), Inches(6.1), Inches(3.6))
-tbl8 = tbl_shape8.table
-tbl8.columns[0].width = Inches(2.3)
-tbl8.columns[1].width = Inches(0.95)
-tbl8.columns[2].width = Inches(0.95)
-tbl8.columns[3].width = Inches(0.95)
-tbl8.columns[4].width = Inches(0.95)
+t6_rows = 10
+t6_cols = 3
+tbl_shape6 = s6.shapes.add_table(t6_rows, t6_cols, Inches(0.85), Inches(2.1), Inches(6.3), Inches(4.4))
+tbl6 = tbl_shape6.table
+tbl6.columns[0].width = Inches(3.5)
+tbl6.columns[1].width = Inches(1.4)
+tbl6.columns[2].width = Inches(1.4)
 
-headers8 = ["Model Architecture", "Accuracy", "Macro F1", "Macro Prec", "Macro Rec"]
-for j, h in enumerate(headers8):
-    cell = tbl8.cell(0, j)
+headers6 = ["Medical Specialty", "Record Count", "Proportion"]
+for j, h in enumerate(headers6):
+    cell = tbl6.cell(0, j)
     cell.fill.solid()
     cell.fill.fore_color.rgb = NAVY_TITLE
     cell.vertical_anchor = MSO_ANCHOR.MIDDLE
@@ -822,17 +559,372 @@ for j, h in enumerate(headers8):
     if j > 0:
         p.alignment = PP_ALIGN.RIGHT
 
-data_s8 = [
-    ("Linear SVM (Best Model)", "88.59%", "0.8971", "0.9022", "0.8953"),
-    ("Soft Voting Ensemble", "87.99%", "0.8898", "0.8997", "0.8887"),
-    ("Logistic Regression", "87.09%", "0.8846", "0.8843", "0.8872"),
-    ("Hard Voting Ensemble", "87.09%", "0.8846", "0.8821", "0.8887"),
-    ("Random Forest", "81.98%", "0.8274", "0.8407", "0.8252"),
-    ("Multinomial Naive Bayes", "77.48%", "0.7743", "0.8143", "0.7740")
+data_s6 = [
+    ("Cardiovascular / Pulmonary", "371", "22.31%"),
+    ("Orthopedic", "355", "21.35%"),
+    ("Gastroenterology", "224", "13.47%"),
+    ("Neurology", "223", "13.41%"),
+    ("Urology", "156", "9.38%"),
+    ("Obstetrics / Gynecology", "155", "9.32%"),
+    ("ENT - Otolaryngology", "96", "5.77%"),
+    ("Ophthalmology", "83", "4.99%"),
+    ("Total Curated Dataset", "1,663", "100.00%")
 ]
-for i, row in enumerate(data_s8):
+for i, row in enumerate(data_s6):
     for j, val in enumerate(row):
-        cell = tbl8.cell(i+1, j)
+        cell = tbl6.cell(i+1, j)
+        cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+        if i == len(data_s6)-1:
+            cell.fill.solid()
+            cell.fill.fore_color.rgb = LIGHT_BLUE_BG
+        p = cell.text_frame.paragraphs[0]
+        p.text = val
+        p.font.name = FONT_BODY
+        p.font.size = Pt(9.5)
+        if i == len(data_s6)-1:
+            p.font.bold = True
+            p.font.color.rgb = NAVY_TITLE
+        else:
+            p.font.color.rgb = TEXT_DARK
+        if j > 0:
+            p.alignment = PP_ALIGN.RIGHT
+
+# Right: Clinical Rationale
+add_card(s6, Inches(7.6), Inches(1.5), Inches(5.13), Inches(5.3))
+t_s6_r = s6.shapes.add_textbox(Inches(7.8), Inches(1.7), Inches(4.73), Inches(4.9))
+tf_s6_r = t_s6_r.text_frame
+tf_s6_r.word_wrap = True
+
+p = tf_s6_r.paragraphs[0]
+p.text = "Clinical Rationale for Selection"
+p.font.name = FONT_TITLE
+p.font.size = Pt(14)
+p.font.bold = True
+p.font.color.rgb = NAVY_TITLE
+
+rat_points = [
+    ("Organ-System Distinctiveness", "Each selected department corresponds to a distinct anatomical system with distinct vocabulary (e.g., cardiac vessels, musculoskeletal joints, digestive tract)."),
+    ("Elimination of Category Ambiguity", "Excluded procedural umbrellas like 'Surgery' which contaminated cardiac, orthopedic, and gastrointestinal procedures simultaneously."),
+    ("Pruning Administrative Formats", "Excluded SOAP notes, consultations, and discharge summaries that represent hospital document templates rather than clinical domains."),
+    ("Balanced Multi-Class Cohort", "Maintains sufficient representation across all 8 classes (83 to 371 samples) while preserving clinical realism.")
+]
+for title, desc in rat_points:
+    p_b = tf_s6_r.add_paragraph()
+    p_b.text = f"✓ {title}: "
+    p_b.font.name = FONT_BODY
+    p_b.font.size = Pt(10.5)
+    p_b.font.bold = True
+    p_b.font.color.rgb = ACCENT_GREEN
+    p_b.space_before = Pt(8)
+    r = p_b.add_run()
+    r.text = desc
+    r.font.bold = False
+    r.font.color.rgb = TEXT_DARK
+
+# ==============================================================================
+# SLIDE 7: Text Preprocessing & TF-IDF
+# ==============================================================================
+s7 = prs.slides.add_slide(blank_layout)
+set_slide_background(s7, LIGHT_BG)
+add_header(s7, "MCA MINI PROJECT | FEATURE ENGINEERING", "Text Preprocessing & TF-IDF Feature Engineering", 7)
+
+# Left: Text Preprocessing
+add_card(s7, Inches(0.6), Inches(1.5), Inches(5.9), Inches(5.3))
+t_s7_l = s7.shapes.add_textbox(Inches(0.85), Inches(1.7), Inches(5.4), Inches(4.9))
+tf_s7_l = t_s7_l.text_frame
+tf_s7_l.word_wrap = True
+
+p = tf_s7_l.paragraphs[0]
+p.text = "Clinical Narrative Preprocessing"
+p.font.name = FONT_TITLE
+p.font.size = Pt(15)
+p.font.bold = True
+p.font.color.rgb = NAVY_TITLE
+
+prep_steps = [
+    ("Enriched Feature Construction", "Synthesized a unified 'clinical_text' field by concatenating the clinical 'description' (abstract summary) and 'transcription' (full dictation)."),
+    ("Normalization & Noise Removal", "Converted all narratives to lowercase; stripped punctuation, formatting escapes, and non-ASCII character noise."),
+    ("Alphanumeric Token Filtering", "Retained clinical terms, drug dosages, and surgical abbreviations while eliminating solitary numerical fragments."),
+    ("Stop-Word Filtration", "Removed general English stop-words and non-informative clinical filler terms while preserving essential diagnostic terminology."),
+    ("Morphological Lemmatization", "Standardized anatomical and surgical variants to base lemmas using NLTK WordNetLemmatizer.")
+]
+for title, desc in prep_steps:
+    p_b = tf_s7_l.add_paragraph()
+    p_b.text = f"• {title}: "
+    p_b.font.name = FONT_BODY
+    p_b.font.size = Pt(10.5)
+    p_b.font.bold = True
+    p_b.font.color.rgb = NAVY_TITLE
+    p_b.space_before = Pt(8)
+    r = p_b.add_run()
+    r.text = desc
+    r.font.bold = False
+    r.font.color.rgb = TEXT_DARK
+
+# Right: TF-IDF Configuration
+add_card(s7, Inches(6.8), Inches(1.5), Inches(5.93), Inches(5.3))
+t_s7_r = s7.shapes.add_textbox(Inches(7.05), Inches(1.7), Inches(5.43), Inches(4.9))
+tf_s7_r = t_s7_r.text_frame
+tf_s7_r.word_wrap = True
+
+p = tf_s7_r.paragraphs[0]
+p.text = "TF-IDF Vectorizer Architecture"
+p.font.name = FONT_TITLE
+p.font.size = Pt(15)
+p.font.bold = True
+p.font.color.rgb = NAVY_TITLE
+
+tfidf_spec = [
+    ("max_features = 8,000", "Constrained high dimensionality from 310k+ to top 8,000 discriminative features to eliminate overfitting."),
+    ("ngram_range = (1, 2)", "Captured unigrams ('stent', 'cataract') and bigrams ('coronary artery', 'lumbar spine')."),
+    ("sublinear_tf = True", "Replaced raw TF with (1 + log(TF)) scaling to dampen overly repetitive terms."),
+    ("min_df = 2, max_df = 0.7", "Pruned singleton words and filtered ubiquitous tokens occurring in > 70% of documents."),
+    ("norm = 'l2' (L2 Normalization)", "Normalized document vector lengths, making representation invariant to report length."),
+    ("Strict Anti-Leakage Partitioning", "Fitted ONLY on training data (1,330 samples); test data (333 samples) strictly transformed.")
+]
+for title, desc in tfidf_spec:
+    p_b = tf_s7_r.add_paragraph()
+    p_b.text = f"✓ {title}: "
+    p_b.font.name = FONT_BODY
+    p_b.font.size = Pt(10.5)
+    p_b.font.bold = True
+    p_b.font.color.rgb = ACCENT_GREEN
+    p_b.space_before = Pt(6)
+    r = p_b.add_run()
+    r.text = desc
+    r.font.bold = False
+    r.font.color.rgb = TEXT_DARK
+
+p_mat = tf_s7_r.add_paragraph()
+p_mat.text = "Resulting Feature Matrices:\n• Training Matrix: 1,330 × 8,000  |  Testing Matrix: 333 × 8,000"
+p_mat.font.name = FONT_BODY
+p_mat.font.size = Pt(11)
+p_mat.font.bold = True
+p_mat.font.color.rgb = TEAL_ACCENT
+p_mat.space_before = Pt(8)
+
+# ==============================================================================
+# SLIDE 8: Class Imbalance Mitigation
+# ==============================================================================
+s8 = prs.slides.add_slide(blank_layout)
+set_slide_background(s8, LIGHT_BG)
+add_header(s8, "MCA MINI PROJECT | IMBALANCE MITIGATION", "Class Imbalance Mitigation Techniques in Phase 2", 8)
+
+imb_techniques = [
+    ("1. Algorithmic Cost Weighting (class_weight='balanced')", NAVY_TITLE,
+     "• Applied natively across: Logistic Regression, Linear SVM, and Random Forest.\n• Mechanism: Automatically adjusts loss-function penalties inversely proportional to class frequencies:\n  w_j = N / (K · n_j)\n• Impact: Penalizes majority-class false predictions more heavily, preventing models from sacrificing minority classes like Ophthalmology (83) and ENT (96)."),
+    
+    ("2. Synthetic Minority Over-sampling (SMOTE)", TEAL_ACCENT,
+     "• Applied strictly to the training fold (never on test data to preserve evaluation integrity).\n• Configuration: k_neighbors = 3 (tailored for sparse medical text representations).\n• Mechanism: Generates synthetic feature vectors along line segments connecting k-nearest minority neighbors, enriching minority decision regions."),
+    
+    ("3. Random Over-Sampling (ROS)", GOLD_ACCENT,
+     "• Evaluated to boost minority-class representation during iterative experimentation.\n• Duplicates minority instances to balance gradient propagation across rare specialty categories."),
+    
+    ("Core Engineering Objective", ACCENT_GREEN,
+     "• Objective: Prevent the models from being dominated by majority classes while preserving an uncorrupted, unseen test set of 333 held-out records.\n• Preserves exact stratified class proportions in the 20% test partition for unbiased clinical validation.")
+]
+
+for idx, (title, color_h, body) in enumerate(imb_techniques):
+    cx, cy = coords[idx]
+    add_card(s8, cx, cy, card_w, card_h)
+    tb = s8.shapes.add_textbox(cx + Inches(0.2), cy + Inches(0.15), card_w - Inches(0.4), card_h - Inches(0.3))
+    tf_i = tb.text_frame
+    tf_i.word_wrap = True
+    
+    p = tf_i.paragraphs[0]
+    p.text = title
+    p.font.name = FONT_TITLE
+    p.font.size = Pt(13)
+    p.font.bold = True
+    p.font.color.rgb = color_h
+    
+    p_b = tf_i.add_paragraph()
+    p_b.text = body
+    p_b.font.name = FONT_BODY
+    p_b.font.size = Pt(9.5)
+    p_b.font.color.rgb = TEXT_DARK
+    p_b.space_before = Pt(4)
+
+# ==============================================================================
+# SLIDE 9: Model Training
+# ==============================================================================
+s9 = prs.slides.add_slide(blank_layout)
+set_slide_background(s9, LIGHT_BG)
+add_header(s9, "MCA MINI PROJECT | MODEL TRAINING", "Model Training: Four Core Supervised ML Algorithms", 9)
+
+models_train = [
+    ("1. Linear Support Vector Machine (LinearSVC)",
+     "Config: C = 1.0, class_weight = 'balanced', max_iter = 3000",
+     "• Why Tested: SVMs excel on high-dimensional sparse text vectors by finding the maximum-margin hyperplane.\n• Training Behavior: Linear kernel separates 8,000 TF-IDF features with minimal computational overhead.\n• Regularization: L2 penalty ($C=1.0$) prevents overfitting on minority classes."),
+    
+    ("2. Logistic Regression (Multinomial)",
+     "Config: Multinomial Softmax, class_weight = 'balanced', max_iter = 1000",
+     "• Why Tested: Provides a well-calibrated probabilistic baseline with direct clinical interpretability.\n• Training Behavior: Optimizes multinomial cross-entropy with L2 regularization penalty.\n• Output: Produces natural class probability distributions for ensemble voting."),
+    
+    ("3. Random Forest Classifier",
+     "Config: n_estimators = 100, max_depth = 25, class_weight = 'balanced'",
+     "• Why Tested: Evaluates whether bagging non-linear decision trees captures keyword interactions.\n• Training Behavior: Ensembles 100 decorrelated trees with random feature subsampling.\n• Constraints: max_depth=25 prevents individual trees from memorizing sparse training text."),
+    
+    ("4. Multinomial Naive Bayes (MNB)",
+     "Config: alpha = 0.5 (Additive Laplace Smoothing)",
+     "• Why Tested: Standard generative text benchmark based on conditional word frequencies.\n• Training Behavior: Extremely rapid closed-form training with zero iterative gradient steps.\n• Smoothing: alpha=0.5 prevents zero-probability traps for rare clinical vocabulary.")
+]
+
+for idx, (title, cfg, body) in enumerate(models_train):
+    cx, cy = coords[idx]
+    add_card(s9, cx, cy, card_w, card_h)
+    tb = s9.shapes.add_textbox(cx + Inches(0.2), cy + Inches(0.15), card_w - Inches(0.4), card_h - Inches(0.3))
+    tf_m = tb.text_frame
+    tf_m.word_wrap = True
+    
+    p = tf_m.paragraphs[0]
+    p.text = title
+    p.font.name = FONT_TITLE
+    p.font.size = Pt(13)
+    p.font.bold = True
+    p.font.color.rgb = NAVY_TITLE
+    
+    p_c = tf_m.add_paragraph()
+    p_c.text = cfg
+    p_c.font.name = FONT_BODY
+    p_c.font.size = Pt(9.5)
+    p_c.font.bold = True
+    p_c.font.color.rgb = TEAL_ACCENT
+    p_c.space_before = Pt(2)
+    
+    p_b = tf_m.add_paragraph()
+    p_b.text = body
+    p_b.font.name = FONT_BODY
+    p_b.font.size = Pt(9)
+    p_b.font.color.rgb = TEXT_DARK
+    p_b.space_before = Pt(3)
+
+# ==============================================================================
+# SLIDE 10: Voting Ensembles
+# ==============================================================================
+s10 = prs.slides.add_slide(blank_layout)
+set_slide_background(s10, LIGHT_BG)
+add_header(s10, "MCA MINI PROJECT | ENSEMBLE LEARNING", "Hard & Soft Voting Ensemble Architectures", 10)
+
+# Left: Hard Voting
+add_card(s10, Inches(0.6), Inches(1.5), Inches(5.9), Inches(5.3))
+t_s10_l = s10.shapes.add_textbox(Inches(0.85), Inches(1.7), Inches(5.4), Inches(4.9))
+tf_s10_l = t_s10_l.text_frame
+tf_s10_l.word_wrap = True
+
+p = tf_s10_l.paragraphs[0]
+p.text = "Hard Voting Ensemble (Majority Rule)"
+p.font.name = FONT_TITLE
+p.font.size = Pt(15)
+p.font.bold = True
+p.font.color.rgb = NAVY_TITLE
+
+hard_points = [
+    ("Consensus Mechanism", "Aggregates discrete class predictions across the 4 base classifiers (LR, SVM, RF, MNB) and assigns the final label via majority vote: ŷ = mode(ŷ_1, ŷ_2, ŷ_3, ŷ_4)."),
+    ("Non-Probabilistic Decision", "Operates directly on predicted class labels without requiring probability outputs."),
+    ("Empirical Performance", "Achieved 87.09% accuracy and 0.8846 Macro F1 on the 333 test samples, matching Logistic Regression."),
+    ("Limitation", "Treats high-confidence and borderline predictions with equal weight, discarding nuanced confidence margins.")
+]
+for title, desc in hard_points:
+    p_b = tf_s10_l.add_paragraph()
+    p_b.text = f"• {title}: "
+    p_b.font.name = FONT_BODY
+    p_b.font.size = Pt(10.5)
+    p_b.font.bold = True
+    p_b.font.color.rgb = NAVY_TITLE
+    p_b.space_before = Pt(8)
+    r = p_b.add_run()
+    r.text = desc
+    r.font.bold = False
+    r.font.color.rgb = TEXT_DARK
+
+# Right: Soft Voting
+add_card(s10, Inches(6.8), Inches(1.5), Inches(5.93), Inches(5.3))
+t_s10_r = s10.shapes.add_textbox(Inches(7.05), Inches(1.7), Inches(5.43), Inches(4.9))
+tf_s10_r = t_s10_r.text_frame
+tf_s10_r.word_wrap = True
+
+p = tf_s10_r.paragraphs[0]
+p.text = "Soft Voting Ensemble (Weighted Probability)"
+p.font.name = FONT_TITLE
+p.font.size = Pt(15)
+p.font.bold = True
+p.font.color.rgb = NAVY_TITLE
+
+soft_points2 = [
+    ("Linear SVM Probability Calibration", "LinearSVC natively outputs raw hyperplane distances. Used CalibratedClassifierCV with Platt scaling to produce valid posterior probabilities P(c | x)."),
+    ("Weighted Consensus Formula", "Combined class probabilities with empirical weights [LR:2, SVM:2, RF:1, MNB:1]:\n  P_ensemble = (2·P_LR + 2·P_SVM + P_RF + P_MNB) / 6"),
+    ("Decision Rule", "Final specialty assigned by argmax: ŷ = argmax P_ensemble(c | x)."),
+    ("Why Investigated", "Soft voting captures model certainty, smoothing out individual estimator noise and stabilizing predictions across diverse model families (87.99% accuracy / 0.8898 Macro F1).")
+]
+for title, desc in soft_points2:
+    p_b = tf_s10_r.add_paragraph()
+    p_b.text = f"✓ {title}: "
+    p_b.font.name = FONT_BODY
+    p_b.font.size = Pt(10.5)
+    p_b.font.bold = True
+    p_b.font.color.rgb = ACCENT_GREEN
+    p_b.space_before = Pt(6)
+    r = p_b.add_run()
+    r.text = desc
+    r.font.bold = False
+    r.font.color.rgb = TEXT_DARK
+
+# ==============================================================================
+# SLIDE 11: Model Performance Comparison
+# ==============================================================================
+s11 = prs.slides.add_slide(blank_layout)
+set_slide_background(s11, LIGHT_BG)
+add_header(s11, "MCA MINI PROJECT | EVALUATION BENCHMARK", "Model Performance Comparison (Final 8-Specialty Results)", 11)
+
+# Left: Full Table
+add_card(s11, Inches(0.6), Inches(1.5), Inches(6.8), Inches(5.3))
+t_s11_tbl = s11.shapes.add_textbox(Inches(0.85), Inches(1.65), Inches(6.3), Inches(0.4))
+tf_s11t = t_s11_tbl.text_frame
+p = tf_s11t.paragraphs[0]
+p.text = "Final Evaluation Benchmark (333 Held-Out Test Records)"
+p.font.name = FONT_TITLE
+p.font.size = Pt(13)
+p.font.bold = True
+p.font.color.rgb = NAVY_TITLE
+
+t11_rows = 7
+t11_cols = 6
+tbl_shape11 = s11.shapes.add_table(t11_rows, t11_cols, Inches(0.85), Inches(2.1), Inches(6.3), Inches(3.6))
+tbl11 = tbl_shape11.table
+tbl11.columns[0].width = Inches(2.3)
+tbl11.columns[1].width = Inches(0.8)
+tbl11.columns[2].width = Inches(0.8)
+tbl11.columns[3].width = Inches(0.8)
+tbl11.columns[4].width = Inches(0.8)
+tbl11.columns[5].width = Inches(0.8)
+
+headers11 = ["Model Architecture", "Accuracy", "Macro Prec", "Macro Rec", "Macro F1", "Weighted F1"]
+for j, h in enumerate(headers11):
+    cell = tbl11.cell(0, j)
+    cell.fill.solid()
+    cell.fill.fore_color.rgb = NAVY_TITLE
+    cell.vertical_anchor = MSO_ANCHOR.MIDDLE
+    p = cell.text_frame.paragraphs[0]
+    p.text = h
+    p.font.name = FONT_BODY
+    p.font.size = Pt(8.5)
+    p.font.bold = True
+    p.font.color.rgb = TEXT_WHITE
+    if j > 0:
+        p.alignment = PP_ALIGN.RIGHT
+
+data_s11 = [
+    ("Linear SVM (Best Model)", "0.8859", "0.9051", "0.8902", "0.8971", "0.8862"),
+    ("Soft Voting Ensemble", "0.8799", "0.9041", "0.8795", "0.8898", "0.8818"),
+    ("Logistic Regression", "0.8709", "0.8966", "0.8768", "0.8846", "0.8730"),
+    ("Hard Voting Ensemble", "0.8709", "0.8966", "0.8768", "0.8846", "0.8730"),
+    ("Random Forest", "0.8198", "0.8340", "0.8257", "0.8274", "0.8209"),
+    ("Multinomial Naive Bayes", "0.7748", "0.8602", "0.7331", "0.7743", "0.7824")
+]
+for i, row in enumerate(data_s11):
+    for j, val in enumerate(row):
+        cell = tbl11.cell(i+1, j)
         cell.vertical_anchor = MSO_ANCHOR.MIDDLE
         if i == 0:
             cell.fill.solid()
@@ -843,7 +935,7 @@ for i, row in enumerate(data_s8):
         p = cell.text_frame.paragraphs[0]
         p.text = val
         p.font.name = FONT_BODY
-        p.font.size = Pt(9)
+        p.font.size = Pt(8.5)
         if i < 2:
             p.font.bold = True
             p.font.color.rgb = NAVY_TITLE
@@ -852,109 +944,59 @@ for i, row in enumerate(data_s8):
         if j > 0:
             p.alignment = PP_ALIGN.RIGHT
 
-# Bottom note in left card
-tb_bot8 = s8.shapes.add_textbox(Inches(0.75), Inches(5.8), Inches(6.1), Inches(0.85))
-tf_b8 = tb_bot8.text_frame
-tf_b8.word_wrap = True
-p = tf_b8.paragraphs[0]
-p.text = "★ Key Takeaway: Every candidate model and ensemble comfortably surpassed the required 75.0% threshold. Linear SVM achieved the highest overall accuracy (88.59%) and Macro F1 (0.8971)."
+# Highlights box below table
+tb_bot11 = s11.shapes.add_textbox(Inches(0.85), Inches(5.8), Inches(6.3), Inches(0.85))
+tf_b11 = tb_bot11.text_frame
+tf_b11.word_wrap = True
+p = tf_b11.paragraphs[0]
+p.text = "★ Best Individual: Linear SVM — 88.59% Accuracy | 0.8971 Macro F1\n★ Best Ensemble: Soft Voting — 87.99% Accuracy | 0.8898 Macro F1\n✓ All 6 configurations comfortably beat the required 75.0% project target threshold."
 p.font.name = FONT_BODY
 p.font.size = Pt(9.5)
 p.font.bold = True
 p.font.color.rgb = ACCENT_GREEN
 
-# Right Side: Image Card
-add_card(s8, Inches(7.2), Inches(1.5), Inches(5.53), Inches(5.3))
+# Right: Chart Image
+add_card(s11, Inches(7.6), Inches(1.5), Inches(5.13), Inches(5.3))
 if os.path.exists(img_perf):
-    s8.shapes.add_picture(img_perf, Inches(7.35), Inches(1.65), width=Inches(5.23), height=Inches(4.95))
+    s11.shapes.add_picture(img_perf, Inches(7.75), Inches(1.65), width=Inches(4.83), height=Inches(4.95))
 
 # ==============================================================================
-# SLIDE 9: Key Performance Highlights
+# SLIDE 12: Confusion Matrix & Classification Analysis
 # ==============================================================================
-s9 = prs.slides.add_slide(blank_layout)
-set_slide_background(s9, LIGHT_BG)
-add_header(s9, "MCA MINI PROJECT | METRIC HIGHLIGHTS", "Key Performance Highlights", 9)
+s12 = prs.slides.add_slide(blank_layout)
+set_slide_background(s12, LIGHT_BG)
+add_header(s12, "MCA MINI PROJECT | CONFUSION MATRIX", "Confusion Matrix & Classification Analysis", 12)
 
-highlights = [
-    ("Top Individual Model: Linear SVM", "88.59% Accuracy  |  0.8971 Macro F1",
-     "• Maximizes the separation margin across high-dimensional sparse TF-IDF text vectors.\n• Achieved 0.9022 Macro Precision and 0.8953 Macro Recall on 333 unseen test records.\n• Outstanding generalization with zero overfitting due to L2 regularization ($C=1.0$)."),
-    
-    ("Top Ensemble: Soft Voting Classifier", "87.99% Accuracy  |  0.8898 Macro F1",
-     "• Consensus integration with empirical weights [LR:2, SVM:2, RF:1, MNB:1].\n• Achieved 0.8997 Macro Precision and 0.8809 Weighted F1-score.\n• Probability averaging provides confidence calibration for clinical decision support."),
-    
-    ("Strong Linear Baseline: Logistic Regression", "87.09% Accuracy  |  0.8846 Macro F1",
-     "• Multinomial Softmax matches the performance of the Hard Voting Ensemble.\n• Macro Precision: 0.8843 | Macro Recall: 0.8872.\n• Provides direct, interpretable log-odds for clinical keyword importance."),
-    
-    ("Project Benchmark Exceeded Across All Models", "All 6 Configurations > 75.0% Target",
-     "• Random Forest (81.98% Accuracy / 0.8274 Macro F1) and MNB (77.48% Accuracy) both exceed the benchmark.\n• Validates the power of curating 8 mutually exclusive clinical specialties.\n• Substantial improvement over the initial 7.85%–27.39% 40-class baseline.")
-]
-
-for idx, (title, stat, body) in enumerate(highlights):
-    cx, cy = coords[idx]
-    add_card(s9, cx, cy, card_w, card_h)
-    tb = s9.shapes.add_textbox(cx + Inches(0.2), cy + Inches(0.15), card_w - Inches(0.4), card_h - Inches(0.3))
-    tf_h = tb.text_frame
-    tf_h.word_wrap = True
-    
-    p = tf_h.paragraphs[0]
-    p.text = title
-    p.font.name = FONT_TITLE
-    p.font.size = Pt(13)
-    p.font.bold = True
-    p.font.color.rgb = NAVY_TITLE
-    
-    p_st = tf_h.add_paragraph()
-    p_st.text = stat
-    p_st.font.name = FONT_BODY
-    p_st.font.size = Pt(12)
-    p_st.font.bold = True
-    p_st.font.color.rgb = TEAL_ACCENT if idx != 0 else GOLD_ACCENT
-    p_st.space_before = Pt(2)
-    
-    p_bd = tf_h.add_paragraph()
-    p_bd.text = body
-    p_bd.font.name = FONT_BODY
-    p_bd.font.size = Pt(9.5)
-    p_bd.font.color.rgb = TEXT_DARK
-    p_bd.space_before = Pt(4)
-
-# ==============================================================================
-# SLIDE 10: Soft Voting Ensemble Confusion Matrix
-# ==============================================================================
-s10 = prs.slides.add_slide(blank_layout)
-set_slide_background(s10, LIGHT_BG)
-add_header(s10, "MCA MINI PROJECT | CONFUSION MATRIX", "Soft Voting Ensemble Confusion Matrix (8 × 8)", 10)
-
-# Left Side: Image
-add_card(s10, Inches(0.6), Inches(1.5), Inches(5.8), Inches(5.3))
+# Left: CM Heatmap
+add_card(s12, Inches(0.6), Inches(1.5), Inches(5.8), Inches(5.3))
 if os.path.exists(img_cm):
-    s10.shapes.add_picture(img_cm, Inches(0.75), Inches(1.65), width=Inches(5.5), height=Inches(4.95))
+    s12.shapes.add_picture(img_cm, Inches(0.75), Inches(1.65), width=Inches(5.5), height=Inches(4.95))
 
-# Right Side: Analytical Insights
-add_card(s10, Inches(6.6), Inches(1.5), Inches(6.13), Inches(5.3))
-t_s10_r = s10.shapes.add_textbox(Inches(6.8), Inches(1.7), Inches(5.7), Inches(4.9))
-tf_s10_r = t_s10_r.text_frame
-tf_s10_r.word_wrap = True
+# Right: Diagonal & Pattern Analysis
+add_card(s12, Inches(6.6), Inches(1.5), Inches(6.13), Inches(5.3))
+t_s12_r = s12.shapes.add_textbox(Inches(6.8), Inches(1.7), Inches(5.7), Inches(4.9))
+tf_s12_r = t_s12_r.text_frame
+tf_s12_r.word_wrap = True
 
-p = tf_s10_r.paragraphs[0]
-p.text = "Confusion Matrix Diagnostic Analysis"
+p = tf_s12_r.paragraphs[0]
+p.text = "Diagnostic Classification Patterns"
 p.font.name = FONT_TITLE
-p.font.size = Pt(15)
+p.font.size = Pt(14)
 p.font.bold = True
 p.font.color.rgb = NAVY_TITLE
 
-cm_points = [
-    ("Strong Diagonal Dominance", "295 out of 333 held-out test records correctly classified (88.59% accuracy), with only 38 total misclassifications across all 8 classes."),
-    ("Perfect Classification: Ophthalmology", "17 out of 17 records classified with 100% precision and 100% recall (zero misclassifications), proving highly distinctive eye diagnostic terminology."),
-    ("Near-Zero Cross-Domain Noise", "Zero false positives or negatives between unrelated organ systems (e.g. Ophthalmology vs Cardiovascular, Urology vs Orthopedic)."),
-    ("Primary Diagnostic Challenge: Neurology ↔ Orthopedic", "The majority of misclassifications occurred between Neurology and Orthopedics:\n• Orthopedic: 63/71 correct (88.7%); 7 cases misclassified as Neurology.\n• Neurology: 35/45 correct (77.8%); 5 cases misclassified as Orthopedic."),
-    ("Clinical Linguistic Root Cause", "Both specialties frequently share anatomical vocabulary regarding spine surgeries, lumbar discectomy, radiculopathy, disc herniation, and nerve root decompression.")
+cm_analysis = [
+    ("Heavy Diagonal Concentration", "295 out of 333 test instances correctly classified (88.59%), confirming sharp decision boundaries across most clinical specialties."),
+    ("Easiest Specialty to Distinguish: Ophthalmology", "17 out of 17 correct (100% precision & recall, 0 misclassifications) due to unique eye-specific clinical terminology (e.g. 'phacoemulsification', 'corneal')."),
+    ("High Diagnostic Separation", "Zero cross-domain confusion between unrelated organ systems (e.g. Ophthalmology vs Cardiovascular, Urology vs Orthopedic)."),
+    ("Hardest Boundary: Neurology ↔ Orthopedic", "Accounts for 12 of the 38 total misclassifications:\n• 7 Orthopedic cases misclassified as Neurology\n• 5 Neurology cases misclassified as Orthopedic"),
+    ("Linguistic Root Cause of Error", "Shared operative terminology in spinal procedures (e.g., lumbar discectomy, radiculopathy, disc herniation, and nerve root decompression) where nerve and bone tissue co-occur.")
 ]
-for title, desc in cm_points:
-    p_b = tf_s10_r.add_paragraph()
+for title, desc in cm_analysis:
+    p_b = tf_s12_r.add_paragraph()
     p_b.text = f"• {title}: "
     p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(10.5)
+    p_b.font.size = Pt(10)
     p_b.font.bold = True
     p_b.font.color.rgb = NAVY_TITLE
     p_b.space_before = Pt(6)
@@ -964,37 +1006,36 @@ for title, desc in cm_points:
     r.font.color.rgb = TEXT_DARK
 
 # ==============================================================================
-# SLIDE 11: Specialty-wise Classification Performance
+# SLIDE 13: Specialty-wise Performance
 # ==============================================================================
-s11 = prs.slides.add_slide(blank_layout)
-set_slide_background(s11, LIGHT_BG)
-add_header(s11, "MCA MINI PROJECT | DETAILED EVALUATION", "Specialty-wise Classification Performance (Soft Voting)", 11)
+s13 = prs.slides.add_slide(blank_layout)
+set_slide_background(s13, LIGHT_BG)
+add_header(s13, "MCA MINI PROJECT | DETAILED EVALUATION", "Specialty-wise Classification Performance (Final Report)", 13)
 
-# Left Side: Full Performance Table
-add_card(s11, Inches(0.6), Inches(1.5), Inches(7.5), Inches(5.3))
-t_s11_tbl = s11.shapes.add_textbox(Inches(0.85), Inches(1.65), Inches(7.0), Inches(0.4))
-tf_s11t = t_s11_tbl.text_frame
-p = tf_s11t.paragraphs[0]
-p.text = "Per-Class Evaluation Metrics (Soft Voting on 333 Test Records)"
+# Left: Exact Classification Report Table
+add_card(s13, Inches(0.6), Inches(1.5), Inches(7.5), Inches(5.3))
+t_s13_tbl = s13.shapes.add_textbox(Inches(0.85), Inches(1.65), Inches(7.0), Inches(0.4))
+tf_s13t = t_s13_tbl.text_frame
+p = tf_s13t.paragraphs[0]
+p.text = "Per-Class Classification Report (Best Model: Linear SVM)"
 p.font.name = FONT_TITLE
-p.font.size = Pt(13.5)
+p.font.size = Pt(13)
 p.font.bold = True
 p.font.color.rgb = NAVY_TITLE
 
-# Create Specialty Table
-t11_rows = 11
-t11_cols = 5
-tbl_shape11 = s11.shapes.add_table(t11_rows, t11_cols, Inches(0.85), Inches(2.1), Inches(7.0), Inches(4.4))
-tbl11 = tbl_shape11.table
-tbl11.columns[0].width = Inches(3.0)
-tbl11.columns[1].width = Inches(1.0)
-tbl11.columns[2].width = Inches(1.0)
-tbl11.columns[3].width = Inches(1.0)
-tbl11.columns[4].width = Inches(1.0)
+t13_rows = 12
+t13_cols = 5
+tbl_shape13 = s13.shapes.add_table(t13_rows, t13_cols, Inches(0.85), Inches(2.1), Inches(7.0), Inches(4.4))
+tbl13 = tbl_shape13.table
+tbl13.columns[0].width = Inches(3.0)
+tbl13.columns[1].width = Inches(1.0)
+tbl13.columns[2].width = Inches(1.0)
+tbl13.columns[3].width = Inches(1.0)
+tbl13.columns[4].width = Inches(1.0)
 
-headers11 = ["Medical Specialty", "Precision", "Recall", "F1-Score", "Support"]
-for j, h in enumerate(headers11):
-    cell = tbl11.cell(0, j)
+headers13 = ["Medical Specialty", "Precision", "Recall", "F1-Score", "Support"]
+for j, h in enumerate(headers13):
+    cell = tbl13.cell(0, j)
     cell.fill.solid()
     cell.fill.fore_color.rgb = NAVY_TITLE
     cell.vertical_anchor = MSO_ANCHOR.MIDDLE
@@ -1007,23 +1048,24 @@ for j, h in enumerate(headers11):
     if j > 0:
         p.alignment = PP_ALIGN.RIGHT
 
-data_s11 = [
+data_s13 = [
     ("Cardiovascular / Pulmonary", "0.88", "0.92", "0.90", "74"),
-    ("ENT (Otolaryngology)", "0.94", "0.84", "0.89", "19"),
+    ("ENT - Otolaryngology", "0.94", "0.84", "0.89", "19"),
     ("Gastroenterology", "0.87", "0.89", "0.88", "45"),
     ("Neurology", "0.76", "0.78", "0.77", "45"),
     ("Obstetrics / Gynecology", "0.93", "0.90", "0.92", "31"),
     ("Ophthalmology", "1.00", "1.00", "1.00", "17"),
     ("Orthopedic", "0.89", "0.89", "0.89", "71"),
     ("Urology", "0.97", "0.90", "0.93", "31"),
-    ("Macro Average", "0.90", "0.89", "0.89", "333"),
-    ("Weighted Average", "0.88", "0.88", "0.88", "333")
+    ("Accuracy", "", "", "0.89", "333"),
+    ("Macro Average", "0.91", "0.89", "0.90", "333"),
+    ("Weighted Average", "0.89", "0.89", "0.89", "333")
 ]
-for i, row in enumerate(data_s11):
+for i, row in enumerate(data_s13):
     for j, val in enumerate(row):
-        cell = tbl11.cell(i+1, j)
+        cell = tbl13.cell(i+1, j)
         cell.vertical_anchor = MSO_ANCHOR.MIDDLE
-        if i == 5: # Ophthalmology
+        if i == 5:
             cell.fill.solid()
             cell.fill.fore_color.rgb = RGBColor(0xEC, 0xFD, 0xF5) # soft green
         elif i >= 8:
@@ -1041,27 +1083,27 @@ for i, row in enumerate(data_s11):
         if j > 0:
             p.alignment = PP_ALIGN.RIGHT
 
-# Right Side: Performance Summary Cards
-add_card(s11, Inches(8.35), Inches(1.5), Inches(4.38), Inches(5.3))
-t_s11_r = s11.shapes.add_textbox(Inches(8.55), Inches(1.7), Inches(3.98), Inches(4.9))
-tf_s11_r = t_s11_r.text_frame
-tf_s11_r.word_wrap = True
+# Right: Observations
+add_card(s13, Inches(8.35), Inches(1.5), Inches(4.38), Inches(5.3))
+t_s13_r = s13.shapes.add_textbox(Inches(8.55), Inches(1.7), Inches(3.98), Inches(4.9))
+tf_s13_r = t_s13_r.text_frame
+tf_s13_r.word_wrap = True
 
-p = tf_s11_r.paragraphs[0]
-p.text = "Per-Class Clinical Insights"
+p = tf_s13_r.paragraphs[0]
+p.text = "Specialty-wise Observations"
 p.font.name = FONT_TITLE
 p.font.size = Pt(14)
 p.font.bold = True
 p.font.color.rgb = NAVY_TITLE
 
-spec_insights = [
-    ("Best Performance: Ophthalmology", "1.00 F1-score with 100% precision & recall. Zero false positives or false negatives due to specialized terminology (e.g., 'phacoemulsification', 'intraocular lens')."),
-    ("Strong Class Generalization", "Urology (0.93 F1 / 0.97 Precision), OB/GYN (0.92 F1 / 0.93 Precision), and Cardiovascular (0.90 F1 / 0.92 Recall) show excellent discriminability."),
-    ("Robust Minorities", "ENT achieved 0.94 Precision and 0.89 F1 despite having only 19 test records, demonstrating effective feature representation without sample starvation."),
-    ("Most Challenging: Neurology", "0.77 F1 reflects the diagnostic overlap with Orthopedic spinal procedures.")
+spec_obs = [
+    ("Ophthalmology: Flawless Generalization", "1.00 F1-score across all 17 test cases with 100% precision and recall."),
+    ("High Precision Specialties", "Urology (0.97 Precision), ENT (0.94 Precision), and OB/GYN (0.93 Precision) demonstrate exceptional specificity."),
+    ("Robust Majority Classes", "Cardiovascular / Pulmonary (0.90 F1) and Orthopedic (0.89 F1) maintain high recall despite being the largest classes."),
+    ("Challenging Class", "Neurology (0.77 F1) reflects the semantic overlap with Orthopedic spinal cases.")
 ]
-for title, desc in spec_insights:
-    p_b = tf_s11_r.add_paragraph()
+for title, desc in spec_obs:
+    p_b = tf_s13_r.add_paragraph()
     p_b.text = f"★ {title}:\n"
     p_b.font.name = FONT_BODY
     p_b.font.size = Pt(10)
@@ -1074,289 +1116,147 @@ for title, desc in spec_insights:
     r.font.color.rgb = TEXT_DARK
 
 # ==============================================================================
-# SLIDE 12: Unseen Test Data & Prediction Analysis
+# SLIDE 14: Key Findings
 # ==============================================================================
-s12 = prs.slides.add_slide(blank_layout)
-set_slide_background(s12, LIGHT_BG)
-add_header(s12, "MCA MINI PROJECT | TEST DATA ANALYSIS", "Unseen Test Data & Prediction Analysis", 12)
+s14 = prs.slides.add_slide(blank_layout)
+set_slide_background(s14, LIGHT_BG)
+add_header(s14, "MCA MINI PROJECT | EMPIRICAL FINDINGS", "Key Empirical Findings from Phase 2", 14)
 
-# 3 Horizontal / Column Cards
-add_card(s12, Inches(0.6), Inches(1.5), Inches(3.85), Inches(5.3))
-t_s12_1 = s12.shapes.add_textbox(Inches(0.8), Inches(1.7), Inches(3.45), Inches(4.9))
-tf_12_1 = t_s12_1.text_frame
-tf_12_1.word_wrap = True
-p = tf_12_1.paragraphs[0]
-p.text = "1. Strict Held-Out Evaluation"
-p.font.name = FONT_TITLE
-p.font.size = Pt(14)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-points_12_1 = [
-    ("333 Held-Out Records", "All evaluation metrics, confusion matrices, and confidence profiles were computed exclusively on 333 unquarantined test samples."),
-    ("Zero Data Leakage", "TF-IDF vocabulary fitting and model training strictly used the 1,330 training records. Zero test tokens contaminated feature construction."),
-    ("High Generalization", "295 out of 333 records correctly classified (88.59%), proving strong out-of-sample real-world reliability.")
-]
-for title, desc in points_12_1:
-    p_b = tf_12_1.add_paragraph()
-    p_b.text = f"• {title}:\n"
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(10.5)
-    p_b.font.bold = True
-    p_b.font.color.rgb = NAVY_TITLE
-    p_b.space_before = Pt(8)
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
-
-add_card(s12, Inches(4.74), Inches(1.5), Inches(3.85), Inches(5.3))
-t_s12_2 = s12.shapes.add_textbox(Inches(4.94), Inches(1.7), Inches(3.45), Inches(4.9))
-tf_12_2 = t_s12_2.text_frame
-tf_12_2.word_wrap = True
-p = tf_12_2.paragraphs[0]
-p.text = "2. Prediction Confidence Profile"
-p.font.name = FONT_TITLE
-p.font.size = Pt(14)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-points_12_2 = [
-    ("Decisive High Confidence", "78.4% of Soft Voting predictions exhibited high confidence (≥ 0.85), indicating sharp, unequivocal specialty predictions on typical dictations."),
-    ("Moderate Confidence Tier", "14.1% of records predicted with confidence between 0.65 and 0.85, indicating multi-disciplinary symptoms."),
-    ("Ambiguity Detection (< 0.65)", "Only 7.5% of test predictions had confidence < 0.65. This provides an automated trigger to flag uncertain dictations for human review.")
-]
-for title, desc in points_12_2:
-    p_b = tf_12_2.add_paragraph()
-    p_b.text = f"✓ {title}:\n"
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(10.5)
-    p_b.font.bold = True
-    p_b.font.color.rgb = TEAL_ACCENT
-    p_b.space_before = Pt(8)
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
-
-add_card(s12, Inches(8.88), Inches(1.5), Inches(3.85), Inches(5.3))
-t_s12_3 = s12.shapes.add_textbox(Inches(9.08), Inches(1.7), Inches(3.45), Inches(4.9))
-tf_12_3 = t_s12_3.text_frame
-tf_12_3.word_wrap = True
-p = tf_12_3.paragraphs[0]
-p.text = "3. Error Boundary Examination"
-p.font.name = FONT_TITLE
-p.font.size = Pt(14)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-points_12_3 = [
-    ("38 Total Misclassifications", "Detailed error audit shows 31.6% of all errors (12/38) are isolated to the Neurology ↔ Orthopedic boundary."),
-    ("Spine Surgery Lexicon Overlap", "Discectomy and laminectomy reports mention both vertebrae/facets (Orthopedic) and spinal cord/nerve roots (Neurology)."),
-    ("Isolated Non-Overlap", "No misclassifications crossed between distinct organ systems (e.g. Ophthalmology vs Urology had 0 errors).")
-]
-for title, desc in points_12_3:
-    p_b = tf_12_3.add_paragraph()
-    p_b.text = f"⚠ {title}:\n"
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(10.5)
-    p_b.font.bold = True
-    p_b.font.color.rgb = RED_ACCENT
-    p_b.space_before = Pt(8)
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
-
-# ==============================================================================
-# SLIDE 13: Empirical Findings & Technical Insights
-# ==============================================================================
-s13 = prs.slides.add_slide(blank_layout)
-set_slide_background(s13, LIGHT_BG)
-add_header(s13, "MCA MINI PROJECT | EMPIRICAL FINDINGS", "Empirical Findings & Technical Insights", 13)
-
-findings = [
-    ("1. Linear Model Superiority on Sparse Text",
-     "• Linear SVM (88.59%) and Logistic Regression (87.09%) decisively outperformed Random Forest (81.98%).\n• In an 8,000-dimensional sparse feature space, linear hyperplanes partition document vectors far more cleanly than axis-aligned orthogonal decision tree splits.\n• High dimensionality favors convex maximum-margin linear separation without overfitting."),
+findings8 = [
+    ("1. Raw 40-Class Formulation Failed",
+     "• Initial 40-class training produced 7.85% to 27.39% accuracy, demonstrating that the raw dataset was unsuitable without domain refinement."),
     
-    ("2. Impact of Feature Dimensionality Control",
-     "• Constraining TF-IDF to 8,000 features and unigram/bigram combinations eliminated the curse of dimensionality.\n• Incorporating sublinear scaling (1 + log(TF)) prevented repetitive administrative terms from drowning out key diagnostic markers.\n• Transformed the low baseline (7.85%–27.39%) into robust ~88% classification accuracy."),
+    ("2. Severe Class Imbalance Distorted Learning",
+     "• Extreme 184:1 skew starved minority classes; unweighted models predicted majority 'Surgery' trivially. Class weighting and SMOTE restored balanced gradients."),
     
-    ("3. Multi-Paradigm Ensemble Consensus",
-     "• Soft Voting Ensemble (87.99%) successfully pooled probability estimates across margin-based, probabilistic, Bayesian, and tree-based paradigms.\n• The 2:2:1:1 weighting prioritized high-accuracy linear estimators while absorbing tree and Bayesian variance.\n• Delivers a smooth, calibrated posterior probability distribution ideal for clinical deployment."),
+    ("3. 310,000-Feature TF-IDF Created Sparsity Trap",
+     "• Unconstrained TF-IDF severely overfitted (78:1 feature-to-sample ratio). Restricting to 8,000 features with sublinear scaling stabilized feature space."),
     
-    ("4. Domain Mutuality & Clinical Lexical Boundary",
-     "• Resolving the 40 raw categories into 8 core organ systems eliminated overlapping procedure terms (Surgery) and administrative document noise.\n• Confirms that clinical specialty classification requires clear anatomical domain boundaries.\n• The sole remaining ambiguity is the shared neuro-orthopedic spine boundary.")
+    ("4. Pruning Document Formats Cleared Noise",
+     "• Removing administrative formats (SOAP notes, consults, discharge summaries) eliminated non-specialty linguistic overlap."),
+    
+    ("5. Final 8-Specialty Dataset Achieved 77%–89%",
+     "• Focusing on 8 mutually exclusive clinical departments dramatically elevated performance across all 4 machine-learning algorithms."),
+    
+    ("6. Linear SVM Delivered Top Individual Accuracy",
+     "• Linear SVM achieved 88.59% accuracy and 0.8971 Macro F1, outperforming Random Forest by > 6.6% due to optimal high-dimensional text separation."),
+    
+    ("7. Soft Voting Produced Robust Ensemble Generalization",
+     "• Weighted probability consensus (2:2:1:1) achieved 87.99% accuracy and 0.8898 Macro F1, providing smooth confidence calibration."),
+    
+    ("8. Controlled TF-IDF Drastically Reduced Dimensionality",
+     "• 8,000 features with sublinear TF scaling provided compact, highly discriminative vectors yielding sub-15ms CPU inference.")
 ]
 
-for idx, (title, body) in enumerate(findings):
-    cx, cy = coords[idx]
-    add_card(s13, cx, cy, card_w, card_h)
-    tb = s13.shapes.add_textbox(cx + Inches(0.2), cy + Inches(0.15), card_w - Inches(0.4), card_h - Inches(0.3))
+card_w14 = Inches(5.9)
+card_h14 = Inches(1.18)
+coords14 = [
+    (Inches(0.6), Inches(1.5)),
+    (Inches(6.8), Inches(1.5)),
+    (Inches(0.6), Inches(2.85)),
+    (Inches(6.8), Inches(2.85)),
+    (Inches(0.6), Inches(4.2)),
+    (Inches(6.8), Inches(4.2)),
+    (Inches(0.6), Inches(5.55)),
+    (Inches(6.8), Inches(5.55))
+]
+
+for idx, (title, body) in enumerate(findings8):
+    cx, cy = coords14[idx]
+    add_card(s14, cx, cy, card_w14, card_h14)
+    tb = s14.shapes.add_textbox(cx + Inches(0.15), cy + Inches(0.08), card_w14 - Inches(0.3), card_h14 - Inches(0.16))
     tf_f = tb.text_frame
     tf_f.word_wrap = True
     
     p = tf_f.paragraphs[0]
     p.text = title
     p.font.name = FONT_TITLE
-    p.font.size = Pt(13)
+    p.font.size = Pt(11)
     p.font.bold = True
     p.font.color.rgb = NAVY_TITLE
     
     p_b = tf_f.add_paragraph()
     p_b.text = body
     p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(9.5)
+    p_b.font.size = Pt(8.5)
     p_b.font.color.rgb = TEXT_DARK
-    p_b.space_before = Pt(4)
+    p_b.space_before = Pt(2)
 
 # ==============================================================================
-# SLIDE 14: Model Serialization & Phase 3 Deployment Architecture
-# ==============================================================================
-s14 = prs.slides.add_slide(blank_layout)
-set_slide_background(s14, LIGHT_BG)
-add_header(s14, "MCA MINI PROJECT | DEPLOYMENT ARCHITECTURE", "Model Serialization & Phase 3 Deployment Architecture", 14)
-
-# Left Card: Serialized Artifacts
-add_card(s14, Inches(0.6), Inches(1.5), Inches(5.9), Inches(5.3))
-t_s14_l = s14.shapes.add_textbox(Inches(0.85), Inches(1.7), Inches(5.4), Inches(4.9))
-tf_s14_l = t_s14_l.text_frame
-tf_s14_l.word_wrap = True
-
-p = tf_s14_l.paragraphs[0]
-p.text = "Ultra-Lightweight Serialized Pipeline"
-p.font.name = FONT_TITLE
-p.font.size = Pt(15)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-artifacts = [
-    ("tfidf_vectorizer_8classes.pkl", "0.30 MB", "Fitted TF-IDF vocabulary (8,000 features, unigram/bigram tokens, IDF weights)."),
-    ("best_balanced_model.pkl (Linear SVM)", "0.49 MB", "Top individual model; coefficients and dual vectors for ultra-fast inference."),
-    ("voting_ensemble_model.pkl (Soft Voting)", "11.07 MB", "Complete 4-model ensemble with calibrated probabilities and 2:2:1:1 weights."),
-    ("Total Pipeline Footprint", "~11.9 MB", "Entire serialized system is under 12 MB, enabling deployment on minimal CPU hosting without GPU requirements.")
-]
-for name, size, desc in artifacts:
-    p_b = tf_s14_l.add_paragraph()
-    p_b.text = f"• {name} "
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(10.5)
-    p_b.font.bold = True
-    p_b.font.color.rgb = NAVY_TITLE
-    p_b.space_before = Pt(8)
-    
-    r_sz = p_b.add_run()
-    r_sz.text = f"[{size}]:\n"
-    r_sz.font.bold = True
-    r_sz.font.color.rgb = TEAL_ACCENT
-    
-    r_d = p_b.add_run()
-    r_d.text = desc
-    r_d.font.bold = False
-    r_d.font.color.rgb = TEXT_DARK
-
-# Right Card: Phase 3 Deployment Architecture
-add_card(s14, Inches(6.8), Inches(1.5), Inches(5.93), Inches(5.3))
-t_s14_r = s14.shapes.add_textbox(Inches(7.05), Inches(1.7), Inches(5.43), Inches(4.9))
-tf_s14_r = t_s14_r.text_frame
-tf_s14_r.word_wrap = True
-
-p = tf_s14_r.paragraphs[0]
-p.text = "Phase 3: Web Deployment Architecture"
-p.font.name = FONT_TITLE
-p.font.size = Pt(15)
-p.font.bold = True
-p.font.color.rgb = NAVY_TITLE
-
-deploy_points = [
-    ("Flask REST API Backend (Phase 3)", "Lightweight Python microframework exposing /predict and /batch_classify endpoints for clinical transcription processing."),
-    ("Instantaneous Inference (< 15 ms)", "TF-IDF sparse vector transform and matrix multiplication execute in milliseconds on standard CPU hardware."),
-    ("Interactive Clinician Web Dashboard", "Clean, responsive user interface allowing doctors and medical records personnel to paste dictations and review automated specialty routing."),
-    ("Decision Support Confidence Indicator", "Displays primary predicted specialty, probability confidence bar (e.g. 93.8%), and top alternative classes for borderline cases.")
-]
-for title, desc in deploy_points:
-    p_b = tf_s14_r.add_paragraph()
-    p_b.text = f"✓ {title}:\n"
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(10.5)
-    p_b.font.bold = True
-    p_b.font.color.rgb = ACCENT_GREEN
-    p_b.space_before = Pt(8)
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = TEXT_DARK
-
-# ==============================================================================
-# SLIDE 15: Academic Timeline & Milestone Schedule
+# SLIDE 15: Current Status & Next Phase
 # ==============================================================================
 s15 = prs.slides.add_slide(blank_layout)
 set_slide_background(s15, LIGHT_BG)
-add_header(s15, "MCA MINI PROJECT | PROJECT TIMELINE", "Academic Timeline & Milestone Schedule", 15)
+add_header(s15, "MCA MINI PROJECT | PROJECT STATUS", "Current Project Status & Phase 3 Roadmap", 15)
 
-# Left: Completed Milestones
+# Left: Completed in Phase 2
 add_card(s15, Inches(0.6), Inches(1.5), Inches(5.9), Inches(5.3))
 t_s15_l = s15.shapes.add_textbox(Inches(0.85), Inches(1.7), Inches(5.4), Inches(4.9))
 tf_s15_l = t_s15_l.text_frame
 tf_s15_l.word_wrap = True
 
 p = tf_s15_l.paragraphs[0]
-p.text = "Completed Milestones (Phases 1 & 2)"
+p.text = "Completed in Phase 2"
 p.font.name = FONT_TITLE
 p.font.size = Pt(14)
 p.font.bold = True
 p.font.color.rgb = ACCENT_GREEN
 
-completed_milestones = [
-    ("08-09-2026", "First Project Presentation", "Literature review, Kaggle MTSamples EDA, class imbalance analysis & system architecture approval."),
-    ("09-09-2026", "Sprint Release I", "Formal submission of Phase 1 technical report and exploratory visualization artifacts."),
-    ("Week 6", "Candidate Model Training", "Trained baseline LR, SVM, Random Forest, and Multinomial Naive Bayes classifiers."),
-    ("18-09-2026", "Sprint Release II", "Submission of preliminary candidate model benchmarking and performance metrics."),
-    ("Week 7", "Hyperparameter Tuning & Comparison", "Constrained TF-IDF to 8,000 features; optimized regularization and Laplace smoothing."),
-    ("Week 8", "Soft Voting Ensemble Formulation", "Formulated 2:2:1:1 soft voting consensus and calibrated SVM probabilities via Platt scaling."),
-    ("29–30-09-2026", "★ Interim Presentation ★", "Current Milestone: Defense of model training, evaluation metrics, and empirical findings.")
+comp_phase2 = [
+    ("EDA Findings Incorporated", "Transferred Phase 1 data characteristics into ML pipeline design."),
+    ("40-Class Baseline Benchmark", "Trained and evaluated initial models; documented collapse."),
+    ("Class Imbalance Analysis", "Identified 184:1 skew and 310k feature explosion."),
+    ("20-Class Filtering Experiment", "Pruned <50 sample classes; analyzed persistent semantic overlap."),
+    ("Final 8-Specialty Dataset", "Curated 1,663 records across 8 mutually exclusive clinical departments."),
+    ("TF-IDF Feature Engineering", "Engineered 8,000-dim unigram/bigram representation with sublinear scaling."),
+    ("Imbalance Mitigation Applied", "Applied class_weight='balanced', SMOTE, and ROS to training folds."),
+    ("Model & Ensemble Training", "Trained LR, SVM, RF, MNB, Hard Voting, and Soft Voting ensembles."),
+    ("Comprehensive Evaluation", "Produced comparative metrics, confusion matrix, and classification reports."),
+    ("Model Serialization", "Saved vectorizer (0.30 MB), SVM (0.49 MB), and Ensemble (11.07 MB)."),
+    ("Repository Hygiene", "Resolved GitHub file-size limits via .gitignore configuration.")
 ]
-for dt, m_name, desc in completed_milestones:
+for title, desc in comp_phase2:
     p_b = tf_s15_l.add_paragraph()
-    p_b.text = f"✓ [{dt}] {m_name}: "
+    p_b.text = f"✓ {title}: "
     p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(9.5)
+    p_b.font.size = Pt(9)
     p_b.font.bold = True
-    p_b.font.color.rgb = NAVY_TITLE if "★" not in m_name else GOLD_ACCENT
-    p_b.space_before = Pt(4)
+    p_b.font.color.rgb = NAVY_TITLE
+    p_b.space_before = Pt(3)
     r = p_b.add_run()
     r.text = desc
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
-# Right: Upcoming Milestones (Phase 3 & Completion)
+# Right: Planned for Phase 3
 add_card(s15, Inches(6.8), Inches(1.5), Inches(5.93), Inches(5.3))
 t_s15_r = s15.shapes.add_textbox(Inches(7.05), Inches(1.7), Inches(5.43), Inches(4.9))
 tf_s15_r = t_s15_r.text_frame
 tf_s15_r.word_wrap = True
 
 p = tf_s15_r.paragraphs[0]
-p.text = "Upcoming Milestones (Phase 3 Deployment)"
+p.text = "Planned for Phase 3 (Deployment & Testing)"
 p.font.name = FONT_TITLE
 p.font.size = Pt(14)
 p.font.bold = True
 p.font.color.rgb = ACCENT_BLUE
 
-upcoming_milestones = [
-    ("Week 9", "Flask Web Integration", "Build REST API endpoints and integrate serialized TF-IDF vectorizer and ensemble model."),
-    ("09-10-2026", "★ Sprint Release III ★", "Deployment milestone: Working Flask clinician dashboard with real-time specialty inference."),
-    ("Weeks 10–11", "Evaluation & Usability Testing", "System latency benchmarking, edge case validation, and clinical usability review."),
-    ("22–23-10-2026", "★ Final Project Presentation ★", "Comprehensive final project defense before the department examination board."),
-    ("30-10-2026", "★ Final Report Submission ★", "Submission of finalized MCA Mini Project documentation and complete codebase.")
+plan_phase3 = [
+    ("Finalize Deployment Pipeline", "Construct automated ingestion, preprocessing, and vector transformation pipeline for live clinical text."),
+    ("Flask REST API Integration", "Build lightweight Python Flask web endpoints (/predict, /health) to serve model predictions."),
+    ("Clinician Text Input Interface", "Develop an intuitive web interface for clinicians to paste operative dictations and inspect results."),
+    ("Serialized Model Testing in App", "Verify real-time latency (< 15 ms) and validate predictions directly through the web application."),
+    ("Final System Usability Review", "Benchmark end-to-end reliability, edge cases, and confidence threshold warnings (< 0.65)."),
+    ("Final Defense & Documentation", "Complete MCA project report, user manual, and project defense documentation.")
 ]
-for dt, m_name, desc in upcoming_milestones:
+for title, desc in plan_phase3:
     p_b = tf_s15_r.add_paragraph()
-    p_b.text = f"→ [{dt}] {m_name}: "
+    p_b.text = f"→ {title}:\n"
     p_b.font.name = FONT_BODY
     p_b.font.size = Pt(10)
     p_b.font.bold = True
-    p_b.font.color.rgb = ACCENT_BLUE if "★" not in m_name else TEAL_ACCENT
-    p_b.space_before = Pt(8)
+    p_b.font.color.rgb = ACCENT_BLUE
+    p_b.space_before = Pt(6)
     r = p_b.add_run()
     r.text = desc
     r.font.bold = False
@@ -1368,7 +1268,6 @@ for dt, m_name, desc in upcoming_milestones:
 s16 = prs.slides.add_slide(blank_layout)
 set_slide_background(s16, DARK_BG)
 
-# Title Box
 t16 = s16.shapes.add_textbox(Inches(0.9), Inches(0.50), Inches(11.53), Inches(0.40))
 tf16 = t16.text_frame
 p16 = tf16.paragraphs[0]
@@ -1378,7 +1277,7 @@ p16.font.size = Pt(13)
 p16.font.bold = True
 p16.font.color.rgb = RGBColor(0x94, 0xA3, 0xB8)
 
-pill16 = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(1.05), Inches(4.5), Inches(0.42))
+pill16 = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(1.05), Inches(4.8), Inches(0.42))
 pill16.fill.solid()
 pill16.fill.fore_color.rgb = TEAL_ACCENT
 pill16.line.fill.background()
@@ -1391,18 +1290,16 @@ p_p16.font.size = Pt(12)
 p_p16.font.bold = True
 p_p16.font.color.rgb = TEXT_WHITE
 
-# Main Header
-t_end_title = s16.shapes.add_textbox(Inches(0.9), Inches(1.65), Inches(11.53), Inches(0.9))
+t_end_title = s16.shapes.add_textbox(Inches(0.9), Inches(1.65), Inches(11.53), Inches(0.8))
 tf_et = t_end_title.text_frame
 p_et = tf_et.paragraphs[0]
-p_et.text = "Phase 2 Interim Review: Summary of Achievements"
+p_et.text = "Conclusion: Phase 2 Progression & Outcome"
 p_et.font.name = FONT_TITLE
-p_et.font.size = Pt(28)
+p_et.font.size = Pt(26)
 p_et.font.bold = True
 p_et.font.color.rgb = TEXT_WHITE
 
-# Center Summary Card
-c_sum = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(2.65), Inches(11.53), Inches(2.7))
+c_sum = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(2.55), Inches(11.53), Inches(2.75))
 c_sum.fill.solid()
 c_sum.fill.fore_color.rgb = DARK_CARD
 c_sum.line.color.rgb = DARK_TAG
@@ -1410,34 +1307,29 @@ tf_cs = c_sum.text_frame
 tf_cs.margin_left = Inches(0.4)
 tf_cs.margin_top = Inches(0.25)
 
-p_ch = tf_cs.paragraphs[0]
-p_ch.text = "Key Project Milestones Achieved"
-p_ch.font.name = FONT_TITLE
-p_ch.font.size = Pt(16)
-p_ch.font.bold = True
-p_ch.font.color.rgb = TEAL_ACCENT
+p_cs = tf_cs.paragraphs[0]
+p_cs.text = "Authoritative Summary Statement"
+p_cs.font.name = FONT_TITLE
+p_cs.font.size = Pt(15)
+p_cs.font.bold = True
+p_cs.font.color.rgb = TEAL_ACCENT
 
-sum_bullets = [
-    ("Accuracy Target Exceeded", "Achieved 88.59% accuracy (Linear SVM) and 87.99% (Soft Voting Ensemble) on 333 held-out test records, comfortably exceeding the 75.0% threshold."),
-    ("Dataset Curation Breakthrough", "Successfully refined 4,966 raw records to 1,663 across 8 mutually exclusive clinical specialties, eliminating administrative noise and procedure overlap."),
-    ("Multi-Algorithmic Benchmark", "Benchmarked 4 distinct machine learning classifiers (SVM, LR, RF, MNB) and 2 voting ensembles using calibrated probability consensus."),
-    ("Lightweight Deployment Pipeline", "Serialized feature extraction and ensemble models into an 11.9 MB footprint, ready for Phase 3 Flask web application deployment.")
-]
-for title, desc in sum_bullets:
-    p_b = tf_cs.add_paragraph()
-    p_b.text = f"★ {title}: "
-    p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(11)
-    p_b.font.bold = True
-    p_b.font.color.rgb = RGBColor(0x38, 0xBD, 0xF8)
-    p_b.space_before = Pt(6)
-    r = p_b.add_run()
-    r.text = desc
-    r.font.bold = False
-    r.font.color.rgb = RGBColor(0xCB, 0xD5, 0xE1)
+p_quote = tf_cs.add_paragraph()
+p_quote.text = '"Phase 1 established the dataset characteristics and class imbalance through EDA. Phase 2 converted these findings into a complete machine-learning pipeline, beginning with a 40-class baseline and progressing through dataset refinement, imbalance mitigation, model training and ensemble evaluation. The final 8-specialty formulation achieved up to 88.59% accuracy with Linear SVM."'
+p_quote.font.name = FONT_BODY
+p_quote.font.size = Pt(12)
+p_quote.font.color.rgb = RGBColor(0x38, 0xBD, 0xF8)
+p_quote.space_before = Pt(8)
 
-# Bottom Thank You / Q&A Box
-c_ty = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(5.6), Inches(11.53), Inches(1.3))
+p_pts = tf_cs.add_paragraph()
+p_pts.text = "Key Takeaways: 8 Mutually Exclusive Specialties  •  8,000 TF-IDF Features  •  Class Imbalance Mitigation  •  88.59% SVM Accuracy  •  87.99% Soft Voting  •  Exceeded 75% Target"
+p_pts.font.name = FONT_BODY
+p_pts.font.size = Pt(10.5)
+p_pts.font.bold = True
+p_pts.font.color.rgb = RGBColor(0xCB, 0xD5, 0xE1)
+p_pts.space_before = Pt(12)
+
+c_ty = s16.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.9), Inches(5.5), Inches(11.53), Inches(1.4))
 c_ty.fill.solid()
 c_ty.fill.fore_color.rgb = TEAL_ACCENT
 c_ty.line.fill.background()
