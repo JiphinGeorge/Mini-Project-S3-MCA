@@ -429,7 +429,7 @@ p.font.bold = True
 p.font.color.rgb = NAVY_TITLE
 
 base_fails = [
-    ("Unconstrained Feature Explosion", "TF-IDF generated 310,298 unigram and bigram features for only 3,971 training samples, causing severe sparsity and overfitting."),
+    ("Unconstrained Feature Explosion", "TF-IDF generated 310,298 unigram and bigram features for 3,971 training samples (the 80% split of 4,964 cleaned records), causing a severe 78:1 feature-to-sample sparsity ratio."),
     ("Trivial Majority Prediction", "Unweighted Logistic Regression predicted 'Surgery' almost exclusively, securing 22.96% accuracy simply because Surgery represented 22.2% of the dataset."),
     ("Tree-Based Model Collapse", "Random Forest collapsed to 7.85% accuracy as random feature subsets in a 310k-dimension space almost never contained discriminative terms."),
     ("Non-Specialty Document Contamination", "Classes like 'SOAP Notes' and 'Discharge Summary' contained vocabulary identical to true clinical specialties, making mathematical separation impossible.")
@@ -459,7 +459,7 @@ diag_cards = [
      "• 40 raw categories with extreme distribution skew.\n• Surgery alone comprised 1,103 samples (22.2%).\n• Minority classes had as few as 2–10 samples:\n  - Autopsy: 2 samples\n  - Executive Evaluation: 2 samples\n  - Lab Medicine: 8 samples\n• Imbalance ratio exceeded 184:1, starving minority classes of gradient updates during training."),
     
     ("2. High-Dimensional TF-IDF", GOLD_ACCENT,
-     "• Unconstrained vocabulary generated 310,298 features.\n• Only 3,971 training records in the 80% split.\n• Massive feature-to-sample ratio (> 78:1) created severe data sparsity.\n• Non-informative filler words and rare typographical tokens diluted diagnostic signal, crippling estimators."),
+     "• Unconstrained vocabulary generated 310,298 features.\n• Exactly 3,971 training records (80% split of 4,964 cleaned records).\n• Massive feature-to-sample ratio (> 78:1) created severe data sparsity.\n• Non-informative filler words and rare typographical tokens diluted diagnostic signal, crippling estimators."),
     
     ("3. Clinical Label Ambiguity", TEAL_ACCENT,
      "• Inherent conflict between clinical specialties and document formats:\n  - Consult - History and Phy.: 516 records\n  - SOAP / Progress Notes: 166 records\n  - Discharge Summary: 108 records\n  - Emergency Room Reports: 75 records\n  - Office Notes: 50 records\n• These describe document structures, not medical organ specialties, introducing overlapping vocabularies.")
