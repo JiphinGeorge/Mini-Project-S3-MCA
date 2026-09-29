@@ -1,0 +1,16 @@
+BEST MODEL: Support Vector Machine (SVM)
+
+                            precision    recall  f1-score   support
+
+Cardiovascular / Pulmonary       0.88      0.92      0.90        74
+      ENT - Otolaryngology       0.94      0.84      0.89        19
+          Gastroenterology       0.87      0.89      0.88        45
+                 Neurology       0.76      0.78      0.77        45
+   Obstetrics / Gynecology       0.93      0.90      0.92        31
+             Ophthalmology       1.00      1.00      1.00        17
+                Orthopedic       0.89      0.89      0.89        71
+                   Urology       0.97      0.90      0.93        31
+
+                  accuracy                           0.89       333
+                 macro avg       0.91      0.89      0.90       333
+              weighted avg       0.89      0.89      0.89       333

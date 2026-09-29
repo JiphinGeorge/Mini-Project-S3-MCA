@@ -1,0 +1,8 @@
+# Large model files from initial baseline exploration
+MINI Project ML/*.pkl
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
