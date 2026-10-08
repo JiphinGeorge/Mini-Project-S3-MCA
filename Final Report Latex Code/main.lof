@@ -1,0 +1,16 @@
+\contentsline {figure}{\numberline {1}{\ignorespaces Missing Values by Dataset Attribute\relax }}{23}{figure.caption.12}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Top 10 Medical Specialties by Number of Transcriptions\relax }}{23}{figure.caption.13}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Distribution of All 40 Categories in Raw MTSamples Corpus\relax }}{24}{figure.caption.14}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Distribution of Clinical Transcription Word Length\relax }}{24}{figure.caption.15}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Transcription Length Distribution Across Top Medical Specialties\relax }}{25}{figure.caption.16}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Common Lexical Terms in Medical Transcriptions\relax }}{25}{figure.caption.17}%
+\contentsline {figure}{\numberline {7}{\ignorespaces Activity Diagram of Support Vector Machine Classifier\relax }}{27}{figure.caption.18}%
+\contentsline {figure}{\numberline {8}{\ignorespaces Activity Diagram of Random Forest Classifier\relax }}{28}{figure.caption.19}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Activity Diagram of Multinomial Logistic Regression Classifier\relax }}{29}{figure.caption.20}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Activity Diagram of Multinomial Naive Bayes Classifier\relax }}{30}{figure.caption.21}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Activity Diagram of Sublinear TF-IDF Feature Vectorizer\relax }}{31}{figure.caption.22}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Activity Diagram of Calibrated Soft Voting Ensemble Classifier\relax }}{32}{figure.caption.23}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Project Pipeline Diagram of Medical Specialty Classification System\relax }}{33}{figure.caption.24}%
+\contentsline {figure}{\numberline {14}{\ignorespaces System Design Training, Validation, and Partitioning Workflow\relax }}{43}{figure.caption.29}%
+\contentsline {figure}{\numberline {15}{\ignorespaces Model Performance Comparison across Accuracy, Macro F1, and Macro Recall against the 75\% Target Threshold\relax }}{48}{figure.caption.31}%
+\contentsline {figure}{\numberline {16}{\ignorespaces Confusion Matrix of the Soft Voting Ensemble across 8 Clinical Specialties on the Held-Out Test Set\relax }}{50}{figure.caption.32}%
