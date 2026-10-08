@@ -1,11 +1,11 @@
 \clearpage
 
-\chapter{SUPPORTING LITERATURE}
+\section{SUPPORTING LITERATURE}
 
-\chapter{Literature Review}
+\subsection{Literature Review}
 A systematic review of contemporary literature was conducted to evaluate existing methodological frameworks, feature engineering representations, classification algorithms, class imbalance mitigation techniques, and dataset challenges in clinical natural language processing. The review focuses on peer-reviewed research analyzing medical narratives, electronic health records, and document categorization systems.
 
-\chapter{Paper 1 -- Omar AM, Elhoseny M, Hassanien AM. Clinical text classification with word representation features and machine learning algorithms. International Journal of Online and Biomedical Engineering (iJOE). 2023.}
+\paragraph{Paper 1 -- Omar AM, Elhoseny M, Hassanien AM. Clinical text classification with word representation features and machine learning algorithms. International Journal of Online and Biomedical Engineering (iJOE). 2023.}
 
 The paper titled ``Clinical Text Classification with Word Representation Features and Machine Learning Algorithms'' \cite{omar2023} investigates the impact of diverse text representation techniques on Electronic Medical Record (EMR) narratives. The authors introduced a structured four-phase classification framework consisting of clinical text preprocessing, word vectorization, dimensionality reduction, and supervised classification.
 
@@ -44,7 +44,7 @@ However, the authors noted that distance-based k-NN introduces significant compu
 \label{tab:summary_paper1}
 \end{table}
 
-\chapter{Paper 2 -- Zhang H, Zhu D, Tan H, Shafiq M, Gu Z. Medical specialty classification based on semiadversarial data augmentation. Hindawi Computational Intelligence and Neuroscience. 2023.}
+\paragraph{Paper 2 -- Zhang H, Zhu D, Tan H, Shafiq M, Gu Z. Medical specialty classification based on semiadversarial data augmentation. Hindawi Computational Intelligence and Neuroscience. 2023.}
 
 The research article titled ``Medical Specialty Classification Based on Semiadversarial Data Augmentation'' \cite{zhang2023} investigated extreme category imbalance and data sparsity in clinical specialty categorization. The authors introduced Semiadversarial Data Augmentation (SemiADA), a framework generating synthetic clinical text samples along adversarial perturbation trajectories to populate sparse decision regions in high-dimensional feature spaces.
 
@@ -83,7 +83,7 @@ Despite these gains, generating synthetic samples along adversarial attack paths
 \label{tab:summary_paper2}
 \end{table}
 
-\chapter{Paper 3 -- Blanchard AE, Gao S, Yoon HJ, Tourassi G. A keyword-enhanced approach to handle class imbalance in clinical text classification. IEEE Journal of Biomedical and Health Informatics. 2022.}
+\paragraph{Paper 3 -- Blanchard AE, Gao S, Yoon HJ, Tourassi G. A keyword-enhanced approach to handle class imbalance in clinical text classification. IEEE Journal of Biomedical and Health Informatics. 2022.}
 
 Blanchard et al., writing in the \textit{IEEE Journal of Biomedical and Health Informatics} \cite{blanchard2022}, addressed the challenge of deep neural networks overfitting on rare clinical categories when trained on lengthy, complex pathology narratives. The authors introduced a data-centric regularisation strategy by injecting short class-associated keyword sequences into mini-batches during neural network training, formulating a dual loss function:
 \begin{equation}
@@ -126,7 +126,7 @@ However, their approach relies on manual curation of comprehensive keyword lexic
 \label{tab:summary_paper3}
 \end{table}
 
-\chapter{Literature Review Summary}
+\subsection{Literature Review Summary}
 Table \ref{tab:overall_summary} presents a comparative synthesis of the reviewed literature alongside our proposed MedSpecialty AI Platform.
 
 \begin{table}[H]
@@ -150,10 +150,10 @@ Blanchard et al. \cite{blanchard2022} & Class Imbalance Regularization & NCI SEE
 \label{tab:overall_summary}
 \end{table}
 
-\chapter{Evolution of Research}
+\paragraph{Evolution of Research}
 Clinical natural language processing has evolved from elementary Bag-of-Words term frequency counters toward distributed word embeddings (Word2Vec), deep convolutional architectures, complex transformer models (BERT, BioBERT), and adversarial data augmentation (SemiADA). While deep neural networks deliver high semantic abstraction, their steep computational overhead, large parameter footprints, and GPU hardware prerequisites prevent real-time deployment in cost-conscious clinical web environments. Furthermore, deep neural networks often suffer from overconfidence on out-of-domain text.
 
-\chapter{Identified Research Gaps}
+\paragraph{Identified Research Gaps}
 The literature review reveals four fundamental research gaps:
 \begin{enumerate}
     \item \textit{Excessive Computational Overhead}: Existing deep learning systems rely on GPU hardware accelerators and introduce substantial inference latency, making real-time interactive dictation triage challenging.
@@ -162,12 +162,12 @@ The literature review reveals four fundamental research gaps:
     \item \textit{Single Estimator Bias}: Many prior systems rely on a single classifier architecture, failing to exploit ensemble diversity to balance high-margin boundaries with calibrated probabilistic spreads.
 \end{enumerate}
 
-\chapter{Motivation for Proposed System}
+\paragraph{Motivation for Proposed System}
 Our project directly addresses these research gaps by designing the \textbf{MedSpecialty AI Platform}. The system couples an 8,000-dimensional sublinear TF-IDF vectorizer (capturing unigram terms and bigram clinical phrases) with a calibrated Soft Voting Ensemble aggregating Linear SVM, Logistic Regression, Random Forest, and Multinomial Naive Bayes using optimal weights [2:2:1:1]. Crucially, an Open-Set Confidence Rejection Gate ($\tau = 0.48$) is established to route unsupported or ambiguous narratives to a dedicated \textit{``Other / Requires Review''} class. The entire architecture is deployed through a responsive Flask web application featuring PyMuPDF in-memory text parsing and real-time NLP pipeline inspection on standard CPU hardware.
 
-\chapter{Findings and Proposals}
+\subsection{Findings and Proposals}
 
-\chapter{Findings}
+\subsubsection{Findings}
 The systematic review of contemporary literature yields several critical findings:
 \begin{enumerate}
     \item \textit{Efficacy of Classical ML with N-Gram Term Weighting}: Classical machine learning algorithms (Support Vector Machines, Logistic Regression, Random Forest, and Naive Bayes) demonstrate competitive classification performance on clinical narratives when paired with sublinear TF-IDF feature representations, matching or exceeding heavy neural models on moderate-sized corpora while executing in milliseconds on standard CPUs.
@@ -177,7 +177,7 @@ The systematic review of contemporary literature yields several critical finding
     \item \textit{Importance of Macro F1 Evaluation}: In clinical NLP with imbalanced specialty distributions, overall accuracy is deceptive. Macro F1-score---which weights each clinical department equally---serves as the primary indicator of balanced diagnostic capability.
 \end{enumerate}
 
-\chapter{Proposal}
+\subsubsection{Proposal}
 Synthesizing these findings, this project proposes the \textbf{MedSpecialty AI Platform} for automated clinical specialty classification and open-set triage:
 \begin{enumerate}
     \item \textit{Curated Benchmark Dataset}: Filter the raw MTSamples corpus down from 40 overlapping/administrative categories to a curated benchmark of 1,663 records across eight mutually exclusive hospital specialties: Cardiovascular / Pulmonary, Orthopedic, Gastroenterology, Neurology, Urology, Obstetrics / Gynecology, ENT -- Otolaryngology, and Ophthalmology.
