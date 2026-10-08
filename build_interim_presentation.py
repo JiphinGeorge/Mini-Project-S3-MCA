@@ -41,8 +41,12 @@ def set_slide_background(slide, color):
     fill.solid()
     fill.fore_color.rgb = color
 
+def add_slide_notes(slide, notes_text):
+    notes_slide = slide.notes_slide
+    tf = notes_slide.notes_text_frame
+    tf.text = notes_text
+
 def add_header(slide, pill_text, title_text, slide_num, total_slides=16):
-    # Pill Badge
     pill = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.6), Inches(0.32), Inches(4.5), Inches(0.34))
     pill.fill.solid()
     pill.fill.fore_color.rgb = TEAL_ACCENT
@@ -58,7 +62,6 @@ def add_header(slide, pill_text, title_text, slide_num, total_slides=16):
     p.font.bold = True
     p.font.color.rgb = TEXT_WHITE
     
-    # Title
     t_box = slide.shapes.add_textbox(Inches(0.6), Inches(0.68), Inches(12.13), Inches(0.65))
     tf2 = t_box.text_frame
     tf2.word_wrap = True
@@ -70,7 +73,6 @@ def add_header(slide, pill_text, title_text, slide_num, total_slides=16):
     p2.font.bold = True
     p2.font.color.rgb = NAVY_TITLE
 
-    # Footer elements
     sep = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0.6), Inches(7.05), Inches(12.13), Inches(0.015))
     sep.fill.solid()
     sep.fill.fore_color.rgb = CARD_BORDER
@@ -117,13 +119,12 @@ def add_card(slide, left, top, width, height, bg_color=CARD_BG, border_color=CAR
         card.line.fill.background()
     return card
 
-# 2-Column Standard Geometry
+# Standard Layout Dimensions
 COL2_L = Inches(0.60)
 COL2_W = Inches(5.90)
 COL2_R = Inches(6.80)
 COL2_RW = Inches(5.93)
 
-# 2x2 Grid Geometry
 GRID_W = Inches(5.90)
 GRID_H = Inches(2.50)
 GRID_COORDS = [
@@ -133,7 +134,6 @@ GRID_COORDS = [
     (Inches(6.80), Inches(4.25))
 ]
 
-# 3-Column Standard Geometry (Fixes any overlap!)
 COL3_W = Inches(3.80)
 COL3_GAP = Inches(0.36)
 COL3_LEFT = Inches(0.60)
@@ -141,7 +141,7 @@ def get_col3_left(idx):
     return COL3_LEFT + idx * (COL3_W + COL3_GAP)
 
 # ==============================================================================
-# SLIDE 1: Title Slide (Dark Theme)
+# SLIDE 1: Title Slide
 # ==============================================================================
 s1 = prs.slides.add_slide(blank_layout)
 set_slide_background(s1, DARK_BG)
@@ -172,7 +172,7 @@ t_title = s1.shapes.add_textbox(Inches(0.9), Inches(1.65), Inches(11.53), Inches
 tf_title = t_title.text_frame
 tf_title.word_wrap = True
 p_title = tf_title.paragraphs[0]
-p_title.text = "Medical Specialty Classification Using NLP and Ensemble Machine Learning"
+p_title.text = "Medical Specialty Classification Using TF-IDF and Ensemble Machine Learning"
 p_title.font.name = FONT_TITLE
 p_title.font.size = Pt(32)
 p_title.font.bold = True
@@ -259,6 +259,18 @@ for i, tag in enumerate(tags):
     p_t.font.bold = True
     p_t.font.color.rgb = RGBColor(0x38, 0xBD, 0xF8)
 
+add_slide_notes(s1, """[SPEAKER SCRIPT]
+"Respected Guide Prof. Biju Skaria, and esteemed members of the project review committee, good morning. I am Jiphin George, Register Number MAC25MCA-2033, Semester 3 MCA. Today, I am presenting the Interim Review for my Mini Project titled 'Medical Specialty Classification Using TF-IDF and Ensemble Machine Learning'. In Phase 1, we completed exploratory data analysis. In this Phase 2 review, I will present our complete machine learning pipeline: from our initial 40-class baseline experiments, failure mode diagnosis, dataset refinement, and class imbalance mitigation, to our final 8-specialty benchmarking where our models exceeded our target threshold of 75% accuracy, reaching 88.59% accuracy with Linear SVM and 87.99% with a Soft Voting Ensemble."
+
+[KEY TECHNICAL TERMS]
+• Clinical NLP: AI and computational linguistics for processing unstructured doctor dictations.
+• Supervised ML: Learning a mapping from TF-IDF feature vectors to medical specialty labels.
+• Ensemble Learning: Combining multiple diverse estimators to reduce variance and improve generalization.
+
+[VIVA Q&A]
+Q: Why is automated medical specialty classification needed?
+A: Clinical dictations arrive as unstructured free text. Automated classification enables immediate electronic triage, routing reports to the correct clinical department and reducing administrative overhead.""")
+
 # ==============================================================================
 # SLIDE 2: Project Recap & Phase 1 Bridge
 # ==============================================================================
@@ -343,8 +355,19 @@ for title, desc in p2_points:
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
+add_slide_notes(s2, """[SPEAKER SCRIPT]
+"To clearly establish our project progression: Phase 1 was dedicated strictly to Exploratory Data Analysis. We explored the MTSamples corpus, checked data distributions, audited missing attributes, and discovered severe class imbalance. Crucially, NO machine learning models were trained or evaluated in Phase 1. Phase 2 marked the start of all engineering work: text preprocessing, baseline experiments, problem diagnosis, dataset curation, imbalance mitigation, and final model training."
+
+[KEY TECHNICAL TERMS]
+• Exploratory Data Analysis (EDA): Initial statistical profiling without predictive modeling.
+• Scope Boundary: Strict separation between data characterization (Phase 1) and ML experimentation (Phase 2).
+
+[VIVA Q&A]
+Q: Did you do any model training in Phase 1?
+A: No. Phase 1 concluded after dataset inspection and class imbalance identification. All ML training and experimentation began in Phase 2.""")
+
 # ==============================================================================
-# SLIDE 3: Phase 2: Initial Baseline Experiment
+# SLIDE 3: Phase 2 Initial Baseline Experiment
 # ==============================================================================
 s3 = prs.slides.add_slide(blank_layout)
 set_slide_background(s3, LIGHT_BG)
@@ -447,8 +470,19 @@ for title, desc in base_fails:
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
+add_slide_notes(s3, """[SPEAKER SCRIPT]
+"When we initiated Phase 2, our very first experiment tested classifying all 40 raw categories directly. As the table shows, the baseline results collapsed: accuracies ranged from 7.85% for Random Forest to a maximum of only 27.39% for Balanced Logistic Regression. Unweighted Logistic Regression achieved 22.96% only because it predicted the majority class Surgery (22.2% of the dataset) for every sample. Random Forest collapsed to 7.85% due to 310,298 features across 3,971 training samples. These results proved the raw 40-class formulation was unviable."
+
+[KEY TECHNICAL TERMS]
+• Trivial Classifier: Predicting the majority class to minimize training loss while failing on all minority classes.
+• Tree Subsampling Collapse: In Random Forest, sampling sqrt(310k) ~ 557 features almost always samples zeroes in sparse text.
+
+[VIVA Q&A]
+Q: Why did Balanced Logistic Regression get 27.39% while Random Forest got 7.85%?
+A: Logistic Regression optimizes weights globally across all features via dot products. Random Forest only samples ~557 random features at each tree split; in 310k sparse dimensions, random subsets rarely pick up informative clinical keywords.""")
+
 # ==============================================================================
-# SLIDE 4: Baseline Problem Diagnosis (FIXED: Zero Overlap via get_col3_left!)
+# SLIDE 4: Baseline Problem Diagnosis
 # ==============================================================================
 s4 = prs.slides.add_slide(blank_layout)
 set_slide_background(s4, LIGHT_BG)
@@ -486,8 +520,19 @@ for idx, (title, color_h, body) in enumerate(diag_cards):
     p_b.font.color.rgb = TEXT_DARK
     p_b.space_before = Pt(8)
 
+add_slide_notes(s4, """[SPEAKER SCRIPT]
+"To understand why the 40-class models failed, we identified three core obstacles: First, Severe Class Imbalance: Surgery had 1,103 samples, whereas Autopsy had only 2, creating an extreme 184:1 ratio. Second, High-Dimensional Feature Explosion: Unconstrained TF-IDF generated 310,298 features for 3,971 training records (the 80% split of 4,964 cleaned records), creating an overwhelming 78:1 feature-to-sample ratio. Third, Clinical Label Ambiguity: The dataset mixed true medical specialties with document formats like SOAP notes, Consults, and Discharge Summaries that span all specialties, making mathematical separation impossible."
+
+[KEY TECHNICAL TERMS]
+• Feature-to-Sample Ratio (p/n): Ratio of dimensions to records. At 78:1, severe data sparsity leads to extreme overfitting.
+• Document Format vs. Specialty: Specialties are anatomical systems; document formats are hospital documentation structures.
+
+[VIVA Q&A]
+Q: Where does the number 3,971 come from?
+A: In our cleaned 40-class dataset (4,964 records), applying an 80:20 train-test split yields exactly 3,971 training samples (4,964 * 0.8 = 3,971.2). TF-IDF was fitted on this training fold to avoid data leakage.""")
+
 # ==============================================================================
-# SLIDE 5: Phase 2 Dataset Refinement (FIXED: Zero Overlap via get_col3_left!)
+# SLIDE 5: Phase 2 Dataset Refinement
 # ==============================================================================
 s5 = prs.slides.add_slide(blank_layout)
 set_slide_background(s5, LIGHT_BG)
@@ -524,6 +569,17 @@ for idx, (title, color_h, body) in enumerate(steps_refine):
     p_b.font.size = Pt(10)
     p_b.font.color.rgb = TEXT_DARK
     p_b.space_before = Pt(8)
+
+add_slide_notes(s5, """[SPEAKER SCRIPT]
+"We resolved these flaws through a three-stage iterative refinement during Phase 2: In Iteration 1, the raw 40-class problem failed (7.85%–27.39%). In Iteration 2, we tested threshold filtering by removing classes with under 50 samples, keeping 20 categories. Accuracy improved to 40%–50%, but Surgery still overlapped with operative specialties. In Iteration 3, we retained only pure, mutually exclusive organ-system clinical departments and eliminated administrative formats and broad procedure tags. This curated 8-specialty dataset of 1,663 records immediately elevated accuracy to between 77.48% and 88.59%."
+
+[KEY TECHNICAL TERMS]
+• Threshold Pruning: Removing classes with insufficient sample support (< 50).
+• Domain Mutuality: Defining categories such that the vocabulary of each class has minimal intersection with others.
+
+[VIVA Q&A]
+Q: Why didn't you stop at the 20-class dataset?
+A: The 20-class dataset still contained 'Surgery' and document formats. The classifier continually confused 'Surgery' with 'Orthopedic' and 'Neurosurgery', capping accuracy below 50%. The 8-class refinement provided true mutual exclusivity.""")
 
 # ==============================================================================
 # SLIDE 6: Final 8-Specialty Dataset
@@ -626,6 +682,17 @@ for title, desc in rat_points:
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
+add_slide_notes(s6, """[SPEAKER SCRIPT]
+"Slide 6 shows our final curated dataset of 1,663 authentic records across 8 core specialties. Cardiovascular/Pulmonary (371 records) and Orthopedic (355 records) are our largest classes, while ENT (96 records) and Ophthalmology (83 records) are our smallest. The imbalance ratio was successfully compressed from 184:1 down to 4.5:1. Every specialty maps directly to a distinct human anatomical organ system with its own diagnostic terminology."
+
+[KEY TECHNICAL TERMS]
+• Imbalance Compression: Reducing class ratio from 184:1 to 4.5:1, making it solvable via cost-sensitive learning.
+• Anatomical Lexical Grounding: Grounding categories in anatomy guarantees domain-specific diagnostic terms.
+
+[VIVA Q&A]
+Q: Why combine Cardiovascular and Pulmonary?
+A: In the original Kaggle MTSamples archive, cardiopulmonary procedures are indexed together because the heart and lungs operate as an integrated cardiopulmonary unit in acute care.""")
+
 # ==============================================================================
 # SLIDE 7: Text Preprocessing & TF-IDF
 # ==============================================================================
@@ -706,8 +773,19 @@ p_mat.font.bold = True
 p_mat.font.color.rgb = TEAL_ACCENT
 p_mat.space_before = Pt(8)
 
+add_slide_notes(s7, """[SPEAKER SCRIPT]
+"To vectorize clinical text, we first combined the short summary abstract with the full dictation narrative to capture both high-level diagnosis and procedure details. We cleaned punctuation, filtered medical stop-words, and applied WordNet lemmatization. For TF-IDF, we capped features at 8,000 unigrams and bigrams, applied sublinear scaling (1 + log(TF)) to dampen repetitive words, and used L2 normalization. Crucially, the vectorizer was fitted ONLY on the 1,330 training records to prevent data leakage, generating a 1,330 by 8,000 training matrix and a 333 by 8,000 testing matrix."
+
+[KEY TECHNICAL TERMS]
+• Sublinear TF Scaling: Replaces raw term count with 1 + log(TF), dampening words repeated 20+ times.
+• Data Leakage Prevention: Fitting TF-IDF exclusively on training folds to ensure the test set represents true unseen clinical records.
+
+[VIVA Q&A]
+Q: Why unigrams AND bigrams (1, 2)?
+A: Medical compounds like 'coronary artery' or 'lumbar spine' carry specific diagnostic meaning that single isolated words lose.""")
+
 # ==============================================================================
-# SLIDE 8: Class Imbalance Mitigation (2x2 Grid)
+# SLIDE 8: Class Imbalance Mitigation
 # ==============================================================================
 s8 = prs.slides.add_slide(blank_layout)
 set_slide_background(s8, LIGHT_BG)
@@ -748,8 +826,19 @@ for idx, (title, color_h, body) in enumerate(imb_techniques):
     p_b.font.color.rgb = TEXT_DARK
     p_b.space_before = Pt(4)
 
+add_slide_notes(s8, """[SPEAKER SCRIPT]
+"Even with 8 classes, Cardiovascular (371) is larger than Ophthalmology (83). To prevent majority bias, we applied three techniques during Phase 2: First, cost-sensitive learning via class_weight='balanced' across LR, SVM, and Random Forest, which penalizes minority errors 4.5 times more heavily. Second, SMOTE with k=3 applied strictly to the training fold. Third, Random Over-Sampling. Crucially, all resampling was confined strictly to training folds; our 333 test samples were kept completely uncorrupted."
+
+[KEY TECHNICAL TERMS]
+• Cost-Sensitive Weighting: Scales penalty w_j = N / (K * n_j) inversely proportional to class frequency.
+• SMOTE (k=3): Synthesizes minority feature vectors along k-nearest neighbor line segments.
+
+[VIVA Q&A]
+Q: Why k=3 instead of 5 for SMOTE?
+A: In 8,000-dimensional sparse text, minority classes have sparse local neighborhoods. k=3 keeps synthetic points tightly constrained to authentic minority manifolds without crossing into other classes.""")
+
 # ==============================================================================
-# SLIDE 9: Model Training (2x2 Grid)
+# SLIDE 9: Model Training
 # ==============================================================================
 s9 = prs.slides.add_slide(blank_layout)
 set_slide_background(s9, LIGHT_BG)
@@ -801,6 +890,17 @@ for idx, (title, cfg, body) in enumerate(models_train):
     p_b.font.size = Pt(9)
     p_b.font.color.rgb = TEXT_DARK
     p_b.space_before = Pt(3)
+
+add_slide_notes(s9, """[SPEAKER SCRIPT]
+"We trained four core supervised ML algorithm families: 1. Linear SVM with C=1.0 and balanced class weights, finding the maximum-margin hyperplane in 8,000-dimensional sparse space. 2. Multinomial Logistic Regression, providing an interpretable log-odds probability baseline. 3. Random Forest with 100 trees and max_depth=25 to prevent memorization of sparse text. 4. Multinomial Naive Bayes with Laplace smoothing alpha=0.5. All models were trained on the identical 1,330 training matrix using fixed seed 42."
+
+[KEY TECHNICAL TERMS]
+• Maximum-Margin Hyperplane: Linear decision boundary maximizing geometric distance to the closest training support vectors.
+• Laplace Smoothing (alpha=0.5): Prevents zero-probability traps for clinical words unseen during training.
+
+[VIVA Q&A]
+Q: Why LinearSVC instead of an RBF kernel?
+A: Text in 8,000 TF-IDF dimensions is already linearly separable. LinearSVC uses fast LIBLINEAR coordinate descent O(n*p); RBF kernels compute an N*N Gram matrix O(n^2), which is computationally expensive without improving accuracy.""")
 
 # ==============================================================================
 # SLIDE 10: Voting Ensembles
@@ -870,6 +970,17 @@ for title, desc in soft_points2:
     r.text = desc
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
+
+add_slide_notes(s10, """[SPEAKER SCRIPT]
+"We investigated two ensemble architectures: Hard Voting uses simple majority vote across discrete predictions. Soft Voting aggregates predicted probability distributions. Because LinearSVC outputs raw signed margins, we applied CalibratedClassifierCV using Platt scaling to fit a logistic sigmoid over decision scores, obtaining true probabilities. We assigned empirical weights [LR:2, SVM:2, RF:1, MNB:1] to prioritize our top-performing linear models while leveraging tree and Bayesian diversity, achieving 87.99% accuracy and 0.8898 Macro F1."
+
+[KEY TECHNICAL TERMS]
+• Platt Scaling: Calibrates raw margins into true probabilities P(y=1|f(x)) = 1 / (1 + exp(A*f(x) + B)).
+• Weighted Consensus: Divides the weighted probability sum by 6 to preserve valid probability distribution.
+
+[VIVA Q&A]
+Q: Why weights [2, 2, 1, 1] instead of [1, 1, 1, 1]?
+A: Linear SVM (88.59%) and LR (87.09%) performed significantly better than MNB (77.48%). Weighting them 2:2:1:1 ensures the strongest models lead consensus while RF and MNB assist in tie-breaking.""")
 
 # ==============================================================================
 # SLIDE 11: Model Performance Comparison
@@ -958,6 +1069,17 @@ add_card(s11, Inches(7.6), Inches(1.5), Inches(5.13), Inches(5.3))
 if os.path.exists(img_perf):
     s11.shapes.add_picture(img_perf, Inches(7.75), Inches(1.65), width=Inches(4.83), height=Inches(4.95))
 
+add_slide_notes(s11, """[SPEAKER SCRIPT]
+"Slide 11 presents our comparative benchmark across all models evaluated on our 333 held-out test records. Every model comfortably exceeded our project target of 75% accuracy. Linear SVM is our top individual model, reaching 88.59% accuracy and 0.8971 Macro F1. Soft Voting achieved 87.99% accuracy and 0.8898 Macro F1. Logistic Regression and Hard Voting reached 87.09%. Even Naive Bayes reached 77.48%. The chart on the right visually confirms all models exceeding the 75% red threshold line."
+
+[KEY TECHNICAL TERMS]
+• Macro F1: Unweighted arithmetic average of F1 across all 8 classes; verifies that minority classes perform as well as majority classes.
+• Weighted F1: Support-weighted average of F1 reflecting the test distribution.
+
+[VIVA Q&A]
+Q: Why did Linear SVM outperform Soft Voting by 0.6%?
+A: Linear SVM's maximum-margin boundary is optimal for high-dimensional text. Soft Voting includes RF (81.98%) and MNB (77.48%), which slightly pulled down peak accuracy. However, Soft Voting provides calibrated continuous probabilities for clinical triage.""")
+
 # ==============================================================================
 # SLIDE 12: Confusion Matrix & Classification Analysis
 # ==============================================================================
@@ -1000,6 +1122,17 @@ for title, desc in cm_analysis:
     r.text = desc
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
+
+add_slide_notes(s12, """[SPEAKER SCRIPT]
+"Slide 12 displays our 8x8 confusion matrix on 333 test samples. Notice the heavy concentration along the diagonal: 295 out of 333 predictions are correct. Ophthalmology achieved 17 out of 17 correct with zero false positives. There is zero confusion between unrelated domains like Ophthalmology and Cardiovascular. The primary clinical challenge is the boundary between Neurology and Orthopedics, accounting for 12 of the 38 total errors. This occurs because spine surgery (discectomy, radiculopathy) involves both vertebrae/facets (Orthopedics) and nerve roots/spinal cord (Neurology)."
+
+[KEY TECHNICAL TERMS]
+• Diagonal Dominance: True Positives along the diagonal confirm sharp discrimination.
+• Neuro-Orthopedic Co-occurrence: Shared vocabulary in spinal pathology where bone and nerve tissues co-occur in the same operative note.
+
+[VIVA Q&A]
+Q: How can the Neurology vs Orthopedic confusion be addressed in the future?
+A: In Phase 3, we can introduce a hierarchical sub-classifier: when primary confidence is split between Neurology and Orthopedic, a specialist sub-model trained strictly on cranial vs spine vs joint keywords can resolve the tie.""")
 
 # ==============================================================================
 # SLIDE 13: Specialty-wise Performance
@@ -1109,8 +1242,19 @@ for title, desc in spec_obs:
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
+add_slide_notes(s13, """[SPEAKER SCRIPT]
+"Slide 13 provides the per-class classification report for our top model, Linear SVM. Ophthalmology achieved a perfect 1.00 F1-score with 100% precision and recall across all 17 test samples. Urology achieved 0.97 precision and 0.93 F1, while OB/GYN reached 0.93 precision and 0.92 F1. Our largest classes—Cardiovascular (0.90 F1) and Orthopedic (0.89 F1)—maintained high recall without over-predicting. ENT reached 0.94 precision on just 19 test records. Our macro average across all 8 classes reached 0.91 Precision, 0.89 Recall, and 0.90 F1-score."
+
+[KEY TECHNICAL TERMS]
+• Precision: Proportion of predicted positives that are true positives (Urology 0.97 means 97% of predictions are correct).
+• Recall: Proportion of actual positives identified (Cardiovascular 0.92 means 92% of true cases caught).
+
+[VIVA Q&A]
+Q: Why is Neurology F1 lower (0.77)?
+A: Due to the 12 neuro-orthopedic spine surgical misclassifications. Excluding spine surgeries, cranial, stroke, and seizure cases were classified with near 100% accuracy.""")
+
 # ==============================================================================
-# SLIDE 14: Key Findings (Redesigned as 2 Clean Columns - Zero Overlap!)
+# SLIDE 14: Key Findings
 # ==============================================================================
 s14 = prs.slides.add_slide(blank_layout)
 set_slide_background(s14, LIGHT_BG)
@@ -1178,86 +1322,149 @@ for title, desc in findings_r:
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
+add_slide_notes(s14, """[SPEAKER SCRIPT]
+"To summarize our key findings from Phase 2: 1. The raw 40-class problem failed (7.85% to 27.39%), confirming clinical refinement was mandatory. 2. Extreme class imbalance caused unweighted models to predict only Surgery. 3. 310,000 unconstrained TF-IDF features created a sparsity trap, collapsing Random Forest to 7.85%. 4. Pruning non-specialty formats removed cross-cutting noise. 5. The curated 8-specialty dataset achieved 77% to 89% accuracy. 6. Linear SVM won by >6.6% over Random Forest because linear hyperplanes excel on high-dimensional text. 7. Soft voting produced robust calibrated probabilities. 8. Limiting TF-IDF to 8,000 features reduced file sizes from 198 MB to 11.9 MB, enabling sub-15ms CPU inference."
+
+[KEY TECHNICAL TERMS]
+• Linear Separability (Cover's Theorem): Complex text patterns mapped into 8,000 dimensions are linearly separable.
+• Sublinear Dampening: Prevents high-frequency clinical boilerplate from distorting vector products.
+
+[VIVA Q&A]
+Q: Why did decision trees struggle with TF-IDF text?
+A: Decision trees split on single features along orthogonal axes (x_i >= c). High-dimensional text classification relies on combinations of dozens of co-occurring words, which linear hyperplanes evaluate simultaneously.""")
+
 # ==============================================================================
-# SLIDE 15: Current Status & Next Phase
+# SLIDE 15: Project Timeline & Milestone Schedule
 # ==============================================================================
 s15 = prs.slides.add_slide(blank_layout)
 set_slide_background(s15, LIGHT_BG)
-add_header(s15, "MCA MINI PROJECT | PROJECT STATUS", "Current Project Status & Phase 3 Roadmap", 15)
+add_header(s15, "MCA MINI PROJECT | PROJECT TIMELINE", "Project Timeline & Milestone Schedule", 15)
 
 add_card(s15, COL2_L, Inches(1.5), COL2_W, Inches(5.3))
-t_s15_l = s15.shapes.add_textbox(COL2_L + Inches(0.25), Inches(1.7), COL2_W - Inches(0.5), Inches(4.9))
+t_s15_l = s15.shapes.add_textbox(COL2_L + Inches(0.2), Inches(1.65), COL2_W - Inches(0.4), Inches(5.0))
 tf_s15_l = t_s15_l.text_frame
 tf_s15_l.word_wrap = True
 
 p = tf_s15_l.paragraphs[0]
-p.text = "Completed in Phase 2"
+p.text = "Completed Milestones (Phases 1 & 2)"
 p.font.name = FONT_TITLE
-p.font.size = Pt(14)
+p.font.size = Pt(13)
 p.font.bold = True
 p.font.color.rgb = ACCENT_GREEN
 
-comp_phase2 = [
-    ("EDA Findings Incorporated", "Transferred Phase 1 data characteristics into ML pipeline design."),
-    ("40-Class Baseline Benchmark", "Trained and evaluated initial models; documented collapse."),
-    ("Class Imbalance Analysis", "Identified 184:1 skew and 310k feature explosion."),
-    ("20-Class Filtering Experiment", "Pruned <50 sample classes; analyzed persistent semantic overlap."),
-    ("Final 8-Specialty Dataset", "Curated 1,663 records across 8 mutually exclusive clinical departments."),
-    ("TF-IDF Feature Engineering", "Engineered 8,000-dim unigram/bigram representation with sublinear scaling."),
-    ("Imbalance Mitigation Applied", "Applied class_weight='balanced', SMOTE, and ROS to training folds."),
-    ("Model & Ensemble Training", "Trained LR, SVM, RF, MNB, Hard Voting, and Soft Voting ensembles."),
-    ("Comprehensive Evaluation", "Produced comparative metrics, confusion matrix, and classification reports."),
-    ("Model Serialization", "Saved vectorizer (0.30 MB), SVM (0.49 MB), and Ensemble (11.07 MB)."),
-    ("Repository Hygiene", "Resolved GitHub file-size limits via .gitignore configuration.")
+timeline_completed = [
+    ("17.07.2026", "Project Proposal & Synopsis Approval", "Approved clinical text classification topic & scope by guide."),
+    ("20.07 – 21.07.2026", "Project Proposal Presentation", "Defended clinical objectives & methodology before faculty panel."),
+    ("Weeks 1–2", "Dataset Collection & EDA (Phase 1)", "Audited 4,999 MTSamples records; identified 184:1 class imbalance."),
+    ("08.09.2026", "★ First Project Presentation ★", "Phase 1 review defense; presented EDA findings & problem formulation."),
+    ("09.09.2026", "★ Sprint Release I ★", "Submitted 6 EDA visual plots, architecture diagram & Phase 1 report."),
+    ("Weeks 3–5", "Preprocessing & Dimensionality (Phase 2)", "40-class baseline (7.85%–27.39%); curated 8 specialties & 8k TF-IDF."),
+    ("Week 6", "Candidate Model Training & Baseline Eval", "Trained Linear SVM, Random Forest, Logistic Regression, and MNB."),
+    ("18.09.2026", "★ Sprint Release II ★", "Milestone release: Trained candidate classifiers & metric logs."),
+    ("Week 7", "Hyperparameter Tuning & Imbalance Mitigation", "Grid search tuning (SVM C=1.0, LR C=5.0); benchmarked SMOTE/ROS."),
+    ("Week 8", "Soft Voting Ensemble & Model Serialization", "Weighted soft voting (2:2:1:1); evaluated test set (88.59% SVM); saved 11.9MB."),
+    ("29.09 – 30.09.2026", "★ Interim Presentation ★ [CURRENT]", "Progress review, empirical findings & model evaluation defense.")
 ]
-for title, desc in comp_phase2:
+
+for date, title, desc in timeline_completed:
     p_b = tf_s15_l.add_paragraph()
-    p_b.text = f"✓ {title}: "
+    is_milestone = "★" in title
+    is_current = "[CURRENT]" in title
+    
+    prefix = "★ " if is_milestone else "✓ "
+    p_b.text = f"{prefix}[{date}] {title}: "
     p_b.font.name = FONT_BODY
-    p_b.font.size = Pt(8.5)
+    p_b.font.size = Pt(8)
     p_b.font.bold = True
-    p_b.font.color.rgb = NAVY_TITLE
+    if is_current:
+        p_b.font.color.rgb = GOLD_ACCENT
+    elif is_milestone:
+        p_b.font.color.rgb = ACCENT_BLUE
+    else:
+        p_b.font.color.rgb = NAVY_TITLE
     p_b.space_before = Pt(3)
+    
     r = p_b.add_run()
     r.text = desc
+    r.font.name = FONT_BODY
+    r.font.size = Pt(7.5)
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
 add_card(s15, COL2_R, Inches(1.5), COL2_RW, Inches(5.3))
-t_s15_r = s15.shapes.add_textbox(COL2_R + Inches(0.25), Inches(1.7), COL2_RW - Inches(0.5), Inches(4.9))
+t_s15_r = s15.shapes.add_textbox(COL2_R + Inches(0.2), Inches(1.65), COL2_RW - Inches(0.4), Inches(3.85))
 tf_s15_r = t_s15_r.text_frame
 tf_s15_r.word_wrap = True
 
 p = tf_s15_r.paragraphs[0]
-p.text = "Planned for Phase 3 (Deployment & Testing)"
+p.text = "Upcoming Milestones (Phase 3 & Completion)"
 p.font.name = FONT_TITLE
-p.font.size = Pt(14)
+p.font.size = Pt(13)
 p.font.bold = True
 p.font.color.rgb = ACCENT_BLUE
 
-plan_phase3 = [
-    ("Finalize Deployment Pipeline", "Construct automated ingestion, preprocessing, and vector transformation pipeline for live clinical text."),
-    ("Flask REST API Integration", "Build lightweight Python Flask web endpoints (/predict, /health) to serve model predictions."),
-    ("Clinician Text Input Interface", "Develop an intuitive web interface for clinicians to paste operative dictations and inspect results."),
-    ("Serialized Model Testing in App", "Verify real-time latency (< 15 ms) and validate predictions directly through the web application."),
-    ("Final System Usability Review", "Benchmark end-to-end reliability, edge cases, and confidence threshold warnings (< 0.65)."),
-    ("Final Defense & Documentation", "Complete MCA project report, user manual, and project defense documentation.")
+timeline_upcoming = [
+    ("Week 9", "Flask REST API & Clinician Web Dashboard", "Build /predict & /health REST endpoints; serialize inference engine; construct clinician UI for pasting notes."),
+    ("09.10.2026", "★ Sprint Release III (Integrated System Release) ★", "Milestone release: Working Flask web application, integrated ensemble pipeline, and comprehensive API documentation."),
+    ("Weeks 10–11", "System Usability, Latency & Edge-Case Testing", "Multi-class diagnostic testing; sub-15ms CPU inference verification; confidence threshold alerts (< 0.65) for ambiguous dictations."),
+    ("22.10 – 23.10.2026", "★ Final Project Presentation ★", "Comprehensive final project defense and live working web application demonstration before external examination board."),
+    ("30.10.2026", "★ Final Project Report & Code Submission ★", "Formal academic submission: Finalized technical project report, user manual, and documented GitHub source code repository.")
 ]
-for title, desc in plan_phase3:
+
+for date, title, desc in timeline_upcoming:
     p_b = tf_s15_r.add_paragraph()
-    p_b.text = f"→ {title}:\n"
+    is_milestone = "★" in title
+    p_b.text = f"→ [{date}] {title}:\n"
     p_b.font.name = FONT_BODY
     p_b.font.size = Pt(9.5)
     p_b.font.bold = True
-    p_b.font.color.rgb = ACCENT_BLUE
-    p_b.space_before = Pt(6)
+    p_b.font.color.rgb = ACCENT_BLUE if is_milestone else NAVY_TITLE
+    p_b.space_before = Pt(8)
+    
     r = p_b.add_run()
     r.text = desc
+    r.font.name = FONT_BODY
+    r.font.size = Pt(8.5)
     r.font.bold = False
     r.font.color.rgb = TEXT_DARK
 
+# Summary Status Box at bottom of right card
+tb_status = s15.shapes.add_textbox(COL2_R + Inches(0.2), Inches(5.65), COL2_RW - Inches(0.4), Inches(1.0))
+tf_stat = tb_status.text_frame
+tf_stat.word_wrap = True
+p_stat = tf_stat.paragraphs[0]
+p_stat.text = "Project Status: ON SCHEDULE"
+p_stat.font.name = FONT_TITLE
+p_stat.font.size = Pt(11)
+p_stat.font.bold = True
+p_stat.font.color.rgb = ACCENT_GREEN
+
+p_stat_desc = tf_stat.add_paragraph()
+p_stat_desc.text = "✓ Phase 1 (EDA & Problem Formulation): 100% Completed\n✓ Phase 2 (Model Training & Evaluation): 100% Completed\n→ Phase 3 (Flask Web Deployment & Defense): Scheduled (Weeks 9–11)"
+p_stat_desc.font.name = FONT_BODY
+p_stat_desc.font.size = Pt(8.5)
+p_stat_desc.font.bold = True
+p_stat_desc.font.color.rgb = NAVY_TITLE
+p_stat_desc.space_before = Pt(2)
+
+add_slide_notes(s15, """[SPEAKER SCRIPT]
+"Slide 15 presents our complete project timeline and milestone schedule from initial proposal through final defense, highlighting our strict phase demarcation:
+In Phase 1, we completed our Project Proposal approval on 17 July and presentation on 20 July, followed by dataset collection and exploratory data analysis across Weeks 1 and 2 where we uncovered the 184:1 class imbalance. This culminated in our First Project Presentation on 8 September and Sprint Release I on 9 September.
+In Phase 2, which commenced right after Sprint Release I, we tackled the core machine learning challenges: evaluating the raw 40-class baseline, resolving the 310,000-feature sparsity trap, curating 8 distinct specialties, and engineering 8,000 TF-IDF features. In Week 6, we trained our candidate classifiers, submitted Sprint Release II on 18 September, executed hyperparameter tuning and imbalance mitigation in Week 7, and constructed our Soft Voting ensemble and 11.9 MB serialized pipeline in Week 8—leading directly to today's Interim Presentation on 29–30 September.
+Looking ahead to Phase 3: In Week 9, we integrate our serialized models into a Flask REST API service and clinician web dashboard; on 9 October, we deliver Sprint Release III; in Weeks 10 and 11, we conduct end-to-end usability and latency testing; culminating in our Final Project Defense on 22–23 October and Final Report Submission on 30 October 2026."
+
+[KEY TECHNICAL TERMS]
+• Phase Demarcation: Strict separation between Phase 1 (EDA and data understanding), Phase 2 (machine learning experimentation, feature engineering, and ensemble formulation), and Phase 3 (Flask web application deployment and usability testing).
+• Model Serialization: Storing trained model weights and vectorizer vocabulary to disk (11.9 MB total) ready for immediate import into the Phase 3 web server.
+
+[VIVA Q&A]
+Q: Why was machine learning model training not included in Phase 1?
+A: In accordance with our MCA project syllabus and sprint methodology, Phase 1 was strictly dedicated to dataset collection, clinical literature review, data inspection, and exploratory data analysis to discover data quality issues such as the 184:1 class imbalance. All algorithmic implementation, baseline evaluations, and ensemble modeling began in Phase 2.
+Q: How will the system be tested in Phase 3?
+A: In Weeks 10–11, we will test the complete end-to-end pipeline: pasting raw clinical dictations through the Flask interface, verifying sub-15ms response latency, evaluating edge cases with confidence thresholds (< 0.65), and ensuring cross-browser stability.""")
+
 # ==============================================================================
-# SLIDE 16: Conclusion & Academic Acknowledgements (Dark Theme)
+# SLIDE 16: Conclusion & Academic Acknowledgements
 # ==============================================================================
 s16 = prs.slides.add_slide(blank_layout)
 set_slide_background(s16, DARK_BG)
@@ -1347,10 +1554,29 @@ p_ty2.font.color.rgb = RGBColor(0xF0, 0xFD, 0xFA)
 p_ty2.alignment = PP_ALIGN.CENTER
 p_ty2.space_before = Pt(3)
 
+add_slide_notes(s16, """[SPEAKER SCRIPT]
+"To conclude our Phase 2 Interim Defense: Phase 1 established our dataset characteristics and uncovered class imbalance through exploratory data analysis. In Phase 2, we transformed those findings into a rigorous machine learning pipeline: we demonstrated the failure of the raw 40-class baseline, diagnosed the root causes, curated 8 mutually exclusive clinical specialties, applied imbalance mitigation, and benchmarked four core algorithms and voting ensembles. We achieved our primary project objective: exceeding the 75% target threshold to reach 88.59% accuracy with Linear SVM and 87.99% accuracy with our Soft Voting Ensemble, supported by an ultra-lightweight 11.9 MB deployment footprint. I express my sincere gratitude to my project guide, Prof. Biju Skaria, and the Department of Computer Applications for their guidance. Thank you, and I am now open to your questions, suggestions, and feedback."
+
+[KEY TAKEAWAYS]
+• 8 Mutually Exclusive Specialties
+• 8,000 TF-IDF Features with Sublinear Scaling
+• 88.59% Accuracy (Linear SVM) & 87.99% (Soft Voting)
+• 11.9 MB Ultra-lightweight Deployment Footprint""")
+
 # Save output presentation
 output_dir = r'D:\Antigravity Projects\Mini Project S3 MCA\model training project\2nd Presentation 30-9-2026'
 os.makedirs(output_dir, exist_ok=True)
-output_path = os.path.join(output_dir, 'Medical_Specialty_Classification_Interim_Presentation_2.pptx')
-prs.save(output_path)
-print(f"Presentation successfully created at: {output_path}")
+primary_path = os.path.join(output_dir, 'Medical_Specialty_Classification_Interim_Presentation_2.pptx')
+backup_path = os.path.join(output_dir, 'Medical_Specialty_Classification_Interim_Presentation_2_with_notes.pptx')
+
+# Always save to backup path first
+prs.save(backup_path)
+print(f"Successfully saved presentation WITH SLIDE NOTES to: {backup_path}")
+
+# Try to overwrite primary if unlocked
+try:
+    prs.save(primary_path)
+    print(f"Successfully updated primary presentation at: {primary_path}")
+except PermissionError:
+    print(f"Note: Primary presentation is currently open in PowerPoint. Please close PowerPoint to overwrite it, or open '{backup_path}'.")
 print(f"Total slides generated: {len(prs.slides)}")
