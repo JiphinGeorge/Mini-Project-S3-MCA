@@ -318,6 +318,21 @@ Solution Applied:
    git commit -m "feat: add RF, LR, SVM, MNB and Voting Ensemble pipeline (88% accuracy)"
    git push origin main
 
+7.4. 9-Class Open-Set Clinical Triage Inference Engine (triage_inference.py):
+* To support real-world hospital workflows where incoming dictations may belong to outside departments 
+  (e.g., Dermatology, Psychiatry, Pediatrics, Dentistry) or contain ambiguous text, we implemented an 
+  Open-Set Clinical Triage Engine with a 9th class ("Other"):
+  - Classes 1–8: High-confidence in-domain hospital departments (88.59% accuracy)
+  - Class 9 ("Other"): Triggered automatically when peak consensus confidence falls below the calibrated 
+    triage threshold (default 48.0%), or when input text lacks clinical vocabulary overlap.
+* The inference module (triage_inference.py) returns:
+  - 'predicted_specialty': Specific department or 'Other'
+  - 'is_other': Boolean flag
+  - 'confidence': Continuous probability score
+  - 'triage_status': CONFIRMED_SPECIALTY or OUT_OF_SCOPE_OR_AMBIGUOUS
+  - 'nearest_candidates': Top alternative specialties for clinician review
+  - 'inference_time_ms': Sub-12ms execution latency on CPU
+
 ====================================================================================================
 9. VIVA & PROJECT DEFENSE GUIDE (EXPLAINING YOUR METHODOLOGY)
 ====================================================================================================
