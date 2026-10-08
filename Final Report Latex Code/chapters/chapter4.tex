@@ -1,14 +1,14 @@
 \clearpage
 
-\chapter{SYSTEM DESIGN}
+\section{SYSTEM DESIGN}
 
 System design translates the analytical requirements and clinical preprocessing pipelines into a robust, deployable machine learning architecture. This section presents the formal design, modular implementation, algorithmic mechanics, and data-partitioning protocols designed to classify unstructured medical transcription narratives into clinical specialties.
 
-\chapter{MODEL(S) BUILDING}
+\subsection{MODEL(S) BUILDING}
 
 The classification framework employs a multi-model paradigm comprising four distinct supervised learning families: linear margin optimization (Support Vector Machine), probabilistic link modeling (Logistic Regression), non-parametric bagging (Random Forest), and Bayesian conditional independence (Multinomial Naive Bayes). Furthermore, an Ensemble Voting meta-classifier is synthesized to consolidate individual algorithmic strengths into an optimal consensus predictor, augmented with an Open-Set Rejection Gate for out-of-scope medical dictations.
 
-\chapter{Implementation Code}
+\subsubsection{Implementation Code}
 
 The model training, validation, and inference pipeline is implemented in Python using \texttt{scikit-learn}, \texttt{numpy}, and \texttt{imbalanced-learn}. The system executes sublinear TF-IDF vectorization, cost-sensitive loss calibration, probability calibration, ensemble voting aggregation, and open-set rejection thresholding. The complete implementation code of the model building and inference pipeline is presented below:
 
@@ -129,7 +129,7 @@ print(classification_report(y_test, y_pred))
 \end{footnotesize}
 \vspace{4pt}
 
-\chapter{Model Planning (Training/Testing Split of the Dataset)}
+\subsubsection{Model Planning (Training/Testing Split of the Dataset)}
 
 Model planning establishes the experimental protocol to guarantee unbiased evaluation and eliminate data leakage. The dataset consists of 1,663 curated clinical transcriptions spanning 8 mutually exclusive clinical departments.
 
@@ -220,9 +220,9 @@ Ophthalmology & 83 & 66 & 17 & 4.99\% \\
 \label{fig:system_design_workflow}
 \end{figure}
 
-\chapter{Training}
+\subsubsection{Training}
 
-\chapter{Build the Model Using the Train Dataset}
+\paragraph{Build the Model Using the Train Dataset}
 During the training phase, the four candidate classifiers and the meta-voting ensemble are parameterized using the 1,330 training instances vectorized across the 8,000-dimensional TF-IDF space.
 
 \begin{enumerate}
@@ -272,9 +272,9 @@ During the training phase, the four candidate classifiers and the meta-voting en
     \end{itemize}
 \end{enumerate}
 
-\chapter{Testing}
+\subsubsection{Testing}
 
-\chapter{Evaluate the Performance of the Model Using the Test Dataset}
+\paragraph{Evaluate the Performance of the Model Using the Test Dataset}
 Testing executes a strictly separated inference pipeline on the 333 unobserved clinical narratives in the testing partition $X_{\text{test}}$:
 
 \begin{enumerate}
