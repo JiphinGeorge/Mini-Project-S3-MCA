@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedSpecialty AI Platform - Clinical NLP & Specialty Classification</title>
+  <meta name="description" content="Clinical Decision-Support & Medical Specialty Classification using TF-IDF and Soft Voting Ensemble Machine Learning with Open-Set Rejection.">
+  <link rel="icon" type="image/svg+xml" href="/static/img/logo.svg">
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       TOP HEADER & APPLICATION NAVIGATION
+       ======================================================================== -->
+  <header class="top-navbar">
+    <div class="navbar-container">
+      <div class="brand-section" onclick="switchView('view-prediction')">
+        <img src="/static/img/logo.svg" alt="MedSpecialty AI Logo" class="brand-logo-img">
+        <div class="brand-titles">
+          <div class="brand-name">
+            MedSpecialty AI <span class="brand-tag">v2.4 MCA</span>
+          </div>
+          <div class="brand-subtitle">Clinical NLP & Specialty Classification System</div>
+        </div>
+      </div>
+
+      <nav class="nav-tabs">
+        <button class="nav-tab-btn active" data-target="view-prediction">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          Clinical Prediction
+        </button>
+        <button class="nav-tab-btn" data-target="view-features">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          TF-IDF Feature Space
+        </button>
+        <button class="nav-tab-btn" data-target="view-performance">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          Model Performance
+        </button>
+        <button class="nav-tab-btn" data-target="view-how-it-works">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          How It Works
+        </button>
+      </nav>
+
+      <div class="header-meta">
+        <div class="meta-badge badge-ensemble">Ensemble [2, 2, 1, 1]</div>
+        <div class="meta-badge badge-threshold">τ = 0.48 Threshold</div>
+        <div class="meta-badge badge-status">
+          <span class="status-dot"></span>
+          Ready
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       APPLICATION MAIN CONTAINER
+       ======================================================================== -->
+  <main class="app-main">
+
+    <!-- ======================================================================
+         VIEW 1: CLINICAL PREDICTION & NLP PIPELINE
+         ====================================================================== -->
+    <section id="view-prediction" class="view-section active-view">
+      <div class="page-hero">
+        <div>
+          <div class="hero-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            Clinical NLP Decision Support
+          </div>
+          <h1 class="hero-title">Medical Specialty Classification & Triage</h1>
+          <p class="hero-subtitle">
+            Upload clinical PDF records or enter patient transcriptions. The pipeline executes sublinear TF-IDF vectorization, quad-classifier inference, Soft Voting Ensemble consensus, and open-set rejection.
+          </p>
+        </div>
+        <div class="hero-stats-row">
+          <div class="hero-stat-card">
+            <div class="stat-card-val">8</div>
+            <div class="stat-card-lbl">Core Classes</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="stat-card-val">8,000</div>
+            <div class="stat-card-lbl">TF-IDF Features</div>
+          </div>
+          <div class="hero-stat-card">
+            <div class="stat-card-val" style="color: var(--primary);">87.99%</div>
+            <div class="stat-card-lbl">Ensemble Acc</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prediction-grid">
+        <!-- Left Column: Input Card -->
+        <div class="input-card">
+          <div class="card-header-bar">
+            <div class="card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Clinical Document Ingestion
+            </div>
+            <div class="input-mode-toggle">
+              <button id="modePdfBtn" class="mode-btn active">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                PDF Upload
+              </button>
+              <button id="modeTextBtn" class="mode-btn">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="2" x2="22" y2="6"/><path d="M7.5 20.5 19 9l-4-4L3.5 16.5 2 22z"/></svg>
+                Type / Paste
+              </button>
+            </div>
+          </div>
+
+          <!-- PDF Upload Zone -->
+          <div id="pdfUploadSection" class="pdf-upload-container">
+            <div id="pdfDropzone" class="dropzone-box">
+              <div class="dropzone-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              </div>
+              <div class="dropzone-title">Drag & drop patient clinical PDF here</div>
+              <div class="dropzone-subtitle">Operative notes, discharge summaries, or diagnostic reports (PDF up to 16MB)</div>
+              <div class="dropzone-browse-btn">Browse PDF File</div>
+              <input type="file" id="pdfFileInput" accept=".pdf" style="display: none;">
+            </div>
+
+            <!-- Selected File Card -->
+            <div id="selectedFileCard" class="selected-file-card">
+              <div class="file-info-col">
+                <svg class="file-pdf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="M10 12h4"/><path d="M10 16h4"/></svg>
+                <div>
+                  <div id="selectedFileName" class="file-name-text">patient_record.pdf</div>
+                  <div id="selectedFileSize" class="file-size-text">0.0 KB</div>
+                </div>
+              </div>
+              <div class="file-actions-row">
+                <button id="extractPdfBtn" class="extract-btn">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                  Extract Text
+                </button>
+                <button id="removeFileBtn" class="remove-file-btn" title="Remove File">✕</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clinical Text Editor Container -->
+          <div class="text-editor-container">
+            <div class="sample-selector-row">
+              <div class="sample-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                Quick Load Clinical Case:
+              </div>
+              <div class="sample-pills">
+                <button class="sample-pill-btn" onclick="loadSample('cardiovascular')">Cardio</button>
+                <button class="sample-pill-btn" onclick="loadSample('orthopedic')">Ortho</button>
+                <button class="sample-pill-btn" onclick="loadSample('neurology')">Neuro</button>
+                <button class="sample-pill-btn" onclick="loadSample('gastroenterology')">Gastro</button>
+                <button class="sample-pill-btn" onclick="loadSample('ophthalmology')">Ophthal</button>
+                <button class="sample-pill-btn pill-out-of-scope" onclick="loadSample('dermatology')" title="Test Open-Set Rejection">Dermatology (Other)</button>
+                <button class="sample-pill-btn pill-out-of-scope" onclick="loadSample('psychiatry')" title="Test Open-Set Rejection">Psychiatry (Other)</button>
+              </div>
+            </div>
+
+            <textarea id="transcriptionText" class="transcription-textarea" placeholder="Paste or type clinical operative report, discharge summary, or patient transcription here... The text can be modified before classification."></textarea>
+
+            <div class="editor-footer-bar">
+              <div class="editor-counters">
+                <span id="charCountDisplay">0 Characters</span>
+                <span id="wordCountDisplay">0 Words</span>
+              </div>
+              <div class="editor-actions">
+                <button id="clearTextBtn" class="clear-btn">Clear</button>
+                <button id="analyzeBtn" class="analyze-btn">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                  Analyze Specialty
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Pipeline Step Cards -->
+          <div class="pipeline-execution-container">
+            <div class="pipeline-bar-header">
+              <div class="pipeline-header-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                7-Phase Dataflow Execution Graph
+              </div>
+            </div>
+            <div class="pipeline-steps-grid">
+              <div class="pipe-step-card">
+                <div class="step-num-badge">PHASE 01</div>
+                <div class="step-name-text">PDF / Ingestion</div>
+                <div class="step-sub-text">PyMuPDF</div>
+              </div>
+              <div class="pipe-step-card">
+                <div class="step-num-badge">PHASE 02</div>
+                <div class="step-name-text">NLP Cleaning</div>
+                <div class="step-sub-text">Regex Lower</div>
+              </div>
+              <div class="pipe-step-card">
+                <div class="step-num-badge">PHASE 03</div>
+                <div class="step-name-text">Tokenization</div>
+                <div class="step-sub-text">Stopwords Out</div>
+              </div>
+              <div class="pipe-step-card">
+                <div class="step-num-badge">PHASE 04</div>
+                <div class="step-name-text">Lemmatization</div>
+                <div class="step-sub-text">Suffix Normal</div>
+              </div>
+              <div class="pipe-step-card">
+                <div class="step-num-badge">PHASE 05</div>
+                <div class="step-name-text">TF-IDF Space</div>
+                <div class="step-sub-text">8,000 N-grams</div>
+              </div>
+              <div class="pipe-step-card">
+                <div class="step-num-badge">PHASE 06</div>
+                <div class="step-name-text">Soft Voting</div>
+                <div class="step-sub-text">Quad Models</div>
+              </div>
+              <div class="pipe-step-card">
+                <div class="step-num-badge">PHASE 07</div>
+                <div class="step-name-text">Open-Set Gate</div>
+                <div class="step-sub-text">τ = 0.48 Triage</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Decision & Prediction Cards -->
+        <div class="results-column">
+          <!-- Primary Specialty Decision Card -->
+          <div id="specialtyDecisionCard" class="decision-card confirmed-card">
+            <div class="decision-header-row">
+              <div id="decisionTagBadge" class="decision-tag tag-confirmed">
+                <span>✓ IN-DOMAIN SPECIALTY CONFIRMED</span>
+              </div>
+              <div id="inferenceLatencyDisplay" class="latency-badge">
+                0.0 ms • 0 Terms Matched
+              </div>
+            </div>
+
+            <div id="predictedSpecialtyTitle" class="specialty-result-title">Cardiovascular / Pulmonary</div>
+            <div id="predictedSpecialtySubtitle" class="specialty-result-subtitle">
+              High-confidence clinical consensus matching cardiovascular operative and hemodynamic terminology.
+            </div>
+
+            <!-- Confidence Meter -->
+            <div class="confidence-meter-container">
+              <div class="meter-top-row">
+                <span class="meter-label">Consensus Posterior Confidence</span>
+                <span id="meterValuePct" class="meter-value-pct">0.0%</span>
+              </div>
+              <div class="meter-bar-track">
+                <div id="meterBarFill" class="meter-bar-fill fill-confirmed" style="width: 0%;"></div>
+              </div>
+              <div class="meter-threshold-guide">
+                <span>0.00 (Ambiguous)</span>
+                <span style="color: var(--amber-text); font-weight: 700;">▲ 0.48 Safety Gate</span>
+                <span>1.00 (Certainty)</span>
+              </div>
+            </div>
+
+            <!-- Out-of-Scope Warning Notice (Triggered when < 48%) -->
+            <div id="outOfScopeNotice" class="out-of-scope-notice">
+              <div class="notice-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Out-of-Scope Specialty / Ambiguous Transcription
+              </div>
+              <div class="notice-body">
+                The ensemble peak confidence is below the safety threshold (48.0%). This record likely belongs to an unsupported medical domain (e.g. Dermatology, Psychiatry, Dentistry) or requires manual clinician review.
+              </div>
+              <div style="font-size: 11px; font-weight: 700; color: #92400E; margin-top: 8px;">NEAREST CANDIDATE DOMAINS:</div>
+              <div id="candidateChipsRow" class="candidate-chips-row"></div>
+            </div>
+          </div>
+
+          <!-- Probability Distribution Breakdown -->
+          <div class="prob-dist-card">
+            <div class="card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              Probability Distribution Across 8 Core Specialties
+            </div>
+            <div id="probDistList" class="prob-list">
+              <!-- Populated by JavaScript -->
+            </div>
+          </div>
+
+          <!-- 4-Model Consensus Grid -->
+          <div class="consensus-grid-card">
+            <div class="card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+              Ensemble Model Decisions (Weights: 2:2:1:1)
+            </div>
+            <div id="modelsGridContainer" class="models-grid-4">
+              <!-- Populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VIEW 2: TF-IDF FEATURE EXTRACTION SCREEN
+         ====================================================================== -->
+    <section id="view-features" class="view-section">
+      <div class="page-hero">
+        <div>
+          <div class="hero-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            NLP Feature Space
+          </div>
+          <h2 class="hero-title">TF-IDF Vector Space & N-Gram Representation</h2>
+          <p class="hero-subtitle">
+            Inspection of the 8,000-dimensional sparse vocabulary matrix constructed using unigrams and bigrams with sublinear logarithmic scaling and L2 normalization.
+          </p>
+        </div>
+        <div class="hero-stats-row">
+          <div class="hero-stat-card">
+            <div id="activeFeaturesCountBadge" class="stat-card-val">0</div>
+            <div class="stat-card-lbl">Non-Zero Terms</div>
+          </div>
+          <div class="hero-stat-card">
+            <div id="vectorSparsityBadge" class="stat-card-val">100%</div>
+            <div class="stat-card-lbl">Vector Sparsity</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Configuration Metrics Grid -->
+      <div class="config-metrics-grid">
+        <div class="config-metric-card">
+          <div class="config-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+          </div>
+          <div class="config-val">8,000</div>
+          <div class="config-lbl">Max Features</div>
+          <div class="config-desc">Vocabulary ceiling</div>
+        </div>
+
+        <div class="config-metric-card">
+          <div class="config-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/></svg>
+          </div>
+          <div class="config-val">(1, 2)</div>
+          <div class="config-lbl">N-Gram Range</div>
+          <div class="config-desc">Unigrams + Bigrams</div>
+        </div>
+
+        <div class="config-metric-card">
+          <div class="config-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          </div>
+          <div class="config-val">Enabled</div>
+          <div class="config-lbl">Sublinear TF</div>
+          <div class="config-desc">1 + log(TF) scaling</div>
+        </div>
+
+        <div class="config-metric-card">
+          <div class="config-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div class="config-val">2 Docs</div>
+          <div class="config-lbl">Min DF</div>
+          <div class="config-desc">Removes hapax legomena</div>
+        </div>
+
+        <div class="config-metric-card">
+          <div class="config-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="config-val">0.70</div>
+          <div class="config-lbl">Max DF</div>
+          <div class="config-desc">70% corpus ceiling</div>
+        </div>
+
+        <div class="config-metric-card">
+          <div class="config-card-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          </div>
+          <div class="config-val">L2 Norm</div>
+          <div class="config-lbl">Normalization</div>
+          <div class="config-desc">Unit Euclidean vector</div>
+        </div>
+      </div>
+
+      <!-- Top Informative N-Grams Data Table -->
+      <div class="table-card">
+        <div class="table-toolbar">
+          <div class="card-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Active Document Clinical Feature Weights
+          </div>
+          <div class="search-input-wrap">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="featureSearchInput" class="search-input" placeholder="Search extracted vocabulary terms...">
+          </div>
+        </div>
+
+        <table class="clinical-data-table">
+          <thead>
+            <tr>
+              <th style="width: 80px;">Rank</th>
+              <th>Clinical N-Gram Feature</th>
+              <th style="width: 140px;">Gram Type</th>
+              <th style="width: 160px;">TF-IDF Weight</th>
+              <th style="width: 220px;">Feature Significance</th>
+            </tr>
+          </thead>
+          <tbody id="featuresTableBody">
+            <tr>
+              <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 32px;">
+                No features extracted yet. Load or analyze a medical transcription on the Clinical Prediction page.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VIEW 3: MODEL PERFORMANCE & EVALUATION SCREEN
+         ====================================================================== -->
+    <section id="view-performance" class="view-section">
+      <div class="page-hero">
+        <div>
+          <div class="hero-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            Empirical Validation
+          </div>
+          <h2 class="hero-title">Model Performance & Evaluation Benchmarks</h2>
+          <p class="hero-subtitle">
+            Holdout test set evaluation on 333 curated MTSamples records. Linear SVM delivers the highest individual accuracy (88.59%), while the Soft Voting Ensemble yields calibrated posteriors (87.99%) for open-set triage.
+          </p>
+        </div>
+      </div>
+
+      <!-- 5 Benchmark Cards Grid -->
+      <div class="benchmark-cards-grid">
+        <!-- Linear SVM -->
+        <div class="bench-card featured-bench">
+          <span class="bench-card-badge">Top Individual Classifier</span>
+          <div class="bench-model-name">Linear SVM (SGD/SVC)</div>
+          <div class="bench-stat-group">
+            <div class="bench-metric-val">88.59%</div>
+            <div class="bench-metric-lbl">Accuracy</div>
+          </div>
+          <div class="bench-f1-row">
+            <span>Macro F1: <strong>0.8971</strong></span>
+            <span>Weight: <strong>2</strong></span>
+          </div>
+        </div>
+
+        <!-- Soft Voting Ensemble -->
+        <div class="bench-card featured-bench" style="border-color: #818CF8; background: linear-gradient(180deg, #EEF2FF 0%, #FFFFFF 100%);">
+          <span class="bench-card-badge" style="background-color: var(--indigo-bg); color: var(--indigo-text); border-color: var(--indigo-border);">Production Consensus</span>
+          <div class="bench-model-name">Soft Voting Ensemble</div>
+          <div class="bench-stat-group">
+            <div class="bench-metric-val">87.99%</div>
+            <div class="bench-metric-lbl">Accuracy</div>
+          </div>
+          <div class="bench-f1-row">
+            <span>Macro F1: <strong>0.8898</strong></span>
+            <span>Weights: <strong>[2, 2, 1, 1]</strong></span>
+          </div>
+        </div>
+
+        <!-- Logistic Regression -->
+        <div class="bench-card">
+          <span class="bench-card-badge" style="background-color: #F0F9FF; color: #0284C7; border-color: #BAE6FD;">Calibrated Odds</span>
+          <div class="bench-model-name">Logistic Regression</div>
+          <div class="bench-stat-group">
+            <div class="bench-metric-val">87.09%</div>
+            <div class="bench-metric-lbl">Accuracy</div>
+          </div>
+          <div class="bench-f1-row">
+            <span>Macro F1: <strong>0.8846</strong></span>
+            <span>Weight: <strong>2</strong></span>
+          </div>
+        </div>
+
+        <!-- Random Forest -->
+        <div class="bench-card">
+          <span class="bench-card-badge" style="background-color: #F8FAFC; color: #475569; border-color: #CBD5E1;">Non-Linear Trees</span>
+          <div class="bench-model-name">Random Forest</div>
+          <div class="bench-stat-group">
+            <div class="bench-metric-val">81.98%</div>
+            <div class="bench-metric-lbl">Accuracy</div>
+          </div>
+          <div class="bench-f1-row">
+            <span>Macro F1: <strong>0.8274</strong></span>
+            <span>Weight: <strong>1</strong></span>
+          </div>
+        </div>
+
+        <!-- Multinomial Naive Bayes -->
+        <div class="bench-card">
+          <span class="bench-card-badge" style="background-color: #F8FAFC; color: #475569; border-color: #CBD5E1;">Probabilistic Baseline</span>
+          <div class="bench-model-name">Multinomial Naive Bayes</div>
+          <div class="bench-stat-group">
+            <div class="bench-metric-val">77.48%</div>
+            <div class="bench-metric-lbl">Accuracy</div>
+          </div>
+          <div class="bench-f1-row">
+            <span>Macro F1: <strong>0.7743</strong></span>
+            <span>Weight: <strong>1</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confusion Matrix & Classification Report Grid -->
+      <div class="perf-detail-grid">
+        <!-- Confusion Matrix Heatmap -->
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div class="card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              Soft Voting Confusion Matrix (8×8 Holdout Test Set)
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">N = 333 Records</span>
+          </div>
+          <div class="cm-matrix-container">
+            <table class="cm-table">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">True \ Pred</th>
+                  <th>Cardio</th>
+                  <th>ENT</th>
+                  <th>Gastro</th>
+                  <th>Neuro</th>
+                  <th>OB/GYN</th>
+                  <th>Ophth</th>
+                  <th>Ortho</th>
+                  <th>Uro</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="text-align: left; font-weight: 600;">Cardio (74)</td>
+                  <td class="cm-cell cm-diag">69</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off nonzero-off">2</td>
+                  <td class="cm-cell cm-off nonzero-off">2</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off nonzero-off">1</td>
+                  <td class="cm-cell cm-off">0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left; font-weight: 600;">ENT (19)</td>
+                  <td class="cm-cell cm-off nonzero-off">3</td>
+                  <td class="cm-cell cm-diag">15</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off nonzero-off">1</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left; font-weight: 600;">Gastro (45)</td>
+                  <td class="cm-cell cm-off nonzero-off">1</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-diag">40</td>
+                  <td class="cm-cell cm-off nonzero-off">2</td>
+                  <td class="cm-cell cm-off nonzero-off">2</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left; font-weight: 600;">Neuro (45)</td>
+                  <td class="cm-cell cm-off nonzero-off">2</td>
+                  <td class="cm-cell cm-off nonzero-off">1</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-diag">36</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off nonzero-off">6</td>
+                  <td class="cm-cell cm-off">0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left; font-weight: 600;">OB/GYN (31)</td>
+                  <td class="cm-cell cm-off nonzero-off">2</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-diag">29</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left; font-weight: 600;">Ophth (17)</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off nonzero-off">1</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-diag">16</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left; font-weight: 600;">Ortho (71)</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off nonzero-off">11</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-diag">60</td>
+                  <td class="cm-cell cm-off">0</td>
+                </tr>
+                <tr>
+                  <td style="text-align: left; font-weight: 600;">Uro (31)</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off nonzero-off">3</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-off">0</td>
+                  <td class="cm-cell cm-diag">28</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Classification Report Table -->
+        <div class="table-card">
+          <div class="table-toolbar">
+            <div class="card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Per-Specialty Precision, Recall & F1-Scores
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--primary); font-weight: 700;">Macro F1: 0.8898</span>
+          </div>
+          <table class="clinical-data-table">
+            <thead>
+              <tr>
+                <th>Clinical Specialty</th>
+                <th style="width: 100px;">Precision</th>
+                <th style="width: 100px;">Recall</th>
+                <th style="width: 100px;">F1-Score</th>
+                <th style="width: 90px;">Support</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cardiovascular / Pulmonary</strong></td>
+                <td class="mono-cell">0.90</td>
+                <td class="mono-cell">0.93</td>
+                <td class="mono-cell" style="color: var(--primary); font-weight: 700;">0.91</td>
+                <td class="mono-cell">74</td>
+              </tr>
+              <tr>
+                <td><strong>ENT - Otolaryngology</strong></td>
+                <td class="mono-cell">0.94</td>
+                <td class="mono-cell">0.79</td>
+                <td class="mono-cell" style="color: var(--primary); font-weight: 700;">0.86</td>
+                <td class="mono-cell">19</td>
+              </tr>
+              <tr>
+                <td><strong>Gastroenterology</strong></td>
+                <td class="mono-cell">0.89</td>
+                <td class="mono-cell">0.89</td>
+                <td class="mono-cell" style="color: var(--primary); font-weight: 700;">0.89</td>
+                <td class="mono-cell">45</td>
+              </tr>
+              <tr>
+                <td><strong>Neurology</strong></td>
+                <td class="mono-cell">0.68</td>
+                <td class="mono-cell">0.80</td>
+                <td class="mono-cell" style="color: var(--primary); font-weight: 700;">0.73</td>
+                <td class="mono-cell">45</td>
+              </tr>
+              <tr>
+                <td><strong>Obstetrics / Gynecology</strong></td>
+                <td class="mono-cell">0.94</td>
+                <td class="mono-cell">0.94</td>
+                <td class="mono-cell" style="color: var(--primary); font-weight: 700;">0.94</td>
+                <td class="mono-cell">31</td>
+              </tr>
+              <tr>
+                <td><strong>Ophthalmology</strong></td>
+                <td class="mono-cell">1.00</td>
+                <td class="mono-cell">0.94</td>
+                <td class="mono-cell" style="color: var(--primary); font-weight: 700;">0.97</td>
+                <td class="mono-cell">17</td>
+              </tr>
+              <tr>
+                <td><strong>Orthopedic</strong></td>
+                <td class="mono-cell">0.90</td>
+                <td class="mono-cell">0.85</td>
+                <td class="mono-cell" style="color: var(--primary); font-weight: 700;">0.87</td>
+                <td class="mono-cell">71</td>
+              </tr>
+              <tr>
+                <td><strong>Urology</strong></td>
+                <td class="mono-cell">1.00</td>
+                <td class="mono-cell">0.90</td>
+                <td class="mono-cell" style="color: var(--primary); font-weight: 700;">0.95</td>
+                <td class="mono-cell">31</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         VIEW 4: HOW IT WORKS (STITCH DESIGN FAITHFULNESS)
+         ====================================================================== -->
+    <section id="view-how-it-works" class="view-section">
+      <div class="page-hero">
+        <div>
+          <div class="hero-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            System Architecture
+          </div>
+          <h2 class="hero-title">How It Works: End-to-End Clinical NLP Pipeline</h2>
+          <p class="hero-subtitle">
+            An architectural, step-by-step mathematical breakdown of how transcription parsing, TF-IDF vectorization, ensemble classification, and open-set rejection operate.
+          </p>
+        </div>
+      </div>
+
+      <!-- Surgical Examination of Pipeline Tiers -->
+      <div class="how-phases-grid">
+        <!-- Tier 1 -->
+        <div class="how-tier-card">
+          <div class="how-tier-top">
+            <span class="how-phase-pill">PHASE 01: DOCUMENT INGESTION</span>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">PyMuPDF / Text</span>
+          </div>
+          <h3 class="how-tier-title">Document Parsing & Ingestion</h3>
+          <p class="how-tier-body">
+            Patient clinical documentation is accepted either via manual transcription entry or multi-page PDF document upload. The PDF engine utilizes in-memory byte stream extraction via PyMuPDF (fitz) to retrieve pure UTF-8 clinical text while omitting document headers and layout noise.
+          </p>
+          <div class="code-snippet-box">
+            <span class="code-keyword">import</span> fitz<br>
+            doc = fitz.open(stream=pdf_bytes, filetype=<span class="code-str">"pdf"</span>)<br>
+            extracted_text = <span class="code-str">"\n"</span>.join([page.get_text() <span class="code-keyword">for</span> page <span class="code-keyword">in</span> doc])
+          </div>
+          <div class="clinical-importance-callout">
+            <div class="callout-title">Why this matters in clinical NLP</div>
+            Clinical reports frequently contain unstructured typographical artifacts. In-memory stream extraction preserves critical syntactic proximity between symptoms and diagnoses.
+          </div>
+        </div>
+
+        <!-- Tier 2 -->
+        <div class="how-tier-card">
+          <div class="how-tier-top">
+            <span class="how-phase-pill">PHASE 02: NLP PURIFICATION</span>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">Regex & Stopwords</span>
+          </div>
+          <h3 class="how-tier-title">Text Cleaning & Tokenization</h3>
+          <p class="how-tier-body">
+            Unstructured medical dictations undergo lowercasing, non-alphanumeric noise elimination, and whitespace normalization. Punctuation characters are converted to token delimiters while preserving hyphenated anatomical descriptors. English stop words are filtered out.
+          </p>
+          <div class="code-snippet-box">
+            cleaned = re.sub(<span class="code-str">r'[^a-zA-Z0-9\s]'</span>, <span class="code-str">' '</span>, raw_text.lower())<br>
+            tokens = re.findall(<span class="code-str">r'\b[a-zA-Z]{2,}\b'</span>, cleaned)<br>
+            filtered = [t <span class="code-keyword">for</span> t <span class="code-keyword">in</span> tokens <span class="code-keyword">if</span> t <span class="code-keyword">not in</span> STOP_WORDS]
+          </div>
+          <div class="clinical-importance-callout">
+            <div class="callout-title">Why this matters in clinical NLP</div>
+            Standard conversational filler words like "the", "with", "from" dilute specialized clinical vocabulary. Removing them forces TF-IDF attention onto clinical tokens.
+          </div>
+        </div>
+
+        <!-- Tier 3 -->
+        <div class="how-tier-card">
+          <div class="how-tier-top">
+            <span class="how-phase-pill">PHASE 03: TF-IDF VECTORIZATION</span>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">8,000 Dimensions</span>
+          </div>
+          <h3 class="how-tier-title">Sublinear TF-IDF Vectorization</h3>
+          <p class="how-tier-body">
+            The cleaned text is converted into an 8,000-dimensional sparse feature vector using unigrams and bigrams. Sublinear term frequency scaling replaces raw term count $TF$ with $1 + \ln(TF)$ to dampen the impact of repeated clinical tokens.
+          </p>
+          <div class="code-snippet-box">
+            tfidf = TfidfVectorizer(max_features=<span class="code-num">8000</span>, ngram_range=(<span class="code-num">1</span>, <span class="code-num">2</span>),<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sublinear_tf=<span class="code-keyword">True</span>, min_df=<span class="code-num">2</span>, max_df=<span class="code-num">0.70</span>)
+          </div>
+          <div class="clinical-importance-callout">
+            <div class="callout-title">Why this matters in clinical NLP</div>
+            A clinician repeating "coronary" ten times does not mean the document is ten times more cardiovascular than a record mentioning it twice. Logarithmic scaling prevents high-frequency term dominance.
+          </div>
+        </div>
+
+        <!-- Tier 4 -->
+        <div class="how-tier-card">
+          <div class="how-tier-top">
+            <span class="how-phase-pill">PHASE 04: QUAD-MODEL INFERENCE</span>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">SVM, LR, RF, MNB</span>
+          </div>
+          <h3 class="how-tier-title">Multi-Classifier Parallel Inference</h3>
+          <p class="how-tier-body">
+            The 8,000-dimensional vector is processed concurrently by four diverse machine learning architectures: Linear SVM (hyperplane margins), Logistic Regression (calibrated log-odds), Random Forest (decision tree bagging), and Multinomial Naive Bayes (conditional probabilities).
+          </p>
+          <div class="code-snippet-box">
+            probs_svm = svm_model.predict_proba(vec)<br>
+            probs_lr&nbsp; = lr_model.predict_proba(vec)<br>
+            probs_rf&nbsp; = rf_model.predict_proba(vec)<br>
+            probs_mnb = mnb_model.predict_proba(vec)
+          </div>
+          <div class="clinical-importance-callout">
+            <div class="callout-title">Why this matters in clinical NLP</div>
+            Different models exhibit orthogonal inductive biases. Linear SVM discovers crisp discriminative boundaries, while Logistic Regression ensures proper probability calibration.
+          </div>
+        </div>
+      </div>
+
+      <!-- Ensemble Sensitivity Engine Panel -->
+      <div class="sensitivity-engine-card">
+        <div class="card-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Ensemble Soft-Voting & Weight Sensitivity Engine
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">
+          Adjust the model voting weights below to observe how the consensus formula computes the final posterior probability distribution.
+        </p>
+
+        <div class="sensitivity-grid">
+          <div class="slider-group">
+            <div class="slider-row">
+              <div class="slider-meta-top">
+                <span>Linear SVM (Weight: <strong id="svmWeightVal">2</strong>)</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--primary);">88.59% Acc</span>
+              </div>
+              <input type="range" id="svmWeightSlider" class="slider-control" min="1" max="5" value="2">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-meta-top">
+                <span>Logistic Regression (Weight: <strong id="lrWeightVal">2</strong>)</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--secondary);">87.09% Acc</span>
+              </div>
+              <input type="range" id="lrWeightSlider" class="slider-control" min="1" max="5" value="2">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-meta-top">
+                <span>Random Forest (Weight: <strong id="rfWeightVal">1</strong>)</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">81.98% Acc</span>
+              </div>
+              <input type="range" id="rfWeightSlider" class="slider-control" min="1" max="5" value="1">
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-meta-top">
+                <span>Multinomial Naive Bayes (Weight: <strong id="mnbWeightVal">1</strong>)</span>
+                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">77.48% Acc</span>
+              </div>
+              <input type="range" id="mnbWeightSlider" class="slider-control" min="1" max="5" value="1">
+            </div>
+          </div>
+
+          <div style="background-color: #FAFAFC; border: 1px solid var(--border-default); border-radius: var(--radius-md); padding: 20px; display: flex; flex-direction: column; justify-content: center;">
+            <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 6px;">Consensus Mathematical Formula</div>
+            <div id="formulaWeights" style="font-family: var(--font-mono); font-size: 15px; font-weight: 700; color: var(--tertiary); margin-bottom: 8px;">
+              (2×SVM + 2×LR + 1×RF + 1×MNB) / 6
+            </div>
+            <div id="totalWeightSum" style="font-family: var(--font-mono); font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+              Total Weight Divisor: 6
+            </div>
+            <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+              Soft Voting calculates a weighted linear combination of model probability estimates. The SVM and Logistic Regression receive double weight due to superior hyperplane separation and probability calibration.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ========================================================================
+       APPLICATION FOOTER
+       ======================================================================== -->
+  <footer class="app-footer">
+    <div class="footer-inner">
+      <div class="footer-credits">
+        <strong>MedSpecialty AI Platform</strong> • MCA Semester 3 Mini Project • Mar Athanasius College of Engineering
+      </div>
+      <div class="footer-links">
+        <span>Dataset: MTSamples (1,663 records)</span>
+        <span>Models: SVM (88.59%) + Soft Voting (87.99%)</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
