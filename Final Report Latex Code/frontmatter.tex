@@ -1,38 +1,41 @@
-\pagestyle{frontmatter}
-\pagenumbering{roman}
-
 % -------------------- DECLARATION --------------------
-\chapter*{DECLARATION}
-\addcontentsline{toc}{chapter}{Declaration}
+\thispagestyle{plain}
+\begin{center}
+    \textbf{\Large DECLARATION}
+\end{center}
+\vspace{0.8cm}
 
-I, Jiphin George, student of Master of Computer Applications, Department of Computer Applications, Mar Athanasius College of Engineering, Kothamangalam, hereby declare that this Internship Report titled ``QualiVision AI – AI Based Live Tomato Freshness Detection System'' is a bonafide record of the internship work carried out by me at Nestsoft Technomaster Pvt. Ltd., during the period 25 May 2026 to 03 July 2026, in partial fulfilment of the requirements for the award of the degree of Master of Computer Applications.
+I, Jiphin George, student of Master of Computer Applications, Department of Computer Applications, Mar Athanasius College of Engineering, Kothamangalam, hereby declare that this Mini Project Report titled \textbf{``Medical Specialty Classification using TF-IDF and Ensemble Machine Learning''} is a bonafide record of the academic project work carried out by me under the supervision and guidance of \textbf{Prof. Biju Skaria}, Project Guide, Department of Computer Applications, in partial fulfilment of the requirements for the award of the degree of Master of Computer Applications of APJ Abdul Kalam Technological University, Thiruvananthapuram.
 
-I further declare that this report has not been submitted previously, either in part or in full, to any other University or Institute for the award of any degree or diploma.
+I further declare that this report has not been submitted previously, either in part or in full, to any other University or Institution for the award of any degree or diploma.
 
 \vspace{1.5cm}
 
 \noindent Place: Kothamangalam\\
-\noindent Date: 03 July 2026 \hfill Jiphin George
+\noindent Date: 30 October 2026 \hfill \textbf{Jiphin George}
 
 \newpage
 
 % -------------------- ACKNOWLEDGEMENT --------------------
-\chapter*{ACKNOWLEDGEMENT}
-\addcontentsline{toc}{chapter}{Acknowledgement}
+\thispagestyle{plain}
+\begin{center}
+    \textbf{\Large ACKNOWLEDGEMENT}
+\end{center}
+\vspace{0.8cm}
 
-I express my sincere gratitude to the Almighty for providing me with the strength, wisdom, and guidance to complete this academic internship project and this report successfully.
+I express my deepest gratitude to the Almighty for bestowing upon me the wisdom, perseverance, and health to complete this academic mini project and its technical report successfully.
 
-I extend my heartfelt thanks to Dr. Sonia Abraham, Head of the Department of Computer Applications, Mar Athanasius College of Engineering, Kothamangalam, for the constant encouragement, institutional support, and motivation throughout my academic programme.
+I extend my sincere thanks to \textbf{Dr. Sonia Abraham}, Head of the Department of Computer Applications, Mar Athanasius College of Engineering, Kothamangalam, for her encouragement, continuous institutional support, and guidance throughout my academic studies.
 
-I am deeply grateful to Prof. Shinu S Kurian, my Internship Guide, and Prof. Sibu Skaria, my Internship Coordinator, in the Department of Computer Applications. I sincerely thank them for their valuable guidance, timely feedback, mentorship, and for efficiently facilitating the internship programme and review processes.
+I express my profound gratitude and indebtedness to my Project Guide, \textbf{Prof. Biju Skaria}, Associate Professor, Department of Computer Applications, for his invaluable mentorship, rigorous technical feedback, insightful recommendations, and unwavering encouragement at every phase of this research and software implementation.
 
-I sincerely thank the mentors and team at Nestsoft Technomaster Pvt. Ltd. for the technical guidance, professional support, constructive suggestions, and the opportunity to work on the QualiVision AI project.
+I also convey my sincere appreciation to \textbf{Prof. Sibu Skaria}, Project Coordinator, Department of Computer Applications, for his timely coordination, structured review schedules, and administrative guidance throughout the semester.
 
-I express my gratitude to all the faculty members and non-teaching staff of the Department of Computer Applications for their continued support and cooperation throughout my studies.
+I am deeply thankful to all the faculty members and technical staff of the Department of Computer Applications for their cooperation, constructive academic environment, and assistance.
 
-Finally, I am deeply thankful to my parents, family, and friends for their unwavering encouragement, patience, and moral support at every stage of this journey.
+Finally, I express my heartfelt gratitude to my parents, family, and peers for their continuous moral support, understanding, and encouragement throughout this journey.
 
-\vspace{1cm}
+\vspace{1.2cm}
 \begin{flushright}
 \textbf{Jiphin George}
 \end{flushright}
@@ -40,15 +43,28 @@ Finally, I am deeply thankful to my parents, family, and friends for their unwav
 \newpage
 
 % -------------------- ABSTRACT --------------------
-\chapter*{ABSTRACT}
-\addcontentsline{toc}{chapter}{Abstract}
+\thispagestyle{plain}
+\begin{center}
+    \textbf{\Large ABSTRACT}
+\end{center}
+\vspace{0.8cm}
 
-This report presents a comprehensive overview of the six-week internship undertaken at Nestsoft Technomaster Pvt. Ltd. as part of the Master of Computer Applications (MCA) programme at Mar Athanasius College of Engineering, Kothamangalam, from 25 May 2026 to 03 July 2026. The internship offered an extensive, hands-on learning journey through Artificial Intelligence, Data Science, Machine Learning, and Computer Vision, bridging the gap between theoretical academic concepts and professional software engineering.
+The rapid digitisation of modern healthcare has led to an exponential influx of unstructured clinical text within Electronic Health Record (EHR) systems, including operative summaries, consultation notes, and hospital discharge reports. Manually indexing and triaging these clinical narratives into specialized medical departments is labor-intensive, error-prone, and bottlenecked by severe inter-annotator variability. 
 
-The internship commenced with foundational concepts in Artificial Intelligence, Python programming, and the development of basic applications like an AI Translator and a Text-to-Speech system. It progressively transitioned into comprehensive Data Science practices, focusing on Exploratory Data Analysis (EDA) and visualization using Pandas, Matplotlib, and Seaborn. Advanced machine learning modules introduced supervised and unsupervised learning algorithms, allowing for predictive modeling on varied datasets, including student performance and passenger survival predictions.
+This project designs, evaluates, and deploys an automated clinical decision-support platform, \textbf{MedSpecialty AI}, for clinical text categorization into medical specialties using high-dimensional Term Frequency--Inverse Document Frequency (TF-IDF) feature engineering and an Ensemble Machine Learning architecture. The investigation utilizes the MTSamples clinical transcription corpus comprising 4,999 raw records across 40 categories. Systematic exploratory data analysis revealed significant label overlap and procedural ambiguity in broad administrative classes (e.g., General Surgery, Consult notes). To construct an academically rigorous and clinically realistic benchmark, a curated dataset of 1,663 records across eight mutually exclusive hospital departments was established: Cardiovascular / Pulmonary, Orthopedic, Gastroenterology, Neurology, Urology, Obstetrics / Gynecology, ENT -- Otolaryngology, and Ophthalmology.
 
-The culmination of this internship was the capstone project: ``QualiVision AI – AI Based Live Tomato Freshness Detection System.'' Designed to automate quality inspection in food processing industries, the system leverages a convolutional neural network (EfficientNetV2B0) to classify agricultural produce as fresh or rotten. It features real-time prediction capabilities, a robust Flask backend, an SQLite database for persistent logging, and a professional industrial dashboard created using Google Stitch. Furthermore, Gradient-weighted Class Activation Mapping (Grad-CAM) was implemented to provide Explainable AI (XAI) insights, ensuring transparency in the model's decision-making process.
+The natural language processing pipeline executes text normalization, medical punctuation handling, tokenization, stopword removal, morphological lemmatization, and sublinear TF-IDF vectorization across an 8,000-dimensional unigram and bigram vocabulary ($L_2$ normalized). Four candidate classifiers with diverse inductive biases were trained on stratified partitions (80\% train / 20\% test, 333 holdout records): Linear Support Vector Machine (Linear SVM with Platt probability calibration), Logistic Regression, Random Forest, and Multinomial Naive Bayes. Empirical evaluation demonstrates that Linear SVM achieved the highest individual classification accuracy of 88.59\% with a Macro F1-score of 0.8971. A Soft Voting Ensemble combining all four models with calibrated weights [2:2:1:1] achieved 87.99\% accuracy and a Macro F1-score of 0.8898, delivering well-calibrated posterior probability spreads.
 
-Through the successful completion of these modules and the QualiVision AI project, the internship significantly enhanced practical competencies in AI model training and deployment, backend engineering, and industrial automation, laying a solid foundation for a successful career in Artificial Intelligence and Software Development.
+To ensure patient safety in open-world clinical environments, the system incorporates an \textbf{Open-Set Confidence Rejection Gate} ($\tau = 0.48$). Any transcription exhibiting peak ensemble confidence below 48\% is routed to a 9th operational class, \textit{``Other / Requires Review''}, successfully intercepting unsupported clinical specialties (such as Dermatology, Psychiatry, or Dentistry) and non-medical text without false specialty force-fitting. The complete pipeline is operationalized through a responsive web platform featuring in-memory PDF clinical text extraction via PyMuPDF, interactive 7-phase dataflow visualization, TF-IDF feature space inspection, and dynamic multi-model consensus dashboards.
 
+\newpage
+
+% -------------------- CONTENTS & LISTS --------------------
+\tableofcontents
+\newpage
+
+\listoftables
+\newpage
+
+\listoffigures
 \newpage

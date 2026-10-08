@@ -2,32 +2,24 @@
 
 \section{SYSTEM ANALYSIS}
 
-System analysis establishes the functional requirements, dataset architecture, preprocessing steps, exploratory data analysis, and algorithmic framework for the medical specialty classification system.
+System analysis establishes the foundational functional requirements, dataset architecture, exploratory statistical properties, preprocessing transformations, algorithmic mechanics, and deployment feasibility for the automated Medical Specialty Classification system.
 
-The Kaggle Medical Transcriptions (MTSamples) dataset, sourced from Kaggle \cite{mtsamples_dataset}, provides clinical narrative dictations across multiple healthcare sub-disciplines, enabling comprehensive evaluation of natural language processing and machine learning models for medical document categorization.
+The empirical investigation is conducted on the Kaggle Medical Transcriptions (MTSamples) dataset \cite{mtsamples_dataset}, which provides authentic, transcribed clinical dictations across diverse healthcare disciplines. Analyzing this corpus facilitates the development of a clinically sound, computationally lightweight natural language processing pipeline capable of differentiating domain-specific medical vocabulary while remaining suitable for real-time web deployment on standard CPU hardware.
 
-\textbf{Dataset Link}: \url{https://www.kaggle.com/datasets/tboyle10/medicaltranscriptions}
+\subsection{Analysis of the dataset}
 
-\textbf{Size}: The dataset comprises 4,999 clinical records spanning 40 distinct medical specialties.
-
-\textbf{Data Structure}: It contains six attributes including row index (\texttt{Unnamed: 0}), short report abstract (\texttt{description}), target medical department (\texttt{medical\_specialty}), sample dictation title (\texttt{sample\_name}), main clinical narrative (\texttt{transcription}), and extracted key terms (\texttt{keywords}).
-
-\textbf{Sparsity}: The primary text column (\texttt{transcription}) is highly complete, containing 33 missing records (0.66\%), which are dropped during preprocessing. The target label (\texttt{medical\_specialty}) contains zero missing values.
-
-\subsection{EXPLORATORY DATA ANALYSIS}
-
-\subsubsection{ABOUT THE DATASET}
+\subsubsection{About the dataset}
 
 \paragraph{Dataset Overview}
-The Kaggle Medical Transcriptions dataset provides authentic clinical narratives dictating patient histories, diagnostic evaluations, physical examinations, and surgical procedures:
+The Kaggle Medical Transcriptions dataset is a curated collection of authentic clinical narratives obtained from MTSamples.com, an open clinical transcription repository created to assist medical transcriptionists and healthcare informatics researchers. The dataset encapsulates a broad spectrum of real-world clinical encounters, ranging from routine consultative histories and physical examinations to highly complex intraoperative surgical summaries.
 \begin{itemize}
-    \item Total Records: 4,999 clinical reports.
-    \item Total Features: 5 independent variables + 1 target variable (\texttt{medical\_specialty}).
-    \item Data Types: Textual narratives (\texttt{transcription}, \texttt{description}, \texttt{keywords}), categorical labels (\texttt{medical\_specialty}), and integer index.
-    \item Missing Values: Present in \texttt{description} (6 records), \texttt{transcription} (33 records), and \texttt{keywords} (1,068 records).
+    \item \textbf{Total Raw Records}: 4,999 clinical transcription reports.
+    \item \textbf{Total Attributes}: 6 attributes (1 integer identifier, 4 textual features, and 1 categorical target label).
+    \item \textbf{Data Types}: Free-text clinical narratives (\texttt{transcription}), diagnostic abstracts (\texttt{description}), comma-delimited keywords (\texttt{keywords}), procedure titles (\texttt{sample\_name}), and categorical specialty labels (\texttt{medical\_specialty}).
+    \item \textbf{Target Attribute}: \texttt{medical\_specialty}, containing 40 nominal medical department categories in the raw distribution.
 \end{itemize}
 
-Table \ref{tab:dataset_summary_card} summarizes the core dataset attributes.
+Table \ref{tab:dataset_summary_card} summarizes the fundamental structural characteristics of the raw dataset.
 
 \begin{table}[H]
 \centering
@@ -41,61 +33,70 @@ Table \ref{tab:dataset_summary_card} summarizes the core dataset attributes.
 \hline
 \textbf{Source} & Kaggle (\url{https://www.kaggle.com/datasets/tboyle10/medicaltranscriptions}) \\
 \hline
-\textbf{Total Records} & 4,999 clinical reports \\
+\textbf{Total Raw Records} & 4,999 clinical reports \\
 \hline
-\textbf{Number of Columns} & 6 fields (\texttt{Unnamed: 0}, \texttt{description}, \texttt{medical\_specialty}, \texttt{sample\_name}, \texttt{transcription}, \texttt{keywords}) \\
+\textbf{Number of Attributes} & 6 fields (\texttt{Unnamed: 0}, \texttt{description}, \texttt{medical\_specialty}, \texttt{sample\_name}, \texttt{transcription}, \texttt{keywords}) \\
 \hline
-\textbf{Input Variable} & \texttt{transcription} (Primary clinical narrative text) \\
+\textbf{Primary Feature Variable} & \texttt{transcription} (Unstructured clinical narrative dictation) \\
 \hline
-\textbf{Target Variable} & \texttt{medical\_specialty} (40 unique clinical specialties) \\
+\textbf{Auxiliary Feature Variable} & \texttt{description} (Short diagnostic synopsis) \\
 \hline
-\textbf{Advantages} & Authentic clinical dictations; complete target label annotations (0 missing labels); broad multi-class domain coverage \\
+\textbf{Target Class Variable} & \texttt{medical\_specialty} (40 raw categories; curated to 8 core specialties + 1 Open-Set class) \\
 \hline
-\textbf{Limitations} & Severe class imbalance across categories; 33 missing transcriptions; 1,068 missing keyword entries; variable text length \\
+\textbf{Advantages} & Authentic clinical language; zero missing target labels (100\% labeled); rich multi-specialty terminology \\
+\hline
+\textbf{Challenges} & Severe category imbalance; missing transcription entries (33 nulls); overlapping administrative document categories \\
 \hline
 \end{tabularx}
 \caption{Characteristics of the Kaggle Medical Transcriptions Dataset}
 \label{tab:dataset_summary_card}
 \end{table}
 
-The dataset attributes are categorized as follows:
+\paragraph{Attribute Specifications}
+The six dataset attributes serve distinct analytical functions:
 \begin{enumerate}
-    \item \textbf{Primary Clinical Narrative (\texttt{transcription})}: The central predictor attribute containing unstructured, dictation-style medical reports that detail symptoms, findings, diagnoses, and treatments.
-    \item \textbf{Clinical Abstract (\texttt{description})}: Short one-to-two sentence summary of the clinical consultation or procedure.
-    \item \textbf{Extracted Keywords (\texttt{keywords})}: Comma-delimited clinical terms and anatomical references extracted from the narrative.
-    \item \textbf{Sample Identification (\texttt{sample\_name})}: Dictation title indicating the type of procedure or medical note.
-    \item \textbf{Target Variable (\texttt{medical\_specialty})}: The multi-class categorical label representing the specialized department (40 clinical specialties).
+    \item \textbf{Record Identifier (\texttt{Unnamed: 0})}: An integer sequence representing the raw tabular row index (range: 0 to 4,998).
+    \item \textbf{Clinical Abstract (\texttt{description})}: A concise, one-to-two sentence clinical synopsis summarizing the patient's presenting condition, consultation findings, or surgical objective.
+    \item \textbf{Target Medical Specialty (\texttt{medical\_specialty})}: The categorical label designating the medical specialty or departmental division under which the transcription was categorized.
+    \item \textbf{Dictation Title (\texttt{sample\_name})}: A brief descriptive title denoting the specific clinical procedure, anatomical site, or encounter type (e.g., ``Coronary Artery Bypass'', ``Colonoscopy'').
+    \item \textbf{Primary Clinical Narrative (\texttt{transcription})}: The central predictor feature containing the full, free-text clinical dictation. It details the patient's medical history, physical examination, diagnostic investigations, intraoperative findings, and postoperative care plans.
+    \item \textbf{Extracted Keywords (\texttt{keywords})}: Comma-delimited medical keywords and anatomical descriptors indexed from the report.
 \end{enumerate}
 
-\subsubsection{STATISTICAL ANALYSIS}
-Data exploration was conducted using Python data analysis tools (\texttt{pandas}, \texttt{numpy}). Inspection via \texttt{shape}, \texttt{info()}, \texttt{dtypes}, and \texttt{describe()} confirmed that the dataset contains 4,999 records and 6 columns without structural corruption. Table \ref{tab:column_description} describes each column, its data type, and missing value counts.
+\subsubsection{Explore the dataset}
+
+\paragraph{Statistical Data Profiling and Null Value Audit}
+Exploratory data profiling was conducted using Python data analysis frameworks (\texttt{pandas}, \texttt{numpy}). Systematically inspecting the schema via \texttt{shape}, \texttt{info()}, \texttt{dtypes}, and null audits confirmed the presence of 4,999 records across 6 attributes. Table \ref{tab:column_description} provides a complete audit of column types, descriptions, and missing record frequencies.
 
 \begin{table}[H]
 \centering
 \small
 \setlength{\tabcolsep}{5pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}p{2.0cm}|>{\raggedright\arraybackslash}X|r|}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}X|r|r|}
 \hline
-\textbf{Column Name} & \textbf{Data Type} & \textbf{Description} & \textbf{Missing Count} \\
+\textbf{Attribute Name} & \textbf{Data Type} & \textbf{Clinical Description} & \textbf{Null Count} & \textbf{Null \%} \\
 \hline
-\texttt{Unnamed: 0} & Integer & Record Identifier / Row Index & 0 \\
+\texttt{Unnamed: 0} & Integer & Record index / sequence number & 0 & 0.00\% \\
 \hline
-\texttt{description} & Text & Short summary of clinical report & 6 \\
+\texttt{description} & Text & Short consultation summary & 6 & 0.12\% \\
 \hline
-\texttt{medical\_specialty} & Categorical & Target specialty label (40 classes) & 0 \\
+\texttt{medical\_specialty} & Categorical & Target clinical specialty & 0 & 0.00\% \\
 \hline
-\texttt{sample\_name} & Text & Report title / dictation sample title & 0 \\
+\texttt{sample\_name} & Text & Procedure / dictation sample title & 0 & 0.00\% \\
 \hline
-\texttt{transcription} & Text & Primary clinical narrative (Input) & 33 \\
+\texttt{transcription} & Text & Primary clinical narrative & 33 & 0.66\% \\
 \hline
-\texttt{keywords} & Text & Extracted key terms & 1,068 \\
+\texttt{keywords} & Text & Extracted clinical terms & 1,068 & 21.36\% \\
 \hline
 \end{tabularx}
-\caption{Dataset Column Descriptions and Missing Value Audit}
+\caption{Dataset Attribute Specifications and Missing Value Audit}
 \label{tab:column_description}
 \end{table}
 
-Descriptive statistical analysis revealed significant variation in class distribution across the 40 medical specialties. Table \ref{tab:top_bottom_specialties} lists the record counts for the top 10 majority specialties alongside the 10 rarest minority specialties.
+The audit confirms that the target attribute (\texttt{medical\_specialty}) is fully populated across all 4,999 instances. In the primary feature attribute (\texttt{transcription}), 33 records contain empty/null values (0.66\%), which are removed during initial data pruning. In contrast, \texttt{keywords} exhibits 1,068 missing records (21.36\%), justifying its exclusion as a primary feature to avoid substantial feature sparsity and imputation bias.
+
+\paragraph{Class Distribution and Imbalance in Raw Dataset}
+Analyzing the raw target variable revealed extreme category imbalance across the 40 classes. Table \ref{tab:top_bottom_specialties} contrasts the top 10 majority specialties against the 10 rarest minority specialties.
 
 \begin{table}[H]
 \centering
@@ -103,7 +104,7 @@ Descriptive statistical analysis revealed significant variation in class distrib
 \setlength{\tabcolsep}{5pt}
 \begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}X|r|>{\raggedright\arraybackslash}X|r|}
 \hline
-\textbf{Top 10 Specialties} & \textbf{Count} & \textbf{Bottom 10 Specialties} & \textbf{Count} \\
+\textbf{Top 10 Majority Classes} & \textbf{Record Count} & \textbf{Bottom 10 Minority Classes} & \textbf{Record Count} \\
 \hline
 Surgery & 1,103 & Cosmetic / Plastic Surgery & 27 \\
 \hline
@@ -126,20 +127,143 @@ SOAP / Chart / Progress Notes & 166 & Executive Evaluation & 2 \\
 Obstetrics / Gynecology & 160 & Autopsy & 2 \\
 \hline
 \end{tabularx}
-\caption{Distribution of Top 10 Majority and Bottom 10 Minority Medical Specialties}
+\caption{Distribution of Top 10 Majority and Bottom 10 Minority Categories in Raw Dataset}
 \label{tab:top_bottom_specialties}
 \end{table}
 
-Statistical analysis of narrative text lengths indicated a positively skewed distribution. While the median document length is approximately 350 to 500 words, certain comprehensive operative notes and consultative evaluations extend beyond 2,000 words. This variation in document length further supports the use of TF-IDF feature representation with vector normalization for consistent numerical feature scaling.
+\paragraph{Clinical Domain Filtering and Benchmark Curation}
+A critical finding from data exploration is that the raw 40 classes do not represent mutually exclusive medical specialties. Instead, the raw dataset mixes anatomical medical specialties with general administrative document formats and procedural umbrellas:
+\begin{enumerate}
+    \item \textit{Administrative Document Formats}: Categories such as \texttt{Consult - History and Phy.} (516 records), \texttt{SOAP / Chart / Progress Notes} (166 records), \texttt{Discharge Summary} (108 records), \texttt{Office Notes} (50 records), and \texttt{Emergency Room Reports} (75 records) define documentation templates rather than distinct medical specialties. Reports within these classes span cardiology, neurology, gastroenterology, and orthopedics, introducing severe semantic ambiguity.
+    \item \textit{Procedural Umbrella Overlap}: The largest category, \texttt{Surgery} (1,103 records), functions as an overarching procedural umbrella. An appendectomy in \texttt{Surgery} shares identical clinical terminology with \texttt{Gastroenterology}; a total knee replacement in \texttt{Surgery} overlaps with \texttt{Orthopedic}; and a coronary artery bypass graft in \texttt{Surgery} overlaps with \texttt{Cardiovascular / Pulmonary}. Retaining \texttt{Surgery} forces classifiers to learn artificial distinctions between surgical and clinical records of the same organ system.
+    \item \textit{Severe Minority Sparsity}: Several specialized classes contain fewer than 10 records (e.g., \texttt{Allergy / Immunology}: 7, \texttt{Hospice - Palliative Care}: 6, \texttt{Autopsy}: 2), making statistically sound train-test splitting impossible.
+\end{enumerate}
 
-\clearpage
+To establish a clinically coherent, academically defensible classification benchmark, a rigorous filtering methodology was applied, restricting the classification universe to the \textbf{eight core mutually exclusive clinical specialties}. These eight specialties represent distinct organ systems with established hospital departmental divisions:
+\begin{enumerate}
+    \item \textbf{Cardiovascular / Pulmonary}: Heart, vascular, lung, and thoracic conditions.
+    \item \textbf{Orthopedic}: Musculoskeletal, joint, bone fracture, and spinal interventions.
+    \item \textbf{Gastroenterology}: Digestive tract, liver, colon, and endoscopy procedures.
+    \item \textbf{Neurology}: Brain, central nervous system, stroke, and neuromuscular diseases.
+    \item \textbf{Urology}: Urinary tract, kidney, bladder, and male reproductive system.
+    \item \textbf{Obstetrics / Gynecology}: Female reproductive system, pregnancy, and childbirth.
+    \item \textbf{ENT -- Otolaryngology}: Ear, nose, throat, larynx, and sinonasal disorders.
+    \item \textbf{Ophthalmology}: Eye diseases, cataracts, retina, and vision surgery.
+\end{enumerate}
 
-\subsection{DATA VISUALIZATION}
+Following null removal and domain filtering, the finalized curated clinical dataset comprises \textbf{1,663 records}. Table \ref{tab:curated_8classes} details the distribution of the curated benchmark.
 
-Data visualization is an important stage of Exploratory Data Analysis (EDA) that helps in understanding the characteristics, distributions, and relationships among clinical narratives and medical specialties. Visual representations provide valuable insights into the dataset, reveal hidden patterns, and assist in verifying the suitability of the text data for machine learning classification.
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabularx}{\linewidth}{|c|>{\raggedright\arraybackslash}X|r|r|}
+\hline
+\textbf{Rank} & \textbf{Medical Specialty} & \textbf{Sample Count} & \textbf{Percentage (\%)} \\
+\hline
+1 & Cardiovascular / Pulmonary & 371 & 22.31\% \\
+\hline
+2 & Orthopedic & 355 & 21.35\% \\
+\hline
+3 & Gastroenterology & 230 & 13.83\% \\
+\hline
+4 & Neurology & 223 & 13.41\% \\
+\hline
+5 & Obstetrics / Gynecology & 160 & 9.62\% \\
+\hline
+6 & Urology & 156 & 9.38\% \\
+\hline
+7 & ENT -- Otolaryngology & 96 & 5.77\% \\
+\hline
+8 & Ophthalmology & 83 & 4.99\% \\
+\hline
+\multicolumn{2}{|r|}{\textbf{Total Curated Clinical Dataset}} & \textbf{1,663} & \textbf{100.00\%} \\
+\hline
+\end{tabularx}
+\caption{Record Distribution Across the 8 Curated Clinical Specialties}
+\label{tab:curated_8classes}
+\end{table}
 
-\paragraph{Missing Value Analysis}
-Figure \ref{fig:eda_missing} illustrates the distribution of missing values across dataset attributes. As shown, the primary target attribute (\texttt{medical\_specialty}) contains zero missing values. The primary input text narrative (\texttt{transcription}) contains 33 missing records, while the auxiliary \texttt{keywords} attribute exhibits 1,068 missing records.
+\subsection{Data Preprocessing}
+
+Data preprocessing transforms unstructured clinical narratives into structured numerical representations suitable for machine learning. The pipeline addresses text irregularities, removes noise, normalizes morphological variations, and extracts informative n-grams.
+
+\subsubsection{Data Cleaning}
+Clinical narratives contain non-standard punctuation, uppercase emphasis, and administrative formatting. The cleaning pipeline executes six sequential operations:
+\begin{enumerate}
+    \item \textit{Null Record Pruning}: Dropping records where \texttt{transcription} is null or blank (33 raw records).
+    \item \textit{Text Lowercasing}: Converting all characters to lowercase to prevent identical clinical terms from being treated as distinct entities (e.g., ``Hypertension'' vs. ``hypertension'').
+    \item \textit{Punctuation \& Symbol Removal}: Stripping punctuation marks, parentheses, and special characters via regular expressions, preserving clean word boundaries.
+    \item \textit{Tokenization}: Segmenting continuous sentences into discrete word tokens.
+    \item \textit{Stopword Removal}: Eliminating non-informative conversational filler words (e.g., ``the'', ``is'', ``patient'', ``with'') using Scikit-learn's standardized English stopword list, ensuring that TF-IDF vectors focus on diagnostic vocabulary.
+    \item \textit{Morphological Lemmatization}: Reducing inflected word forms to their canonical root dictionary form (lemma) using the WordNet Lemmatizer (e.g., ``fractures'' $\rightarrow$ ``fracture'', ``occluded'' $\rightarrow$ ``occlude'').
+\end{enumerate}
+
+Table \ref{tab:preprocessing_examples} provides concrete text transformation examples across each stage.
+
+\begin{table}[H]
+\centering
+\small
+\setlength{\tabcolsep}{5pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Preprocessing Stage} & \textbf{Input Text Example} & \textbf{Processed Output Example} \\
+\hline
+Raw Narrative & ``DIAGNOSIS: Acute myocardial infarction with severe chest pain!'' & ``DIAGNOSIS: Acute myocardial infarction with severe chest pain!'' \\
+\hline
+1. Lowercasing & ``DIAGNOSIS: Acute myocardial...'' & ``diagnosis: acute myocardial infarction with severe chest pain!'' \\
+\hline
+2. Punctuation Strip & ``diagnosis: acute myocardial...'' & ``diagnosis acute myocardial infarction with severe chest pain'' \\
+\hline
+3. Tokenization & ``acute myocardial infarction'' & [\texttt{'acute'}, \texttt{'myocardial'}, \texttt{'infarction'}] \\
+\hline
+4. Stopword Removal & [\texttt{'with'}, \texttt{'severe'}, \texttt{'chest'}, \texttt{'pain'}] & [\texttt{'severe'}, \texttt{'chest'}, \texttt{'pain'}] \\
+\hline
+5. Lemmatization & [\texttt{'arteries'}, \texttt{'occluded'}] & [\texttt{'artery'}, \texttt{'occlude'}] \\
+\hline
+\end{tabularx}
+\caption{Step-by-Step Clinical Text Preprocessing Examples}
+\label{tab:preprocessing_examples}
+\end{table}
+
+\subsubsection{Analysis of Feature Variables}
+The primary feature variable is the clinical text narrative. To maximize contextual signal, an enriched feature string is constructed by concatenating the clinical consultation summary with the transcription narrative:
+\begin{equation}
+\text{clinical\_text} = \text{description} + \text{ `` '' } + \text{transcription}
+\end{equation}
+This synthesis ensures that both high-level diagnostic summaries and detailed procedural descriptions contribute to feature extraction.
+
+Converting this enriched text into numerical vectors is accomplished via \textbf{Sublinear TF-IDF Vectorization}. The vectorizer configuration is engineered specifically for clinical NLP:
+\begin{itemize}
+    \item \textbf{Maximum Vocabulary Ceiling}: Bounded at 8,000 features to capture rare specialty terms while ensuring fast CPU execution.
+    \item \textbf{N-Gram Range}: Unigrams and bigrams $(1, 2)$, capturing single terms (e.g., ``angioplasty'', ``cataract'') as well as compound medical phrases (e.g., ``coronary artery'', ``lumbar spine'', ``intraocular lens'').
+    \item \textbf{Sublinear Term Frequency Scaling}: Enabled ($1 + \log(\text{TF})$). In clinical dictation, a doctor repeating ``dyspnea'' multiple times does not mean the report is five times more pulmonary. Logarithmic scaling prevents frequent repetitions from dominating feature vectors.
+    \item \textbf{Document Frequency Thresholds}: Minimum document frequency $\text{min\_df} = 2$ eliminates hapax legomena (idiosyncratic typos), while maximum document frequency $\text{max\_df} = 0.70$ discards generic terms appearing in over 70\% of documents.
+    \item \textbf{Vector Normalization}: Euclidean $L_2$ unit normalization ($\|v\|_2 = 1.0$) eliminates document length bias between brief consultations and lengthy operative summaries.
+\end{itemize}
+
+\subsubsection{Analysis of Class Variables}
+The target variable \texttt{medical\_specialty} spans eight mutually exclusive clinical categories in the curated dataset. While class counts range from 371 (Cardiovascular / Pulmonary) to 83 (Ophthalmology), this ratio ($4.47:1$) is manageable through standard stratified sampling and class-weight balancing, in stark contrast to the unmanageable $551:1$ imbalance of the raw 40-class dataset.
+
+\paragraph{Open-Set Operational Class Formulation}
+A central innovation of this project is the formulation of a 9th operational class: \textbf{``Other / Requires Review''}. Traditional multi-class models assume closed-set operation, assigning any input to one of the trained classes. In healthcare, this assumption is hazardous: entering a Dermatology or Psychiatry report into an 8-class model would force an incorrect assignment to Orthopedics or Neurology.
+
+To overcome this, an open-set confidence rejection gate is implemented:
+\begin{equation}
+\hat{y} = 
+\begin{cases} 
+c^*, & \text{if } \max_{k} P_{\text{ensemble}}(y = k \mid x) \ge \tau \\
+\text{``Other''}, & \text{if } \max_{k} P_{\text{ensemble}}(y = k \mid x) < \tau \text{ or } \text{nnz}(x) = 0
+\end{cases}
+\end{equation}
+where $\tau = 0.48$ is the calibrated decision threshold, $c^* = \arg\max_k P_{\text{ensemble}}(y = k \mid x)$, and $\text{nnz}(x)$ represents non-zero matched clinical vocabulary features. This architecture ensures patient safety by routing out-of-scope or ambiguous clinical dictations to human clinicians for manual triage.
+
+\subsection{Data Visualization}
+
+Exploratory data visualization reveals structural, lexical, and distributional patterns across the clinical transcription corpus.
+
+\paragraph{Missing Value Distribution}
+Figure \ref{fig:eda_missing} displays the missing record counts across attributes. While \texttt{medical\_specialty} contains zero missing entries and \texttt{transcription} has only 33 nulls (0.66\%), the auxiliary \texttt{keywords} field exhibits 1,068 missing records (21.36\%), confirming that keywords cannot serve as a reliable primary classification attribute.
 
 \begin{figure}[H]
 \centering
@@ -148,8 +272,8 @@ Figure \ref{fig:eda_missing} illustrates the distribution of missing values acro
 \label{fig:eda_missing}
 \end{figure}
 
-\paragraph{Top 10 Medical Specialties}
-Figure \ref{fig:eda_top10} displays the record counts for the top 10 medical specialties in the dataset. Surgery represents the single largest category with 1,103 clinical reports, followed by Consult - History and Phy. (516 reports), Cardiovascular / Pulmonary (372 reports), and Orthopedic (355 reports).
+\paragraph{Top 10 Medical Categories}
+Figure \ref{fig:eda_top10} illustrates transcription frequencies for the top 10 categories in the raw dataset. Surgery dominates with 1,103 records, followed by Consult - History and Phy. (516 records), Cardiovascular / Pulmonary (372 records), and Orthopedic (355 records).
 
 \begin{figure}[H]
 \centering
@@ -158,165 +282,70 @@ Figure \ref{fig:eda_top10} displays the record counts for the top 10 medical spe
 \label{fig:eda_top10}
 \end{figure}
 
-\paragraph{Complete Specialty Distribution}
-Figure \ref{fig:eda_complete_specialty} illustrates the full class distribution across all 40 medical specialties in the MTSamples corpus. The chart demonstrates severe class imbalance, ranging from majority classes such as Surgery (1,103 records) down to highly specialized minority classes such as Hospice - Palliative Care, Allergy / Immunology, Lab Medicine - Pathology, and Autopsy with under 10 records each.
+\paragraph{Complete Class Distribution (40 Categories)}
+Figure \ref{fig:eda_complete_specialty} illustrates the severe class imbalance across all 40 raw categories, underscoring why filtering to 8 mutually exclusive specialties was essential for academic validity.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.82\textwidth,height=7.0cm,keepaspectratio]{EDA_Diagrams/03_complete_specialty_distribution.png}
-\caption{Distribution of Medical Specialties}
+\caption{Distribution of All 40 Categories in Raw MTSamples Corpus}
 \label{fig:eda_complete_specialty}
 \end{figure}
 
-\paragraph{Transcription Length Distribution}
-Figure \ref{fig:eda_length_dist} displays the word count distribution for clinical narratives, fitted with a Kernel Density Estimate (KDE) curve. The majority of medical transcriptions range between 200 and 600 words, exhibiting a right-skewed distribution with extended narratives reaching up to 3,000 words.
+\paragraph{Clinical Narrative Length Distribution}
+Figure \ref{fig:eda_length_dist} displays the word count distribution for clinical narratives, fitted with a Kernel Density Estimate (KDE) curve. The distribution is right-skewed; most transcriptions contain between 200 and 600 words, with comprehensive operative notes extending beyond 2,500 words.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.82\textwidth,height=6.0cm,keepaspectratio]{EDA_Diagrams/04_transcription_length_distribution.png}
-\caption{Distribution of Clinical Transcription Length}
+\caption{Distribution of Clinical Transcription Word Length}
 \label{fig:eda_length_dist}
 \end{figure}
 
-\paragraph{Transcription Length Across Top Specialties}
-Figure \ref{fig:eda_length_by_specialty} presents box plots comparing narrative word count distributions across the top 10 medical specialties. Specialties such as Radiology and Gastroenterology feature shorter median narrative lengths (~250 words), whereas Orthopedic, Surgery, and Consult - History and Phy. contain longer document narratives (median ~500 words) with multiple high-length outliers exceeding 1,500 to 2,500 words.
+\paragraph{Document Length Variations Across Specialties}
+Figure \ref{fig:eda_length_by_specialty} presents box plots comparing narrative word count distributions across specialties. Consultations and diagnostic notes (e.g., Radiology) feature shorter median lengths (~200 words), whereas Orthopedic and Cardiovascular operative summaries are substantially longer (~600 words), emphasizing the need for $L_2$ length normalization.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.82\textwidth,height=6.5cm,keepaspectratio]{EDA_Diagrams/05_transcription_length_by_specialty.png}
-\caption{Transcription Length Distribution Across Top 10 Medical Specialties}
+\caption{Transcription Length Distribution Across Top Medical Specialties}
 \label{fig:eda_length_by_specialty}
 \end{figure}
 
-\paragraph{Medical Word Cloud Visualization}
-Figure \ref{fig:eda_wordcloud} displays a word cloud of the most frequent clinical terms extracted from the medical transcription corpus. High-frequency domain terms include "placed", "well", "used", "time", "patient", "incision", "removed", "normal", and "procedure", reflecting common clinical documentation vocabulary across specialties.
+\paragraph{Clinical Word Cloud Visualization}
+Figure \ref{fig:eda_wordcloud} displays a lexical word cloud of high-frequency clinical terms across the corpus, including ``incision'', ``procedure'', ``patient'', ``normal'', ``placed'', ``artery'', and ``postoperative'', highlighting the medical domain vocabulary.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.82\textwidth,height=6.0cm,keepaspectratio]{EDA_Diagrams/06_medical_transcription_wordcloud.png}
-\caption{Common Terms in Medical Transcriptions}
+\caption{Common Lexical Terms in Medical Transcriptions}
 \label{fig:eda_wordcloud}
 \end{figure}
 
-The exploratory visualizations indicate that the clinical narratives exhibit distinct length characteristics, rich medical vocabulary, and severe class imbalance across specialties. These insights inform the text preprocessing, TF-IDF feature extraction, and stratified multi-model ensemble training strategies.
+\subsection{Analysis of Architecture and Algorithms}
 
-\clearpage
+The classification engine evaluates four candidate supervised learning algorithms alongside sublinear TF-IDF feature extraction, synthesizing their predictions through a calibrated Soft Voting Ensemble with open-set rejection.
 
-\subsection{DATA PREPROCESSING}
+\subsubsection{Detailed Study Report of the Proposed Algorithms}
 
-Data preprocessing is an essential stage in developing a machine learning model, as it transforms raw, unstructured clinical narratives into a structured and meaningful format suitable for mathematical modeling. In this project, the original dataset consisted of free-text clinical dictations containing clinical terminology, punctuation, formatting artifacts, and varying narrative lengths. The preprocessing stage included data cleaning, text normalization, analysis of feature variables, and examination of the target class distribution.
+\paragraph{1. Linear Support Vector Machine (Linear SVM)}
+Support Vector Machine (SVM) operates on structural risk minimization principles, constructing optimal hyperplanes that maximize the geometric separation margin between clinical classes in high-dimensional feature spaces. Linear SVM is well suited for sparse text categorization where 8,000 TF-IDF features offer natural linear separability.
 
-\subsubsection{DATA CLEANING}
-Text preprocessing is essential in clinical NLP to remove noisy elements, normalize medical vocabulary, and transform raw narrative text into clean input suitable for mathematical vectorization. The cleaning pipeline executes eight sequential operations:
-
-\begin{enumerate}
-    \item \textit{Removing Missing Values}: Records containing empty or null \texttt{transcription} fields (33 records) are dropped from the dataset.
-    \item \textit{Removing Duplicates}: Verification ensures no duplicate clinical reports exist in the corpus.
-    \item \textit{Lowercasing}: All narrative text is converted to lowercase to standardize character representations.
-    \item \textit{Removing Punctuation}: Commas, periods, semicolons, and special punctuation symbols are stripped.
-    \item \textit{Removing Special Characters}: Numeric digits and non-alphanumeric symbols are removed.
-    \item \textit{Tokenization}: Free-text narratives are segmented into individual word tokens.
-    \item \textit{Stop-Word Removal}: Generic English stop-words are filtered out while preserving clinical vocabulary.
-    \item \textit{Lemmatization}: Word tokens are mapped to their canonical base form using the WordNet Lemmatizer.
-\end{enumerate}
-
-Table \ref{tab:preprocessing_examples} provides concrete text transformation examples for each step.
-
-\begin{table}[H]
-\centering
-\small
-\setlength{\tabcolsep}{5pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
-\hline
-\textbf{Preprocessing Step} & \textbf{Input Text Example} & \textbf{Processed Output Example} \\
-\hline
-Raw Input Text & "SUBJECTIVE: Patient suffers from acute chest pain!" & "SUBJECTIVE: Patient suffers from acute chest pain!" \\
-\hline
-1. Missing Values & Checked: Non-null text & Retained \\
-\hline
-2. Duplicates & Checked: Unique entry & Retained \\
-\hline
-3. Lowercasing & "SUBJECTIVE: Patient suffers..." & "subjective: patient suffers from acute chest pain!" \\
-\hline
-4. Punctuation & "subjective: patient suffers..." & "subjective patient suffers from acute chest pain" \\
-\hline
-5. Special Chars & "chest pain! 100\%" & "chest pain" \\
-\hline
-6. Tokenization & "patient suffers pain" & ['patient', 'suffers', 'pain'] \\
-\hline
-7. Stop-Words & ['patient', 'suffers', 'from', 'pain'] & ['patient', 'suffers', 'pain'] \\
-\hline
-8. Lemmatization & ['patient', 'suffers', 'pain'] & ['patient', 'suffer', 'pain'] \\
-\hline
-\end{tabularx}
-\caption{Step-by-Step Clinical Text Preprocessing Examples}
-\label{tab:preprocessing_examples}
-\end{table}
-
-\subsubsection{ANALYSIS OF FEATURE VARIABLES}
-The \texttt{transcription} field is selected as the primary feature variable because it contains the complete clinical narrative. Other metadata fields, such as \texttt{description} and \texttt{keywords}, are not included in the primary classification feature set because the project focuses on full transcription-based specialty classification and the \texttt{keywords} field contains substantial missing values. Unstructured clinical narratives are converted into high-dimensional numerical feature vectors using Term Frequency--Inverse Document Frequency (TF-IDF) vectorization, which extracts unigram and bigram tokens while applying sublinear frequency scaling and $L_2$ normalization.
-
-\subsubsection{ANALYSIS OF CLASS VARIABLE}
-The target variable \texttt{medical\_specialty} contains 40 distinct medical specialty categories. The class distribution exhibits severe imbalance, ranging from 1,103 reports in Surgery to only 2 reports in Autopsy and Executive Evaluation. To ensure fair multi-class evaluation, stratified train-test splitting (80:20) is utilized to preserve class proportions, and ensemble voting consensus is deployed to avoid model bias toward majority classes.
-
-\clearpage
-
-\subsection{ANALYSIS OF ALGORITHMS}
-
-This project employs supervised machine learning algorithms to classify clinical transcription narratives into 40 distinct medical specialties. Multiple classification algorithms are considered to evaluate their effectiveness in distinguishing domain-specific clinical vocabulary based on extracted TF-IDF feature vectors. The proposed algorithms include Support Vector Machine (Linear SVM), Random Forest (RF), Logistic Regression (LR), and Multinomial Naive Bayes (MNB), integrated through a Voting Ensemble Classifier. These algorithms were chosen because they offer strong predictive performance in high-dimensional sparse text domains, provide architectural diversity, and execute efficiently on standard computing hardware without requiring specialized GPU accelerators.
-
-\subsubsection{DETAILED STUDY REPORT OF THE PROPOSED ALGORITHMS}
-
-The proposed system evaluates diverse machine learning estimators alongside statistical feature extraction to construct a robust specialty classification engine. Each algorithm offers distinct theoretical properties, mathematical formulations, and operational characteristics when applied to high-dimensional clinical text spaces.
-
-\paragraph{1. Support Vector Machine (SVM)}
-
-Support Vector Machine (SVM) is a robust supervised learning algorithm founded on statistical learning theory and structural risk minimization principles. It constructs an optimal decision boundary (hyperplane) in a high-dimensional feature space to separate target classes while maximizing the geometric margin between them. Linear SVM (Linear SVC) is exceptionally well suited for text categorization where sparse TF-IDF vectors offer natural linear separability.
-
-\subparagraph{A. Theoretical Foundation and Optimization Model}
-Given a training dataset of clinical transcription records:
-\begin{equation}
-D = \{(x_1, y_1), (x_2, y_2), \dots, (x_N, y_N)\}
-\end{equation}
-where $x_i \in \mathbb{R}^d$ represents the sparse TF-IDF feature vector across $d$ vocabulary terms and $y_i \in \{1, 2, \dots, K\}$ denotes the target medical specialty ($K = 40$), the linear decision hyperplane is defined as:
-\begin{equation}
-w^T x + b = 0
-\end{equation}
-where $w \in \mathbb{R}^d$ is the weight vector normal to the hyperplane and $b \in \mathbb{R}$ is the bias scalar. To handle real-world clinical vocabulary noise and lexical overlap between specialties, a soft-margin optimization formulation is applied using non-negative slack variables $\xi_i \ge 0$:
+Given training pairs $(x_i, y_i)$ where $x_i \in \mathbb{R}^d$ and $y_i \in \{1, \dots, K\}$, the soft-margin primal objective is:
 \begin{equation}
 \min_{w, b, \xi} \frac{1}{2} \|w\|^2 + C \sum_{i=1}^{N} \xi_i
 \end{equation}
-subject to the linear constraints:
+subject to:
 \begin{equation}
 y_{i, k}(w_k^T x_i + b_k) \ge 1 - \xi_i, \quad \xi_i \ge 0, \quad \forall i = 1, \dots, N
 \end{equation}
-where $C > 0$ is the regularization parameter controlling the trade-off between maximizing the geometric margin width ($\frac{2}{\|w\|}$) and minimizing training classification error.
-
-\subparagraph{B. Dual Formulation and Multi-Class Decision Function}
-By introducing Lagrange multipliers $\alpha_i \ge 0$, the primal optimization problem is transformed into its Wolfe dual representation:
+where $C$ governs margin trade-offs. To enable soft-voting participation, Linear SVM's uncalibrated signed margin distances $f_k(x) = w_k^T x + b_k$ are calibrated using Scikit-learn's \texttt{CalibratedClassifierCV} via Platt scaling:
 \begin{equation}
-\max_{\alpha} \sum_{i=1}^{N} \alpha_i - \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \alpha_i \alpha_j y_i y_j K(x_i, x_j)
+P_{\text{SVM}}(y = k \mid x) = \frac{1}{1 + \exp(A \cdot f_k(x) + B)}
 \end{equation}
-subject to $0 \le \alpha_i \le C$ and $\sum_{i=1}^{N} \alpha_i y_i = 0$. For high-dimensional sparse text vectors, the Linear Kernel $K(x_i, x_j) = x_i^T x_j$ is utilized.
+mapping geometric margins monotonically into valid multi-class probability distributions.
 
-To support 40 medical specialties, a One-vs-Rest (OvR) strategy is implemented, training 40 independent binary classifiers. The decision function evaluating an incoming clinical transcription $x$ is:
-\begin{equation}
-f_k(x) = w_k^T x + b_k
-\end{equation}
-The predicted medical specialty $\hat{y}$ corresponds to the class with the maximum decision score:
-\begin{equation}
-\hat{y} = \arg\max_{k \in \{1, \dots, K\}} (w_k^T x + b_k)
-\end{equation}
-
-\subparagraph{C. Hyperparameter Tuning and Clinical Relevance}
-The predictive performance of Linear SVM depends primarily on optimizing the regularization parameter $C$. Linear SVM excels in clinical transcription classification due to its immunity to high-dimensional overfitting, low memory footprint during inference, and reliance solely on critical support vectors along decision margins.
-
-\subparagraph{D. Probability Calibration for Soft-Voting Integration}
-Standard Linear Support Vector Classifiers (\texttt{LinearSVC}) compute uncalibrated signed geometric distances to separating hyperplanes, which do not directly provide posterior probability distributions (\texttt{predict\_proba}). Because the proposed ensemble relies on soft-voting probability aggregation, the Linear SVM decision scores are calibrated to produce class probability estimates before soft-voting aggregation. This is achieved using Scikit-learn's \texttt{CalibratedClassifierCV}, which applies Platt scaling via an internal cross-validated logistic sigmoid transformation:
-\begin{equation}
-P(y = k \mid x) = \frac{1}{1 + \exp(A \cdot f_k(x) + B)}
-\end{equation}
-where scalar parameters $A$ and $B$ are estimated through maximum likelihood on internal validation folds. Probability calibration maps decision boundary margins monotonically into valid multi-class probability distributions, enabling Linear SVM to participate effectively in soft-voting probability aggregation alongside inherently probabilistic estimators.
+Figure \ref{fig:act_svm} depicts the activity flow of the Support Vector Machine algorithm.
 
 \begin{figure}[H]
 \centering
@@ -334,10 +363,10 @@ where scalar parameters $A$ and $B$ are estimated through maximum likelihood on 
     \node [process, below=0.24cm of p3] (p4) {Identify Critical Support Vectors};
     \node [process, below=0.24cm of p4] (p5) {Optimize Hyperplane and Margin};
     \node [decision, below=0.28cm of p5] (dec1) {Converged?};
-    \node [process, below=0.28cm of dec1] (p6) {Trained Multi-Class SVM Model};
+    \node [process, below=0.28cm of dec1] (p6) {Calibrate Probabilities (Platt Scaling)};
     \node [process, below=0.24cm of p6] (p7) {Input New Clinical Transcription};
-    \node [process, below=0.24cm of p7] (p8) {Compute Decision Values $f_k(x) = w_k^T x + b_k$};
-    \node [process, below=0.24cm of p8] (p9) {Select Maximum Margin Class ($\arg\max$)};
+    \node [process, below=0.24cm of p7] (p8) {Compute Calibrated Posteriors $P(y=k|x)$};
+    \node [process, below=0.24cm of p8] (p9) {Select Maximum Probability Class};
     \node [branch, below=0.24cm of p9] (out) {Predicted Medical Specialty};
     \node [startstop, below=0.24cm of out] (end) {END};
     
@@ -355,59 +384,22 @@ where scalar parameters $A$ and $B$ are estimated through maximum likelihood on 
     \path [arrow] (p9) -- (out);
     \path [arrow] (out) -- (end);
 \end{tikzpicture}
-\caption{Activity Diagram of Support Vector Machine}
+\caption{Activity Diagram of Support Vector Machine Classifier}
 \label{fig:act_svm}
 \end{figure}
 
 \paragraph{2. Random Forest (RF)}
-
-Random Forest is a high-performance ensemble learning algorithm based on decision tree aggregation. It constructs a multitude of uncorrelated decision trees during training and outputs the ensemble consensus. By combining Bootstrap Aggregation (Bagging) with random feature subspace selection, Random Forest mitigates variance without increasing prediction bias.
-
-\subparagraph{A. Architectural Mechanics and Ensemble Formulation}
-Given a training dataset of $N$ clinical transcription records, Random Forest generates $B$ bootstrap samples by sampling with replacement. For each bootstrap sample, an individual decision tree $T_b(x)$ is trained. At each split node of every tree, a random subset of $m = \sqrt{d}$ TF-IDF features is evaluated to identify the optimal split.
-
-The final specialty class prediction for an input vector $x$ is derived through majority voting:
+Random Forest constructs an ensemble of $B = 200$ uncorrelated decision trees using Bootstrap Aggregation (Bagging) paired with random feature subspace selection ($m = \sqrt{d} \approx 89$ features per split). At each internal node, splits minimize Gini Impurity:
 \begin{equation}
-\hat{y} = \text{mode}(T_1(x), T_2(x), \dots, T_B(x))
+G = 1 - \sum_{k=1}^{K} p_k^2
 \end{equation}
-Alternatively, posterior class probabilities are computed as the average over all $B$ decision trees:
+Class probabilities are derived by averaging probability distributions across all trees:
 \begin{equation}
-P(y = k \mid x) = \frac{1}{B} \sum_{b=1}^{B} P_b(y = k \mid x)
+P_{\text{RF}}(y = k \mid x) = \frac{1}{B} \sum_{b=1}^{B} P_b(y = k \mid x)
 \end{equation}
+Random Forest captures complex non-linear keyword interactions that linear boundaries may overlook.
 
-\subparagraph{B. Node Splitting Criteria and Impurity Measures}
-Decision tree node splits are evaluated using impurity metrics such as Gini Impurity or Information Gain (Entropy).
-\begin{itemize}
-    \item \textbf{Gini Impurity ($G$)}:
-    \begin{equation}
-    G = 1 - \sum_{k=1}^{K} p_k^2
-    \end{equation}
-    where $p_k$ represents the proportion of instances belonging to specialty class $k \in \{1, \dots, 40\}$ at a given node.
-    \item \textbf{Entropy ($H$) and Information Gain ($IG$)}:
-    \begin{equation}
-    H(S) = -\sum_{k=1}^{K} p_k \log_2(p_k)
-    \end{equation}
-    \begin{equation}
-    IG(S, A) = H(S) - \sum_{v \in \text{Values}(A)} \frac{|S_v|}{|S|} H(S_v)
-    \end{equation}
-\end{itemize}
-
-\subparagraph{C. Feature Importance Analysis and Clinical Interpretability}
-A major benefit of Random Forest is its capacity to quantify feature importance using Mean Decrease in Impurity (MDI). The importance index $I(A_j)$ of TF-IDF feature $A_j$ across all $B$ decision trees is computed as:
-\begin{equation}
-I(A_j) = \frac{1}{B} \sum_{b=1}^{B} \sum_{n \in N_b(A_j)} \Delta G(n)
-\end{equation}
-where $\Delta G(n)$ is the Gini impurity reduction achieved at node $n$ by splitting on feature $A_j$. In clinical NLP, this enables identification and ranking of the most discriminative medical keywords for each specialty.
-
-\subparagraph{D. Hyperparameter Optimization}
-The primary hyperparameters tuned for Random Forest include:
-\begin{itemize}
-    \item \texttt{n\_estimators} ($B$): Number of decision trees (typically 100 to 300).
-    \item \texttt{max\_depth}: Maximum depth of decision trees to prevent single-tree memorization.
-    \item \texttt{min\_samples\_split}: Minimum samples required to split an internal node.
-    \item \texttt{min\_samples\_leaf}: Minimum samples required at a terminal leaf node.
-\end{itemize}
-Random Forest captures complex non-linear keyword interactions that linear models may overlook, adding structural diversity to the ensemble.
+Figure \ref{fig:act_rf} illustrates the operational flow of the Random Forest algorithm.
 
 \begin{figure}[H]
 \centering
@@ -444,33 +436,22 @@ Random Forest captures complex non-linear keyword interactions that linear model
     \path [arrow] (p8) -- (out);
     \path [arrow] (out) -- (end);
 \end{tikzpicture}
-\caption{Activity Diagram of Random Forest}
+\caption{Activity Diagram of Random Forest Classifier}
 \label{fig:act_rf}
 \end{figure}
 
 \paragraph{3. Logistic Regression (LR)}
-
-Logistic Regression is a foundational statistical learning algorithm for classification problems. Belonging to the family of Generalized Linear Models (GLMs), it is extended to multi-class classification using the multinomial Softmax formulation, modeling posterior probabilities directly.
-
-\subparagraph{A. Probabilistic Model and Multinomial Softmax Transformation}
-For an input TF-IDF vector $x \in \mathbb{R}^d$ and $K = 40$ medical specialty classes, the algorithm computes linear logit scores $z_k = w_k^T x + b_k$. The posterior probability that transcription $x$ belongs to specialty $k$ is given by the Softmax function:
+Multinomial Logistic Regression models multi-class posterior probabilities directly using the Softmax activation function:
 \begin{equation}
-P(y = k \mid x) = \frac{\exp(w_k^T x + b_k)}{\sum_{j=1}^{K} \exp(w_j^T x + b_j)}
+P_{\text{LR}}(y = k \mid x) = \frac{\exp(w_k^T x + b_k)}{\sum_{j=1}^{K} \exp(w_j^T x + b_j)}
 \end{equation}
-where $w_k \in \mathbb{R}^d$ is the weight vector associated with specialty $k$ and $b_k \in \mathbb{R}$ is the class-specific bias term.
-
-\subparagraph{B. Maximum Likelihood Estimation and Loss Function}
-Model parameter estimation is performed by minimizing the Categorical Cross-Entropy (Negative Log-Likelihood) loss function over $N$ training samples, augmented with an $L_2$ Ridge penalty:
+Parameters are estimated by minimizing categorical cross-entropy loss augmented with an $L_2$ Ridge penalty:
 \begin{equation}
 J(W, b) = -\frac{1}{N} \sum_{i=1}^{N} \sum_{k=1}^{K} \mathbb{I}(y_i = k) \ln P(y_i = k \mid x_i) + \frac{\lambda}{2} \sum_{k=1}^{K} \|w_k\|_2^2
 \end{equation}
-where $\mathbb{I}(\cdot)$ is the indicator function, and $\lambda > 0$ controls the regularisation strength to prevent coefficient explosion on sparse text inputs. Parameters are optimized via gradient descent algorithms:
-\begin{equation}
-w_k^{(t+1)} = w_k^{(t)} - \alpha \nabla_{w_k} J(W, b)
-\end{equation}
+Logistic Regression provides intrinsically calibrated class probability distributions and high interpretability through log-odds coefficients.
 
-\subparagraph{C. Clinical Relevance and Interpretability}
-Logistic Regression serves as an essential baseline model due to its high interpretability. The exponentiated weight coefficients $\exp(w_{k, j})$ represent odds ratios for clinical terms, providing quantitative insight into which medical keywords escalate the probability of assigning a transcription to a specific specialty.
+Figure \ref{fig:act_lr} shows the activity flow of Logistic Regression.
 
 \begin{figure}[H]
 \centering
@@ -487,7 +468,7 @@ Logistic Regression serves as an essential baseline model due to its high interp
     \node [process, below=0.24cm of p2] (p3) {Calculate Linear Scores $z_k = w_k^T x + b_k$};
     \node [process, below=0.24cm of p3] (p4) {Apply Softmax Activation Function};
     \node [process, below=0.24cm of p4] (p5) {Calculate Cross-Entropy Loss};
-    \node [process, below=0.24cm of p5] (p6) {Update Weights via Gradient Descent};
+    \node [process, below=0.24cm of p5] (p6) {Update Weights via L-BFGS Optimization};
     \node [decision, below=0.28cm of p6] (dec1) {Converged?};
     \node [process, below=0.28cm of dec1] (p7) {Trained Logistic Regression Model};
     \node [process, below=0.24cm of p7] (p8) {Input New Clinical Transcription};
@@ -511,30 +492,22 @@ Logistic Regression serves as an essential baseline model due to its high interp
     \path [arrow] (p10) -- (out);
     \path [arrow] (out) -- (end);
 \end{tikzpicture}
-\caption{Activity Diagram of Logistic Regression}
+\caption{Activity Diagram of Multinomial Logistic Regression Classifier}
 \label{fig:act_lr}
 \end{figure}
 
 \paragraph{4. Multinomial Naive Bayes (MNB)}
-
-Multinomial Naive Bayes is a specialized probabilistic classification algorithm rooted in Bayes' Theorem, specifically formulated for discrete word counts and term frequency distributions in document categorization tasks.
-
-\subparagraph{A. Probabilistic Foundation and Bayes' Theorem}
-The algorithm computes the posterior probability of clinical transcription $x = (x_1, \dots, x_m)$ belonging to medical specialty class $c$ using Bayes' rule alongside the assumption of conditional feature independence given the class label:
+Multinomial Naive Bayes is a probabilistic classifier based on Bayes' Theorem under the conditional feature independence assumption:
 \begin{equation}
-P(c \mid x) \propto P(c) \prod_{i=1}^{m} P(x_i \mid c)
+P_{\text{MNB}}(c \mid x) \propto P(c) \prod_{i=1}^{m} P(x_i \mid c)
 \end{equation}
-where $P(c)$ is the prior probability of specialty $c$ (derived from training class proportions) and $P(x_i \mid c)$ is the class-conditional feature likelihood.
-
-\subparagraph{B. Feature Likelihood and Laplace Smoothing}
-To prevent zero-probability penalties for clinical terms absent in the training split of a specific specialty, Laplace (additive) smoothing is applied:
+Feature likelihoods incorporate Laplace additive smoothing ($\alpha = 1.0$) to avoid zero-probability penalties:
 \begin{equation}
 P(x_i \mid c) = \frac{N_{ci} + \alpha}{N_c + \alpha |V|}
 \end{equation}
-where $N_{ci}$ is the cumulative occurrence count of term $x_i$ in specialty class $c$, $N_c$ is the total token count across all records in class $c$, $|V|$ is the vocabulary size, and $\alpha = 1.0$ is the smoothing hyperparameter.
+MNB provides a fast, linear-time probabilistic baseline that contributes frequency diversity to the ensemble.
 
-\subparagraph{C. Computational Efficiency and Role in Medical Text Classification}
-Multinomial Naive Bayes executes in linear time with minimal memory overhead. It functions reliably on smaller clinical training subsets, providing an efficient baseline that contributes probabilistic diversity to the ensemble.
+Figure \ref{fig:act_mnb} depicts the operational flow of Multinomial Naive Bayes.
 
 \begin{figure}[H]
 \centering
@@ -567,37 +540,16 @@ Multinomial Naive Bayes executes in linear time with minimal memory overhead. It
     \path [arrow] (p8) -- (out);
     \path [arrow] (out) -- (end);
 \end{tikzpicture}
-\caption{Activity Diagram of Multinomial Naive Bayes}
+\caption{Activity Diagram of Multinomial Naive Bayes Classifier}
 \label{fig:act_mnb}
 \end{figure}
 
 \paragraph{5. TF-IDF Feature Vectorizer}
-
-Term Frequency--Inverse Document Frequency (TF-IDF) is a statistical vectorization technique that converts unstructured clinical text narratives into high-dimensional numerical feature vectors. In our proposed medical specialty classification system, TF-IDF operates as the core feature engineering component.
-
-\subparagraph{A. Statistical Foundation and Mathematical Formulation}
-The vectorization process evaluates the relative importance of each term $t$ within a specific document $d$ against the entire clinical corpus $D$. Term Frequency, denoted as $\text{TF}(t, d)$, measures word occurrences scaled sublinearly:
+The Sublinear TF-IDF Vectorizer calculates composite weights across unigram and bigram tokens:
 \begin{equation}
-\text{TF}(t, d) = 1 + \log(f_{t, d}) \quad (\text{if } f_{t, d} > 0)
+\text{TF-IDF}(t, d, D) = (1 + \log(f_{t, d})) \times \left(\log\left(\frac{1 + |D|}{1 + |\{d \in D : t \in d\}|}\right) + 1\right)
 \end{equation}
-Inverse Document Frequency, denoted as $\text{IDF}(t, D)$, computes the logarithmic inverse ratio:
-\begin{equation}
-\text{IDF}(t, D) = \log\left(\frac{1 + |D|}{1 + |\{d \in D : t \in d\}|}\right) + 1
-\end{equation}
-The composite TF-IDF weight is:
-\begin{equation}
-\text{TF-IDF}(t, d, D) = \text{TF}(t, d) \times \text{IDF}(t, D)
-\end{equation}
-To ensure comparability across documents of varying lengths, Euclidean $L_2$ normalization is applied:
-\begin{equation}
-v_{\text{norm}} = \frac{v}{\|v\|_2} = \frac{v}{\sqrt{\sum_i v_i^2}}
-\end{equation}
-
-\subparagraph{B. N-Gram Extraction and Sparsity Optimization}
-The vectorizer extracts unigrams and bigrams, capturing both isolated medical terms (e.g., "appendectomy") and multi-word phrases (e.g., "coronary artery"). A minimum document frequency threshold filters out rare typos, yielding a normalized, highly efficient sparse matrix.
-
-\subparagraph{C. Clinical Term Weighting and Down-Weighting Common Words}
-Through this formulation, terms appearing across almost all reports receive low weights, whereas specialty-specific diagnostic vocabulary receives high discriminative weights.
+followed by Euclidean $L_2$ normalization ($v_{\text{norm}} = v / \|v\|_2$). Figure \ref{fig:act_tfidf} outlines the vectorization flow.
 
 \begin{figure}[H]
 \centering
@@ -608,12 +560,12 @@ Through this formulation, terms appearing across almost all reports receive low 
     
     \node [startstop] (start) {START};
     \node [process, below=0.24cm of start] (p1) {Input Cleaned Text Narratives};
-    \node [process, below=0.24cm of p1] (p2) {Tokenize \& Generate N-Grams};
-    \node [process, below=0.24cm of p2] (p3) {Compute Term Frequency ($\text{TF}$)};
-    \node [process, below=0.24cm of p3] (p4) {Compute Inverse Doc Frequency ($\text{IDF}$)};
-    \node [process, below=0.24cm of p4] (p5) {Calculate Composite Score ($\text{TF} \times \text{IDF}$)};
+    \node [process, below=0.24cm of p1] (p2) {Tokenize \& Generate N-Grams (1, 2)};
+    \node [process, below=0.24cm of p2] (p3) {Compute Sublinear TF ($1 + \log(\text{TF})$)};
+    \node [process, below=0.24cm of p3] (p4) {Compute Smoothed IDF Score};
+    \node [process, below=0.24cm of p4] (p5) {Calculate Composite TF-IDF Product};
     \node [process, below=0.24cm of p5] (p6) {Apply Euclidean $L_2$ Normalization};
-    \node [process, below=0.24cm of p6] (p7) {Construct Sparse Feature Matrix};
+    \node [process, below=0.24cm of p6] (p7) {Construct 8,000-D Sparse Matrix};
     \node [startstop, below=0.24cm of p7] (end) {END};
     
     \path [arrow] (start) -- (p1);
@@ -625,95 +577,81 @@ Through this formulation, terms appearing across almost all reports receive low 
     \path [arrow] (p6) -- (p7);
     \path [arrow] (p7) -- (end);
 \end{tikzpicture}
-\caption{Activity Diagram of TF-IDF Feature Vectorizer}
+\caption{Activity Diagram of Sublinear TF-IDF Feature Vectorizer}
 \label{fig:act_tfidf}
 \end{figure}
 
-\paragraph{6. Voting Ensemble Classifier}
-
-The Voting Ensemble Classifier is the final meta-classification mechanism in the proposed system. Rather than relying on a single learning algorithm that may exhibit inductive biases across imbalanced specialties, the ensemble combines predictions from diverse candidate models (Logistic Regression, Linear SVM, Random Forest, and Multinomial Naive Bayes) to generate a consensus decision.
-
-\subparagraph{A. Ensemble Mechanics and Soft-Voting Aggregation}
-Soft voting requires calibrated class probability estimates ($P(y = k \mid x)$) across all candidate base estimators. While Logistic Regression, Random Forest, and Multinomial Naive Bayes intrinsically output class probabilities, standard Linear SVM outputs uncalibrated margin distances. Therefore, the Linear SVM decision scores are calibrated using \texttt{CalibratedClassifierCV} to produce reliable posterior probability estimates before soft-voting aggregation. In the soft-voting configuration, each calibrated base classifier $m \in \{1, \dots, M\}$ generates a posterior class probability distribution $P_m(y = k \mid x)$ indicating the likelihood that a given clinical transcription $x$ belongs to medical specialty $k$. The ensemble then computes the arithmetic mean of these posterior probabilities across all $M$ estimators:
+\paragraph{6. Soft Voting Ensemble Classifier}
+The Soft Voting Ensemble aggregates posterior class probabilities generated by the candidate estimators using calibrated weights $[w_{\text{SVM}}=2, w_{\text{LR}}=2, w_{\text{RF}}=1, w_{\text{MNB}}=1]$:
 \begin{equation}
-P_{\text{ensemble}}(y = k \mid x) = \frac{1}{M} \sum_{m=1}^{M} P_m(y = k \mid x)
+P_{\text{ensemble}}(y = k \mid x) = \frac{2 P_{\text{SVM}}(y = k \mid x) + 2 P_{\text{LR}}(y = k \mid x) + 1 P_{\text{RF}}(y = k \mid x) + 1 P_{\text{MNB}}(y = k \mid x)}{6}
 \end{equation}
+Linear SVM and Logistic Regression receive double weight due to their superior individual benchmark accuracies (88.59\% and 87.09\%) and strong probability calibration. Random Forest and Naive Bayes contribute architectural non-linearity and probabilistic frequency smoothing with unit weights.
 
-\subparagraph{B. Final Multi-Class Specialty Prediction}
-The final predicted medical specialty $\hat{y}$ is selected as the category that maximizes the aggregated ensemble probability:
-\begin{equation}
-\hat{y} = \arg\max_{k \in \{1, \dots, K\}} P_{\text{ensemble}}(y = k \mid x)
-\end{equation}
-
-\subparagraph{C. Variance Reduction and Synergy of Diverse Estimators}
-By integrating linear probabilistic modeling (Logistic Regression), maximum-margin geometric boundaries (Linear SVM), non-linear decision trees (Random Forest), and conditional frequency modeling (Multinomial Naive Bayes), the ensemble offsets the individual weaknesses of each classifier, reduces predictive variance, and improves overall classification stability across all 40 medical specialties.
+Figure \ref{fig:act_ensemble} displays the architecture and dataflow of the Soft Voting Ensemble Classifier.
 
 \begin{figure}[H]
 \centering
 \begin{tikzpicture}[node distance=0.35cm and 0.2cm, auto, >=stealth',
     startstop/.style={rectangle, rounded corners=8pt, draw=black, fill=white, text width=9em, text centered, minimum height=1.5em, font=\scriptsize\bfseries},
     process/.style={rectangle, draw=black, fill=white, text width=15em, text centered, rounded corners=2pt, minimum height=1.6em, font=\scriptsize},
-    smallbox/.style={rectangle, draw=black, fill=white, text width=6.2em, text centered, rounded corners=2pt, minimum height=2.2em, font=\scriptsize},
+    smallbox/.style={rectangle, draw=black, fill=white, text width=6.5em, text centered, rounded corners=2pt, minimum height=2.4em, font=\scriptsize},
     branch/.style={rectangle, draw=black, fill=white, text width=7.5em, text centered, rounded corners=2pt, minimum height=1.5em, font=\scriptsize},
     arrow/.style={draw, -latex', semithick}]
     
     \node [startstop] (start) at (0, 0) {START};
     \node [process, below=0.35cm of start] (input) {TF-IDF Feature Vector Input};
     
-    % Symmetrically positioned candidate classifiers with ample 1.05cm clearance below input
-    \node [smallbox, below=1.05cm of input, xshift=-4.5cm] (lr)  {Logistic\\Regression};
-    \node [smallbox, below=1.05cm of input, xshift=-1.5cm] (svm) {Linear\\SVC / SVM};
-    \node [smallbox, below=1.05cm of input, xshift=1.5cm]  (rf)  {Random\\Forest};
-    \node [smallbox, below=1.05cm of input, xshift=4.5cm]  (nb)  {Multinomial\\Naive Bayes};
+    \node [smallbox, below=1.05cm of input, xshift=-4.5cm] (svm) {Linear SVM\\(Weight: 2)};
+    \node [smallbox, below=1.05cm of input, xshift=-1.5cm] (lr)  {Logistic Reg.\\(Weight: 2)};
+    \node [smallbox, below=1.05cm of input, xshift=1.5cm]  (rf)  {Random Forest\\(Weight: 1)};
+    \node [smallbox, below=1.05cm of input, xshift=4.5cm]  (nb)  {Naive Bayes\\(Weight: 1)};
     
     \coordinate (bus1) at ([yshift=-0.52cm]input.south);
     
-    \node [process, text width=13cm, below=0.85cm of svm, xshift=1.5cm] (collect) {Collect Predictions from All Classifiers};
-    \node [process, below=0.35cm of collect] (vote) {Apply Soft-Voting Aggregation Strategy};
-    \node [process, below=0.35cm of vote] (select) {Select Final Predicted Class ($\arg\max$)};
-    \node [branch, below=0.35cm of select] (output) {Predicted Medical Specialty};
+    \node [process, text width=13cm, below=0.85cm of lr, xshift=1.5cm] (collect) {Collect Calibrated Probabilities Across All Estimators};
+    \node [process, below=0.35cm of collect] (vote) {Compute Weighted Soft Voting Consensus: $\sum w_i P_i / 6$};
+    \node [process, below=0.35cm of vote] (gate) {Evaluate Open-Set Confidence Gate ($\tau = 0.48$)};
+    \node [branch, below=0.35cm of gate] (output) {Specialty Decision / ``Other''};
     \node [startstop, below=0.35cm of output] (end) {END};
     
     \path [arrow] (start) -- (input);
-    \path [arrow] (input.south) -- (bus1) -| (lr.north);
     \path [arrow] (input.south) -- (bus1) -| (svm.north);
+    \path [arrow] (input.south) -- (bus1) -| (lr.north);
     \path [arrow] (input.south) -- (bus1) -| (rf.north);
     \path [arrow] (input.south) -- (bus1) -| (nb.north);
     
-    % Parallel vertical drop lines into collect (no crossings)
-    \path [arrow] (lr.south)  -- ([xshift=-4.5cm]collect.north);
-    \path [arrow] (svm.south) -- ([xshift=-1.5cm]collect.north);
+    \path [arrow] (svm.south) -- ([xshift=-4.5cm]collect.north);
+    \path [arrow] (lr.south)  -- ([xshift=-1.5cm]collect.north);
     \path [arrow] (rf.south)  -- ([xshift=1.5cm]collect.north);
     \path [arrow] (nb.south)  -- ([xshift=4.5cm]collect.north);
     
     \path [arrow] (collect) -- (vote);
-    \path [arrow] (vote) -- (select);
-    \path [arrow] (select) -- (output);
+    \path [arrow] (vote) -- (gate);
+    \path [arrow] (gate) -- (output);
     \path [arrow] (output) -- (end);
 \end{tikzpicture}
-\caption{Activity Diagram of Voting Ensemble Classifier}
+\caption{Activity Diagram of Calibrated Soft Voting Ensemble Classifier}
 \label{fig:act_ensemble}
 \end{figure}
 
-\paragraph{Working of the Proposed Algorithms}
-The proposed machine learning classification framework will execute through the following nine sequential steps:
+\paragraph{Step-by-Step Working of the Algorithmic Architecture}
+The end-to-end classification system executes through nine operational steps:
 \begin{enumerate}
-    \item \textbf{Dataset Ingestion}: Ingesting the raw Kaggle MTSamples dataset containing 4,999 clinical records across 40 medical specialties.
-    \item \textbf{Data Cleaning \& Null Audit}: Auditing and removing records with missing clinical transcriptions (33 null records), handling missing keywords (1,068 records), and standardizing text casing.
-    \item \textbf{Stratified Train-Test Splitting}: Partitioning the cleaned dataset into an 80\% training set and a 20\% testing set using stratified sampling prior to feature extraction to strictly prevent data leakage and preserve class distributions across all 40 medical specialties.
-    \item \textbf{Text Preprocessing Pipeline}: Applying the modular 5-step NLP preprocessing sequence: character cleaning, lowercasing, tokenization, domain stop-word filtering, and WordNet morphological lemmatization.
-    \item \textbf{TF-IDF Feature Representation}: Fitting the TF-IDF vectorizer strictly on the training partition with sublinear scaling and unigrams/bigrams, then transforming both training and test partitions into high-dimensional, $L_2$-normalized sparse feature matrices.
-    \item \textbf{Independent Training of Candidate Classifiers}: Fitting candidate supervised learning algorithms (Support Vector Machine with probability calibration, Random Forest, Logistic Regression, and Multinomial Naive Bayes) on the training features.
-    \item \textbf{Hyperparameter Optimization}: Tuning regularisation parameters, smoothing factors, and estimators via grid search cross-validation.
-    \item \textbf{Voting Ensemble Aggregation}: Combining calibrated posterior class probability distributions generated by the candidate classifiers through soft-voting consensus aggregation via average pooling.
-    \item \textbf{Medical Specialty Prediction \& Deployment}: Evaluating test clinical transcriptions across multi-class metrics, serializing the pipeline with Joblib, and integrating with a lightweight Flask web application for real-time specialty predictions and confidence scores.
+    \item \textbf{Clinical Ingestion}: Ingesting patient documentation through PDF upload (PyMuPDF) or manual transcription entry.
+    \item \textbf{Text Purification}: Normalizing text, stripping punctuation, converting to lowercase, and handling whitespace.
+    \item \textbf{Tokenization \& Stopword Elimination}: Splitting narratives into word tokens and pruning non-informative stopwords.
+    \item \textbf{Morphological Lemmatization}: Mapping inflected clinical terms to base WordNet lemmas.
+    \item \textbf{Sublinear TF-IDF Vectorization}: Transforming clean text into an 8,000-dimensional sparse feature vector using unigrams and bigrams with $L_2$ normalization.
+    \item \textbf{Parallel Classifier Inference}: Concurrently feeding the feature vector to Linear SVM, Logistic Regression, Random Forest, and Multinomial Naive Bayes to generate posterior probability distributions.
+    \item \textbf{Weighted Soft Voting Consensus}: Calculating aggregated posterior class probabilities using calibrated weights $[2, 2, 1, 1]$.
+    \item \textbf{Open-Set Confidence Check ($\tau = 0.48$)}: If the peak ensemble probability is $\ge 0.48$, confirming the predicted medical specialty; otherwise, routing the report to \textit{``Other / Requires Review''}.
+    \item \textbf{Decision Output \& UI Visualization}: Presenting the specialty decision, probability distribution bars, telemetry metrics, and top candidate domains in the web application.
 \end{enumerate}
 
-\FloatBarrier
+\subsection{Project pipeline}
 
-\subsection{PROJECT PIPELINE}
-
-The proposed Medical Specialty Classification system follows a structured pipeline that transforms raw clinical transcription narratives into reliable medical specialty predictions using machine learning. The pipeline begins with clinical text data acquisition, followed by data cleaning, stratified train-test splitting, text preprocessing, TF-IDF feature extraction, machine learning model development and voting ensemble aggregation, and finally medical specialty prediction through a user-friendly Flask web application. Each stage plays an important role in ensuring accurate and reliable classification across all 40 medical specialties without data leakage.
+The project pipeline structures the end-to-end transformation of clinical text from raw data ingestion to interactive web deployment without test-set data leakage. Figure \ref{fig:project_pipeline} illustrates the complete pipeline dataflow.
 
 \begin{figure}[H]
 \centering
@@ -722,27 +660,26 @@ The proposed Medical Specialty Classification system follows a structured pipeli
 \label{fig:project_pipeline}
 \end{figure}
 
-The project pipeline consists of the following stages:
+The pipeline is organized into twelve sequential operational levels:
 \begin{enumerate}
-    \item \textbf{Dataset}: The Kaggle MTSamples Medical Transcription Dataset containing 4,966 cleaned clinical reports across 40 medical specialties is used as the input corpus.
-    \item \textbf{Exploratory Data Analysis (EDA)}: The distribution of transcription lengths, medical specialty frequencies, vocabulary counts, and class imbalances is systematically analyzed and statistically profiled.
-    \item \textbf{Data Cleaning \& Pruning}: Raw clinical notes are audited for null values; 33 records with missing transcription narratives are removed, leaving 4,966 high-quality reports.
-    \item \textbf{Stratified Train--Test Split}: The cleaned dataset is partitioned using stratified sampling into an 80\% training partition and a 20\% testing partition prior to vectorization to strictly prevent test-set data leakage.
-    \item \textbf{Text Preprocessing}: Training and testing clinical narratives undergo character cleaning, lowercasing, tokenization, medical stop-word filtering, and WordNet morphological lemmatization.
-    \item \textbf{TF-IDF Feature Extraction}: A TF-IDF vectorizer is fitted exclusively on the preprocessed training partition and subsequently transforms both training and testing narratives into normalized sparse numerical feature matrices.
-    \item \textbf{Machine Learning Model Development}: Multiple supervised machine learning algorithms, including Calibrated Support Vector Machine (SVM), Random Forest (RF), Logistic Regression (LR), and Multinomial Naive Bayes (MNB), are trained on the training feature matrix.
-    \item \textbf{Hyperparameter Tuning}: Grid search cross-validation is performed to optimize critical hyperparameters across candidate estimators.
-    \item \textbf{Soft Voting Ensemble Formulation}: A Soft Voting Ensemble is formulated using average probability aggregation to synthesize calibrated class probability distributions from all candidate models, mitigating individual estimator variance.
-    \item \textbf{Model Evaluation and Comparison}: All trained candidate models and the Soft Voting Ensemble are rigorously evaluated using standard multi-class classification metrics: Accuracy, Precision, Recall, and F1-Scores.
-    \item \textbf{Model Selection and Serialization}: The finalized pipeline—combining the fitted TF-IDF vectorizer and calibrated Soft Voting Ensemble—is serialized using Joblib for deployment.
-    \item \textbf{Deployment and Prediction}: The serialized model pipeline is integrated into a lightweight Flask web application, enabling healthcare professionals to enter or upload patient clinical notes and receive real-time specialty predictions accompanied by classification confidence scores.
+    \item \textbf{Data Acquisition}: Ingesting raw MTSamples clinical records (4,999 records).
+    \item \textbf{Domain Curation}: Pruning administrative templates and filtering to the 8 core mutually exclusive hospital specialties (1,663 records).
+    \item \textbf{Exploratory Profiling}: Conducting statistical audits of text length distributions, class frequencies, and missing values.
+    \item \textbf{Stratified Train-Test Splitting}: Partitioning the curated dataset into an 80\% training partition (1,330 records) and a 20\% testing partition (333 records) using stratified sampling prior to vectorization to strictly prevent data leakage.
+    \item \textbf{NLP Preprocessing}: Executing text cleaning, tokenization, stopword removal, and morphological lemmatization on both partitions.
+    \item \textbf{TF-IDF Vectorizer Fitting}: Fitting the 8,000-feature sublinear TF-IDF vectorizer exclusively on the training partition and transforming both splits into normalized sparse matrices.
+    \item \textbf{Base Classifier Training}: Fitting Linear SVM, Logistic Regression, Random Forest, and Multinomial Naive Bayes on training features.
+    \item \textbf{Probability Calibration}: Calibrating Linear SVM margin scores using Platt scaling (\texttt{CalibratedClassifierCV}).
+    \item \textbf{Soft Voting Ensemble Formulation}: Aggregating base model probabilities using calibrated weights [2:2:1:1].
+    \item \textbf{Open-Set Confidence Gate}: Applying safety threshold $\tau = 0.48$ to triage ambiguous or out-of-scope records to ``Other''.
+    \item \textbf{Empirical Multi-Metric Evaluation}: Evaluating holdout test set performance using Accuracy, Macro F1, Confusion Matrix, and Precision/Recall reports.
+    \item \textbf{Pipeline Serialization \& Web Deployment}: Serializing artifacts with Joblib and deploying the MedSpecialty AI Platform web application with PyMuPDF PDF extraction.
 \end{enumerate}
 
 \FloatBarrier
 
 \subsection{Project Timeline}
-
-The project timeline outlines the development schedule, review presentations, and sprint releases for the MCA Mini Project.
+Table \ref{tab:project_timeline} details the project timeline, milestones, and sprint releases.
 
 \begin{table}[H]
 \centering
@@ -757,97 +694,94 @@ The project timeline outlines the development schedule, review presentations, an
 \hline
 20.07.2026 -- 21.07.2026 & Project Proposal Presentation before Approval Committee \\
 \hline
-Week 1--2 & Dataset Collection, EDA, and Data Cleaning \\
+Week 1--2 & Dataset Collection, Null Audit, and Initial EDA \\
 \hline
-Week 3--4 & Text Preprocessing and WordNet Lemmatization \\
+Week 3--4 & Clinical Domain Filtering (8 Core Classes) and Text Preprocessing \\
 \hline
-Week 5 & TF-IDF Feature Representation \& Vectorization \\
+Week 5 & Sublinear TF-IDF Feature Extraction \& Vectorization (8,000 Dimensions) \\
 \hline
 08.09.2026 & First Project Presentation (Phase 1 Faculty Review) \\
 \hline
-09.09.2026 & Sprint Release I (Dataset Exploration \& Architecture) \\
+09.09.2026 & Sprint Release I (Dataset Exploration \& NLP Preprocessing) \\
 \hline
-Week 6 & Candidate ML Model Training (Calibrated SVM, RF, LR, MNB) \\
+Week 6 & Candidate ML Model Training (Linear SVM, RF, LR, MNB) \\
 \hline
 18.09.2026 & Sprint Release II \\
 \hline
-Week 7 & Hyperparameter Tuning and Candidate Model Comparison \\
+Week 7 & Platt Probability Calibration and Model Evaluation \\
 \hline
-Week 8 & Soft Voting Ensemble Formulation \& Evaluation \\
+Week 8 & Soft Voting Ensemble Formulation [2:2:1:1] and Open-Set Rejection Gate \\
 \hline
 29.09.2026 -- 30.09.2026 & Interim Project Presentation \\
 \hline
-Week 9 & Flask Web Integration \& Serialized Model Deployment \\
+Week 9 & Flask Web Integration \& MedSpecialty AI Platform Deployment (Stitch UI) \\
 \hline
-09.10.2026 & Sprint Release III \\
+09.10.2026 & Sprint Release III (PDF Ingestion \& End-to-End Testing) \\
 \hline
-Week 10--11 & Multi-Class Evaluation, Confusion Matrix, and Testing \\
+Week 10--11 & Holdout Evaluation, Confusion Matrix Analysis, and Final Report Preparation \\
 \hline
 22.10.2026 -- 23.10.2026 & Final Project Presentation \\
 \hline
 30.10.2026 & Final Report Submission \\
 \hline
 \end{tabularx}
-\caption{Project Timeline}
+\caption{Project Timeline and Milestone Schedule}
 \label{tab:project_timeline}
 \end{table}
 
 \FloatBarrier
 
-\subsection{FEASIBILITY ANALYSIS}
+\subsection{Feasibility Analysis}
 
-Feasibility analysis is conducted to evaluate the practicality of developing and implementing the proposed Medical Specialty Classification system. It assesses whether the project can be successfully developed using the available computational resources, technologies, budget, and time. The feasibility study ensures that the proposed solution is technically viable, economically affordable, operationally practical, and achievable within the designated project schedule.
+Feasibility analysis evaluates the viability of the proposed system across technical, economic, operational, and schedule dimensions.
 
 \subsubsection{Technical Feasibility}
-The proposed system is technically feasible because it utilizes widely adopted open-source software, established Natural Language Processing (NLP) libraries, and standard machine learning toolkits. The development environment consists of Python programming language, Google Colab, and Visual Studio Code, while libraries such as NLTK, Scikit-learn, Pandas, NumPy, Matplotlib, and Seaborn provide comprehensive functionality for text preprocessing, feature extraction, model training, and performance evaluation. The final system will be deployed using the Flask WSGI web framework, enabling healthcare practitioners to enter or upload clinical notes and obtain specialty predictions through an intuitive web interface. The required software tools are freely available and can be executed on standard CPU-based computing systems without requiring specialized high-performance GPU hardware.
+The system is technically feasible because it is constructed using mature, open-source Python natural language processing and machine learning libraries (Scikit-learn, PyMuPDF, Pandas, NumPy). Classical supervised estimators paired with sublinear TF-IDF vectorization execute with high computational efficiency, eliminating the need for expensive GPU clusters. The model executes inference in under 40 milliseconds on standard CPU hardware, making it well suited for interactive web deployment via the Flask WSGI microframework.
 
 \subsubsection{Economic Feasibility}
-The proposed system is economically feasible because it relies entirely on open-source software and publicly available resources. The Kaggle MTSamples clinical transcription dataset used in this project is freely accessible, and all development tools, including Python, Google Colab, Flask, and the required machine learning libraries, are available without commercial licensing costs. Furthermore, because the classical machine learning workflow (TF-IDF paired with Linear SVM, Logistic Regression, Random Forest, and Naive Bayes) is computationally efficient, it eliminates the need for expensive cloud GPU instances or specialized hardware accelerators. Consequently, the overall development expenditure is minimal, making the project exceptionally cost-effective and suitable for academic research and clinical prototype deployment.
+The system is economically feasible as it incurs zero software licensing costs. The MTSamples dataset is publicly accessible, and all software frameworks (Python, Flask, Scikit-learn, PyMuPDF) are free and open-source. Eliminating dedicated cloud GPU instances minimizes operational hosting expenditures, enabling cost-effective deployment on standard institutional servers.
 
 \subsubsection{Operational Feasibility}
-The proposed system is operationally feasible because it is designed to provide a simple and user-friendly interface for medical specialty prediction. Healthcare professionals and administrative personnel will be able to input clinical transcription narratives directly through the web application, after which the system will automatically preprocess the text, extract TF-IDF feature vectors, and generate specialty predictions using the trained Voting Ensemble model. The straightforward workflow minimizes user effort while providing an efficient, reliable, and accessible method for preliminary clinical categorization and automated medical workflow triaging.
+The system is operationally feasible because it provides an intuitive, clinical-grade user interface (\textbf{MedSpecialty AI Platform}) adhering to the Google Stitch design system. Clinicians can drag and drop clinical PDF reports or paste dictated narratives, inspect intermediate NLP pipeline stages, view consensus confidence meters, and receive safe open-set triage recommendations. The workflow integrates seamlessly into hospital health information management routines.
 
 \subsubsection{Schedule Feasibility}
-The project is considered schedule feasible because its development activities are planned in a structured and phased manner. The initial phases, including dataset acquisition, exploratory data analysis, data cleaning, and text preprocessing, have been planned and initiated according to the project schedule. The subsequent phases, such as machine learning model development, probability calibration, voting ensemble aggregation, performance evaluation, Flask web application deployment, and system testing, are scheduled sequentially according to the project timeline. The availability of suitable development tools, pre-existing datasets, and established algorithms supports the timely completion of the project within the academic schedule.
+The project is schedule feasible because all phases—dataset curation, NLP preprocessing, model training, probability calibration, soft voting integration, open-set thresholding, and web deployment—have been completed in alignment with the academic timeline.
 
-\subsection{SYSTEM ENVIRONMENT}
-The system environment specifies the software tools, libraries, and hardware resources required for the development and implementation of the proposed Medical Specialty Classification system. The project uses standard software tools and computing resources for text processing, feature extraction, machine learning model development, performance evaluation, and web application deployment.
+\subsection{System Environment}
+
+The system environment defines the software frameworks and hardware configurations utilized for development, evaluation, and deployment.
 
 \subsubsection{Software Environment}
-The software environment consists of Python and commonly used open-source libraries for Natural Language Processing, data analysis, machine learning, visualization, and web application development. Google Colab and Visual Studio Code are used for development, experimentation, and modular scripting, while Flask is used for deploying the trained model pipeline as an interactive web application. These tools are freely available and do not require specialized commercial software licenses. Table \ref{tab:software_environment} details each software tool, its type, and its specific purpose in the proposed system.
+Table \ref{tab:software_environment} outlines the software tools, frameworks, and their respective operational roles.
 
 \begin{table}[H]
 \centering
 \small
 \renewcommand{\arraystretch}{1.15}
 \setlength{\tabcolsep}{5pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}X|}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}X|}
 \hline
-\textbf{Software / Tool} & \textbf{Type} & \textbf{Purpose} \\
+\textbf{Software / Tool} & \textbf{Type} & \textbf{Purpose in System} \\
 \hline
-Python & Programming Language & Primary programming language used for data preprocessing, feature extraction, model training, and backend scripts. \\
-\hline
-Google Colab & Cloud IDE & Cloud-based interactive environment used for exploratory data analysis, model experimentation, and visualization. \\
+Python 3.10+ & Programming Language & Core language for text preprocessing, feature engineering, model training, and API server. \\
 \hline
 Visual Studio Code & Development IDE & Primary IDE for modular Python script development, project organization, and debugging. \\
 \hline
-\LaTeX & Typesetting System & Document preparation system used for compiling academic reports and formatted tables. \\
+Flask & Web Framework & Lightweight WSGI framework serving REST APIs and hosting the MedSpecialty AI Platform. \\
 \hline
-Pandas & Data Manipulation & Handling structured CSV data, dataset filtering, null audits, and category mapping. \\
+PyMuPDF (fitz) & Document Parser & High-speed in-memory PDF text extraction engine for clinical document parsing. \\
 \hline
-NumPy & Numerical Computing & Efficient multi-dimensional array manipulation and mathematical operations. \\
+Scikit-learn & Machine Learning & Sublinear TF-IDF vectorizer, candidate classifiers (Linear SVM, LR, RF, MNB), calibration, and voting ensemble. \\
 \hline
-NLTK & NLP Toolkit & Text tokenization, stop-word elimination, and WordNet morphological lemmatization. \\
+Joblib & Object Serialization & Serializing trained TF-IDF vectorizer and voting ensemble models for instant loading. \\
 \hline
-Scikit-learn & Machine Learning & TF-IDF feature extraction, individual classifier training, hyperparameter tuning, and Voting Ensemble aggregation. \\
+Pandas & Data Manipulation & Ingestion, null audits, domain filtering, and tabular metrics calculation. \\
 \hline
-Matplotlib & Data Visualization & Rendering statistical charts, class distribution plots, and performance curves. \\
+NumPy & Numerical Computing & Multi-dimensional array operations and probability tensor calculations. \\
 \hline
-Seaborn & Statistical Graphics & High-level statistical visualization for categorical frequencies and confusion matrices. \\
+Matplotlib \& Seaborn & Data Visualization & Generating statistical charts, class distribution plots, and confusion matrix heatmaps. \\
 \hline
-WordCloud & Text Visualization & Generating lexical frequency word clouds from clinical narratives. \\
-\hline
-Flask & Web Framework & Lightweight WSGI framework for serving serialized model predictions via an interactive web interface. \\
+\LaTeX & Typesetting System & Preparing formatted academic reports and mathematical documentation. \\
 \hline
 \end{tabularx}
 \caption{Software Environment and Tool Specifications}
@@ -857,7 +791,7 @@ Flask & Web Framework & Lightweight WSGI framework for serving serialized model 
 \FloatBarrier
 
 \subsubsection{Hardware Environment}
-The proposed Medical Specialty Classification system does not require specialized hardware for its development or operation. The classical machine learning approach, combining TF-IDF feature extraction with ensemble supervised classifiers, is computationally lightweight compared to deep learning transformers. A standard laptop or desktop computer with sufficient processing capability, memory, and storage can be used for text preprocessing, feature extraction, model training, and Flask web application hosting. Table \ref{tab:hardware_environment} outlines the minimum and recommended hardware configurations required for developing and running the proposed system.
+Table \ref{tab:hardware_environment} details the minimum and recommended hardware specifications for developing and hosting the system. The architecture operates entirely on CPU hardware without requiring dedicated GPUs.
 
 \begin{table}[H]
 \centering
@@ -870,17 +804,15 @@ The proposed Medical Specialty Classification system does not require specialize
 \hline
 Processor (CPU) & Dual-Core Processor (2.0 GHz or higher) & Quad-Core / Octa-Core Intel Core i5/i7 or AMD Ryzen 5/7 (Multi-core CPU; no GPU required) \\
 \hline
-RAM & 8 GB DDR4 & 16 GB DDR4/DDR5 (Supports parallel cross-validation and multiple candidate estimators) \\
+RAM & 8 GB DDR4 & 16 GB DDR4/DDR5 (Supports parallel model training and web server handling) \\
 \hline
 Storage & 20 GB available disk space & 256 GB / 512 GB Solid State Drive (SSD) for rapid dataset read/write and virtual environments \\
 \hline
-Operating System & Windows 10 (64-bit) & Windows 10/11 (64-bit), Ubuntu Linux 20.04+, or macOS \\
+Operating System & Windows 10 (64-bit) & Windows 10/11 (64-bit) or Ubuntu Linux 20.04+ LTS \\
 \hline
-Internet Connection & Standard Broadband (5 Mbps) & High-Speed Broadband Connection (For package installation, dataset download, and cloud backup) \\
+Display Resolution & $1366 \times 768$ pixels & $1920 \times 1080$ (Full HD) for responsive web UI visualization \\
 \hline
 \end{tabularx}
 \caption{Hardware Specifications and Environment Requirements}
 \label{tab:hardware_environment}
 \end{table}
-
-

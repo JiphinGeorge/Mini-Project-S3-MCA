@@ -3,15 +3,15 @@
 \section{SUPPORTING LITERATURE}
 
 \subsection{Literature Review}
-A systematic review of contemporary literature was conducted to evaluate existing methodological approaches, feature representations, classification algorithms, and dataset challenges in medical text categorization. The review relies strictly on approved reference literature in clinical natural language processing.
+A systematic review of contemporary literature was conducted to evaluate existing methodological frameworks, feature engineering representations, classification algorithms, class imbalance mitigation techniques, and dataset challenges in clinical natural language processing. The review focuses on peer-reviewed research analyzing medical narratives, electronic health records, and document categorization systems.
 
 \paragraph{Paper 1 -- Omar AM, Elhoseny M, Hassanien AM. Clinical text classification with word representation features and machine learning algorithms. International Journal of Online and Biomedical Engineering (iJOE). 2023.}
 
-The paper titled ``Clinical Text Classification with Word Representation Features and Machine Learning Algorithms'' evaluates the impact of different feature extraction techniques and machine learning algorithms on Electronic Medical Record (EMR) narratives. The authors introduced a four-phase classification framework consisting of text preprocessing, word vectorization, feature reduction, and supervised classification.
+The paper titled ``Clinical Text Classification with Word Representation Features and Machine Learning Algorithms'' \cite{omar2023} investigates the impact of diverse text representation techniques on Electronic Medical Record (EMR) narratives. The authors introduced a structured four-phase classification framework consisting of clinical text preprocessing, word vectorization, dimensionality reduction, and supervised classification.
 
-To model clinical text narratives, the study compared classical bag-of-words and TF-IDF representations against dense neural embeddings (Word2Vec) across multiple classifiers, establishing baseline benchmarks for clinical text processing. The evaluated classifiers include Logistic Regression, Support Vector Machine (SVM), Naive Bayes, and k-Nearest Neighbors (k-NN).
+To model clinical narratives, the study conducted a comparative assessment of classical Bag-of-Words (BoW) and Term Frequency--Inverse Document Frequency (TF-IDF) representations against dense distributed semantic embeddings (Word2Vec) across multiple supervised estimators, including Logistic Regression, Support Vector Machine (SVM), Naive Bayes, and k-Nearest Neighbors (k-NN). The empirical evaluations indicated that pairing continuous Word2Vec embeddings with a k-NN classifier yielded the highest classification accuracy of 92\%, demonstrating that continuous representations capture semantic affinities between medical terms more effectively than unigram Bag-of-Words.
 
-The empirical results demonstrated that combining Word2Vec embeddings with a k-NN classifier achieved the highest accuracy of 92\%. Dense semantic embeddings consistently outperformed sparse unigram Bag-of-Words representations across clinical text categories. However, distance-based k-NN introduces significant computational latency during inference, rendering it inefficient for massive production databases. Furthermore, the study relied on single classifiers without exploring ensemble learning strategies or real-time web deployment frameworks. Crucially, Principal Component Analysis (PCA) was evaluated exclusively in Paper 1 for feature reduction and is not included in our proposed system architecture.
+However, the authors noted that distance-based k-NN introduces significant computational latency during test-time inference, scaling poorly to large-scale hospital databases. Furthermore, the investigation evaluated individual classifiers in isolation without exploring multi-model ensemble consensus or real-time web deployment frameworks. Crucially, Principal Component Analysis (PCA) was evaluated exclusively as an offline dimensionality reduction step in Paper 1 and is not required in our proposed architecture, as sublinear TF-IDF with feature pruning maintains optimal sparsity without dense projection.
 
 \begin{table}[H]
 \centering
@@ -25,19 +25,19 @@ The empirical results demonstrated that combining Word2Vec embeddings with a k-N
 \hline
 \textbf{DATASET} & Electronic Medical Record (EMR) Clinical Transcriptions Dataset \\
 \hline
-\textbf{METHODOLOGY / STRATEGY} & 4-Phase Framework: (1) Preprocessing, (2) Vectorization (BOW, TF-IDF, Word2Vec), (3) Feature Reduction (PCA), (4) Classification \\
+\textbf{METHODOLOGY / STRATEGY} & 4-Phase Framework: (1) Preprocessing, (2) Vectorization (BoW, TF-IDF, Word2Vec), (3) Feature Reduction (PCA), (4) Supervised Classification \\
 \hline
 \textbf{ALGORITHM} & Logistic Regression, Support Vector Machine (SVM), Naive Bayes, k-NN, PCA \\
 \hline
 \textbf{RESULT / PRECISION} & Word2Vec + k-NN achieved the highest classification accuracy of 92\% \\
 \hline
-\textbf{ADVANTAGES} & Proves dense semantic embeddings capture medical context better than unigram BOW \\
+\textbf{ADVANTAGES} & Proves dense semantic representations capture clinical context better than raw unigram BoW \\
 \hline
-\textbf{LIMITATIONS} & Distance-based k-NN scales poorly; lacks ensemble learning and web UI; PCA used only in literature \\
+\textbf{LIMITATIONS} & Distance-based k-NN exhibits high inference latency; lacks ensemble voting, open-set handling, and real-time web deployment \\
 \hline
-\textbf{RELEVANCE TO MY PROJECT} & Establishes the standard 4-phase text preprocessing and feature extraction pipeline \\
+\textbf{RELEVANCE TO MY PROJECT} & Validates the standard 4-phase clinical text preprocessing sequence and benchmark machine learning estimators \\
 \hline
-\textbf{FUTURE PROPOSAL} & Develop lightweight ensemble classifiers suitable for real-time web deployment \\
+\textbf{FUTURE PROPOSAL} & Develop lightweight ensemble classifiers suitable for instantaneous CPU web inference with calibrated confidence \\
 \hline
 \end{tabularx}
 \caption{Summary of Paper 1}
@@ -46,11 +46,11 @@ The empirical results demonstrated that combining Word2Vec embeddings with a k-N
 
 \paragraph{Paper 2 -- Zhang H, Zhu D, Tan H, Shafiq M, Gu Z. Medical specialty classification based on semiadversarial data augmentation. Hindawi Computational Intelligence and Neuroscience. 2023.}
 
-The research article titled ``Medical Specialty Classification Based on Semiadversarial Data Augmentation'' addressed data scarcity and category imbalance in medical specialty classification. The authors developed Semiadversarial Data Augmentation (SemiADA), generating synthetic samples along adversarial attack trajectories to populate sparse decision regions.
+The research article titled ``Medical Specialty Classification Based on Semiadversarial Data Augmentation'' \cite{zhang2023} investigated extreme category imbalance and data sparsity in clinical specialty categorization. The authors introduced Semiadversarial Data Augmentation (SemiADA), a framework generating synthetic clinical text samples along adversarial perturbation trajectories to populate sparse decision regions in high-dimensional feature spaces.
 
-Additionally, a Probabilistic Information (PI) layer was introduced post-Softmax to recalculate confidence based on domain noun importance. The paper evaluated a filtered subset of the Kaggle Medical Specialty Classification dataset restricted to 18 medical specialty classes. In contrast, our project utilizes the complete Kaggle Medical Transcriptions (MTSamples) dataset spanning 40 medical specialties.
+Additionally, a Probabilistic Information (PI) layer was incorporated following the Softmax output to recalculate prediction confidence by weighting domain-specific clinical nouns. The authors evaluated a filtered subset of the Kaggle Medical Specialty Classification dataset restricted to 18 classes, achieving an average performance improvement of 14.9\% in accuracy and F1-score over baseline benchmarks. Their findings confirmed that domain-specific clinical nouns carry the primary discriminative signal for medical department routing.
 
-The proposed SemiADA framework achieved an average performance improvement of 14.9\% in accuracy and F1 score over baseline benchmarks. The study proved that domain-specific nouns carry the highest discriminative signal for medical specialty assignment. However, generating synthetic text along adversarial attack paths incurs extreme computational overhead. Fine-tuning heavy transformer models like BERT requires dedicated GPU infrastructure, making real-time inference difficult in resource-constrained web environments.
+Despite these gains, generating synthetic samples along adversarial attack paths incurs extreme computational overhead. Furthermore, fine-tuning deep transformer architectures (such as BERT or BioBERT) requires dedicated GPU clusters and introduces substantial inference latency, creating a major barrier for real-time clinical web applications operating in resource-constrained hospital environments. The study also operated strictly under a closed-set assumption, omitting mechanisms to intercept out-of-domain records.
 
 \begin{table}[H]
 \centering
@@ -60,23 +60,23 @@ The proposed SemiADA framework achieved an average performance improvement of 14
 \hline
 \textbf{TITLE} & Medical Specialty Classification Based on Semiadversarial Data Augmentation \cite{zhang2023} \\
 \hline
-\textbf{AREA OF WORK} & Clinical Text Data Augmentation / Class Imbalance Handling \\
+\textbf{AREA OF WORK} & Clinical Text Data Augmentation / Severe Class Imbalance Mitigation \\
 \hline
 \textbf{DATASET} & Kaggle Medical Specialty Classification Dataset (Subset restricted to 18 classes) \\
 \hline
-\textbf{METHODOLOGY / STRATEGY} & Semiadversarial sample generation along attack paths + Probabilistic Information (PI) noun-weighted Softmax recalculation \\
+\textbf{METHODOLOGY / STRATEGY} & Semiadversarial sample generation along attack trajectories + Probabilistic Information (PI) noun-weighted Softmax recalculation \\
 \hline
 \textbf{ALGORITHM} & SemiADA, BERT (Transformer), Softmax with PI Noun Layer \\
 \hline
-\textbf{RESULT / PRECISION} & Achieved an average 14.9\% boost in Accuracy and F1 score over baseline benchmarks \\
+\textbf{RESULT / PRECISION} & Achieved an average 14.9\% boost in Accuracy and Macro F1-score over baseline benchmarks \\
 \hline
-\textbf{ADVANTAGES} & Effectively handles extreme class imbalance using geometry-aware synthetic samples \\
+\textbf{ADVANTAGES} & Populates sparse minority decision boundaries using geometry-aware synthetic clinical samples \\
 \hline
-\textbf{LIMITATIONS} & Extreme computational latency; fine-tuning BERT demands high-end GPU hardware \\
+\textbf{LIMITATIONS} & Extreme training latency; fine-tuning BERT demands dedicated GPU accelerators; closed-set classification only \\
 \hline
-\textbf{RELEVANCE TO MY PROJECT} & Identifies class imbalance in MTSamples data; motivates TF-IDF + Ensemble ML alternative \\
+\textbf{RELEVANCE TO MY PROJECT} & Highlights class imbalance and noun significance in MTSamples data; motivates high-dimensional TF-IDF with ensemble ML \\
 \hline
-\textbf{FUTURE PROPOSAL} & Combine TF-IDF term weighting with ensemble learning to classify 40 specialties on standard CPUs \\
+\textbf{FUTURE PROPOSAL} & Combine sublinear TF-IDF n-gram weighting with probability-calibrated ensemble learning and open-set rejection on standard CPUs \\
 \hline
 \end{tabularx}
 \caption{Summary of Paper 2}
@@ -85,14 +85,15 @@ The proposed SemiADA framework achieved an average performance improvement of 14
 
 \paragraph{Paper 3 -- Blanchard AE, Gao S, Yoon HJ, Tourassi G. A keyword-enhanced approach to handle class imbalance in clinical text classification. IEEE Journal of Biomedical and Health Informatics. 2022.}
 
-Blanchard et al., writing in the \textit{IEEE Journal of Biomedical and Health Informatics}, focused on preventing deep neural models from overfitting on rare clinical categories in long pathology narratives. The authors introduced a data-centric strategy by injecting short class-associated keyword sequences into mini-batches during neural network training, formulating a combined loss function
-\[
+Blanchard et al., writing in the \textit{IEEE Journal of Biomedical and Health Informatics} \cite{blanchard2022}, addressed the challenge of deep neural networks overfitting on rare clinical categories when trained on lengthy, complex pathology narratives. The authors introduced a data-centric regularisation strategy by injecting short class-associated keyword sequences into mini-batches during neural network training, formulating a dual loss function:
+\begin{equation}
 L = L_{\text{docs}} + \alpha L_{\text{key}}
-\]
+\end{equation}
+where $L_{\text{docs}}$ evaluates cross-entropy loss over full documents, $L_{\text{key}}$ penalizes misclassifications on isolated diagnostic keyword sequences, and $\alpha$ balances the objective.
 
-The study utilized the National Cancer Institute (NCI) Surveillance, Epidemiology, and End Results (SEER) cancer pathology registry dataset. The approach evaluated Convolutional Neural Networks (CNNs), keyword-constrained loss functions, and standard data resampling baselines (oversampling and undersampling).
+Evaluating on the National Cancer Institute (NCI) Surveillance, Epidemiology, and End Results (SEER) cancer pathology registry dataset, the study benchmarked Convolutional Neural Networks (CNNs), keyword-constrained loss functions, and conventional resampling techniques (oversampling and undersampling). The findings demonstrated that keyword constraints dramatically improved Macro F1-score and minority class recall without degrading majority class performance. Crucially, the authors emphasized that overall micro-accuracy is an inherently deceptive evaluation metric in clinical NLP, as high global accuracy frequently masks near-zero recall on rare clinical conditions.
 
-Injecting keyword constraints significantly improved macro F1 score and recall on rare classes. The study demonstrated that overall micro-accuracy is a deceptive metric in clinical NLP because high overall scores can mask near-zero recall on rare clinical conditions. However, the approach requires manual curation of comprehensive keyword dictionaries by clinical domain experts for every target category, limiting automated scalability to new medical domains.
+However, their approach relies on manual curation of comprehensive keyword lexicons by clinical domain experts for every target category, limiting rapid scalability to new medical specialties. This limitation directly motivates our system's automated statistical TF-IDF approach, which extracts informative unigram and bigram vocabulary automatically without requiring hand-crafted dictionaries.
 
 \begin{table}[H]
 \centering
@@ -102,23 +103,23 @@ Injecting keyword constraints significantly improved macro F1 score and recall o
 \hline
 \textbf{TITLE} & A Keyword-Enhanced Approach to Handle Class Imbalance in Clinical Text Classification \cite{blanchard2022} \\
 \hline
-\textbf{AREA OF WORK} & Imbalanced Clinical Narrative Classification / Cancer Registry NLP \\
+\textbf{AREA OF WORK} & Imbalanced Clinical Narrative Categorization / Pathology NLP \\
 \hline
 \textbf{DATASET} & NCI SEER Surveillance Cancer Pathology Registry Reports Dataset \\
 \hline
-\textbf{METHODOLOGY / STRATEGY} & Ingesting keyword sequences into mini-batches during training to constrain the neural loss function \\
+\textbf{METHODOLOGY / STRATEGY} & Mini-batch keyword sequence injection to constrain the neural loss function and prevent rare-class forgetting \\
 \hline
 \textbf{ALGORITHM} & Convolutional Neural Networks (CNNs), Keyword-Constrained Loss Optimization \\
 \hline
-\textbf{RESULT / PRECISION} & Significantly improved macro F1 score and recall on rare classes without degrading majority performance \\
+\textbf{RESULT / PRECISION} & Significantly boosted Macro F1-score and minority recall across imbalanced pathology classes \\
 \hline
-\textbf{ADVANTAGES} & Prevents deep models from memorizing noisy tokens in long text documents with rare labels \\
+\textbf{ADVANTAGES} & Demonstrates that keyword and n-gram terms carry decisive clinical signals; confirms Macro F1 as the primary clinical metric \\
 \hline
-\textbf{LIMITATIONS} & Requires manual domain expert curation of keyword dictionaries for every target category \\
+\textbf{LIMITATIONS} & Requires exhaustive manual curation of keyword dictionaries by medical specialists; computationally heavy neural training \\
 \hline
-\textbf{RELEVANCE TO MY PROJECT} & Demonstrates that keyword/n-gram features preserve rare class signals, supporting TF-IDF \\
+\textbf{RELEVANCE TO MY PROJECT} & Proves that n-gram keyword weighting preserves rare class discrimination; validates Macro F1 as our primary evaluation metric \\
 \hline
-\textbf{FUTURE PROPOSAL} & Utilize automated TF-IDF n-gram feature extraction without requiring manual dictionary creation \\
+\textbf{FUTURE PROPOSAL} & Implement automated statistical TF-IDF unigram and bigram extraction with sublinear scaling, eliminating manual dictionary construction \\
 \hline
 \end{tabularx}
 \caption{Summary of Paper 3}
@@ -126,65 +127,63 @@ Injecting keyword constraints significantly improved macro F1 score and recall o
 \end{table}
 
 \subsection{Literature Review Summary}
-Table \ref{tab:overall_summary} presents a concise summary of the reviewed literature alongside our proposed system.
+Table \ref{tab:overall_summary} presents a comparative synthesis of the reviewed literature alongside our proposed MedSpecialty AI Platform.
 
 \begin{table}[H]
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{2.1cm}|>{\raggedright\arraybackslash}p{2.0cm}|>{\raggedright\arraybackslash}p{2.0cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}X|}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}p{2.1cm}|>{\raggedright\arraybackslash}p{2.1cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \textbf{Paper} & \textbf{Area} & \textbf{Dataset} & \textbf{Algorithm} & \textbf{Advantages} & \textbf{Relation to Proposed Work} \\
 \hline
-Omar et al. \cite{omar2023} & Clinical Vectorization & EMR Text & LR, SVM, NB, k-NN & High accuracy (92\%) & Establishes 4-phase preprocessing pipeline \\
+Omar et al. \cite{omar2023} & Clinical Text Vectorization & EMR Text & LR, SVM, NB, k-NN & High accuracy (92\%) with Word2Vec & Establishes the 4-phase text preprocessing pipeline \\
 \hline
-Zhang et al. \cite{zhang2023} & Data Augmentation & MTSamples (18 classes) & SemiADA, BERT & +14.9\% accuracy gain & Highlights MTSamples class imbalance \\
+Zhang et al. \cite{zhang2023} & Data Augmentation & MTSamples (18 classes) & SemiADA, BERT & +14.9\% gain in Accuracy and F1 & Identifies MTSamples class imbalance and clinical noun signal \\
 \hline
-Blanchard et al. \cite{blanchard2022} & Class Imbalance & NCI SEER Pathology & CNN + Keyword Loss & High macro F1 on rare classes & Justifies TF-IDF term weighting \\
+Blanchard et al. \cite{blanchard2022} & Class Imbalance Regularization & NCI SEER Pathology & CNN + Keyword Loss & High Macro F1 on minority classes & Establishes Macro F1 as primary metric; validates n-gram term weighting \\
 \hline
-\textbf{Proposed Work} & \textbf{Specialty Categorization} & \textbf{MTSamples (40 classes)} & \textbf{TF-IDF + Voting Ensemble} & \textbf{Fast, lightweight, web UI} & \textbf{Complete MCA Project System} \\
+\textbf{Proposed Work} & \textbf{Specialty Triage \& Open-Set Routing} & \textbf{MTSamples (Curated 8 Core + Other)} & \textbf{Sublinear TF-IDF (8k) + Soft Voting Ensemble [2:2:1:1]} & \textbf{Fast CPU inference, open-set safety gate ($\tau=0.48$), interactive web UI} & \textbf{Complete, verified clinical decision support platform (MedSpecialty AI)} \\
 \hline
 \end{tabularx}
-\caption{Overall Summary of all paper}
+\caption{Overall Summary of Literature and Relation to Proposed System}
 \label{tab:overall_summary}
 \end{table}
 
 \paragraph{Evolution of Research}
-Clinical text processing research has transitioned from basic Bag-of-Words word counting toward neural word embeddings (Word2Vec), transformer architectures (BERT), and complex adversarial data augmentation (SemiADA). While deep neural networks achieve strong performance, their high computational cost and memory footprints prevent real-time deployment in standard healthcare web environments.
+Clinical natural language processing has evolved from elementary Bag-of-Words term frequency counters toward distributed word embeddings (Word2Vec), deep convolutional architectures, complex transformer models (BERT, BioBERT), and adversarial data augmentation (SemiADA). While deep neural networks deliver high semantic abstraction, their steep computational overhead, large parameter footprints, and GPU hardware prerequisites prevent real-time deployment in cost-conscious clinical web environments. Furthermore, deep neural networks often suffer from overconfidence on out-of-domain text.
 
 \paragraph{Identified Research Gaps}
-The literature review reveals three primary research gaps:
+The literature review reveals four fundamental research gaps:
 \begin{enumerate}
-    \item High Computational Overhead: Existing deep learning systems require dedicated GPUs and introduce substantial inference latency.
-    \item Lack of Real-Time Web Deployment: Prior studies focus exclusively on offline evaluation metrics without building accessible user interfaces.
-    \item Single Model Reliance: Most prior works rely on single classifiers rather than leveraging multi-model ensemble diversity.
+    \item \textit{Excessive Computational Overhead}: Existing deep learning systems rely on GPU hardware accelerators and introduce substantial inference latency, making real-time interactive dictation triage challenging.
+    \item \textit{Closed-Set Vulnerability}: Prior works operate exclusively under a closed-set assumption, failing to handle out-of-scope medical specialties or non-clinical narratives, resulting in hazardous false specialty assignments.
+    \item \textit{Lack of End-to-End Clinical Deployment}: Most studies focus solely on offline experimental benchmarks without delivering an operational, accessible web application supporting direct PDF ingestion.
+    \item \textit{Single Estimator Bias}: Many prior systems rely on a single classifier architecture, failing to exploit ensemble diversity to balance high-margin boundaries with calibrated probabilistic spreads.
 \end{enumerate}
 
 \paragraph{Motivation for Proposed System}
-Our project addresses these research gaps by combining TF-IDF vectorization with a Voting Ensemble Classifier (aggregating Logistic Regression, Linear SVM, Random Forest, and Multinomial Naive Bayes) intended for deployment via a lightweight Flask web application. This architecture is designed to target accurate classification across all 40 medical specialties in the full MTSamples dataset while aiming for efficient CPU inference for real-world clinical use.
+Our project directly addresses these research gaps by designing the \textbf{MedSpecialty AI Platform}. The system couples an 8,000-dimensional sublinear TF-IDF vectorizer (capturing unigram terms and bigram clinical phrases) with a calibrated Soft Voting Ensemble aggregating Linear SVM, Logistic Regression, Random Forest, and Multinomial Naive Bayes using optimal weights [2:2:1:1]. Crucially, an Open-Set Confidence Rejection Gate ($\tau = 0.48$) is established to route unsupported or ambiguous narratives to a dedicated \textit{``Other / Requires Review''} class. The entire architecture is deployed through a responsive Flask web application featuring PyMuPDF in-memory text parsing and real-time NLP pipeline inspection on standard CPU hardware.
 
 \subsection{Findings and Proposals}
 
 \subsubsection{Findings}
-The review of the existing literature shows that machine learning techniques can effectively classify medical and clinical text into different medical specialties. Traditional machine learning algorithms such as Logistic Regression, Support Vector Machine, Random Forest, and Naive Bayes have demonstrated good performance in text classification tasks when appropriate feature extraction techniques are used.
-
-The literature also indicates that TF-IDF feature extraction is effective for converting unstructured clinical text into numerical feature vectors. It helps identify important medical terms and provides suitable high-dimensional input for machine learning algorithms.
-
-Another important finding is that the performance of individual machine learning models may vary depending on the characteristics of the dataset. Some algorithms perform better for certain classes, while others provide better overall generalization. Therefore, relying on a single classifier may not always produce the best prediction performance.
-
-The reviewed studies further show that ensemble learning techniques, which combine predictions from multiple machine learning models, can improve the robustness and reliability of classification systems. However, challenges such as class imbalance, noisy clinical text, missing values, and variations in medical terminology need to be considered during data preprocessing.
-
-Based on these findings, it is observed that combining effective text preprocessing, TF-IDF feature extraction, multiple machine learning algorithms, and an ensemble classification approach can provide a suitable solution for medical specialty classification.
+The systematic review of contemporary literature yields several critical findings:
+\begin{enumerate}
+    \item \textit{Efficacy of Classical ML with N-Gram Term Weighting}: Classical machine learning algorithms (Support Vector Machines, Logistic Regression, Random Forest, and Naive Bayes) demonstrate competitive classification performance on clinical narratives when paired with sublinear TF-IDF feature representations, matching or exceeding heavy neural models on moderate-sized corpora while executing in milliseconds on standard CPUs.
+    \item \textit{Sublinear TF Dampening Prevents Frequency Bias}: Clinical dictations feature frequent repetitions of routine procedural terms. Sublinear logarithmic scaling ($1 + \log(\text{TF})$) successfully prevents high-frequency terms from overshadowing specialty-defining diagnostic keywords.
+    \item \textit{Complementary Estimator Inductive Biases}: Different classifier families exhibit complementary strengths. Linear SVM identifies robust maximum-margin hyperplanes in high-dimensional sparse spaces; Logistic Regression provides well-calibrated odds; Random Forest captures non-linear feature interactions; and Multinomial Naive Bayes contributes probabilistic frequency baselines.
+    \item \textit{Necessity of Open-Set Rejection}: Closed-set classification in clinical environments creates unacceptable diagnostic risks when processing out-of-scope conditions. An empirical confidence threshold provides an effective safeguard for triaging unrecognized narratives to human experts.
+    \item \textit{Importance of Macro F1 Evaluation}: In clinical NLP with imbalanced specialty distributions, overall accuracy is deceptive. Macro F1-score—which weights each clinical department equally—serves as the primary indicator of balanced diagnostic capability.
+\end{enumerate}
 
 \subsubsection{Proposal}
-Based on the findings from the literature review, the proposed system aims to develop a Medical Specialty Classification system using TF-IDF and Ensemble Machine Learning.
-
-The system will use clinical transcription data containing medical reports and their corresponding medical specialties. Initially, the dataset will be analysed and preprocessed by handling missing values, removing unnecessary information, converting text into a consistent format, and cleaning the clinical transcription data.
-
-After preprocessing, the clinical text will be transformed into numerical feature vectors using the TF-IDF Vectorizer. Multiple machine learning algorithms, including Logistic Regression, Linear Support Vector Machine, Random Forest, and Multinomial Naive Bayes, will then be trained using the extracted features.
-
-The predictions generated by the individual machine learning models will be combined using an ensemble learning approach, such as Voting Classification. The proposed approach is expected to improve the reliability and classification performance compared with depending on a single machine learning model.
-
-Finally, the trained system will accept a clinical transcription as input and predict the most appropriate medical specialty. The system will be evaluated using suitable performance measures such as accuracy, precision, recall, and F1-score.
-
-Thus, the proposed system combines text preprocessing, TF-IDF feature extraction, multiple machine learning algorithms, and ensemble learning to provide an efficient approach for the automatic classification of medical clinical transcriptions.
+Synthesizing these findings, this project proposes the \textbf{MedSpecialty AI Platform} for automated clinical specialty classification and open-set triage:
+\begin{enumerate}
+    \item \textit{Curated Benchmark Dataset}: Filter the raw MTSamples corpus down from 40 overlapping/administrative categories to a curated benchmark of 1,663 records across eight mutually exclusive hospital specialties: Cardiovascular / Pulmonary, Orthopedic, Gastroenterology, Neurology, Urology, Obstetrics / Gynecology, ENT -- Otolaryngology, and Ophthalmology.
+    \item \textit{Modular NLP Preprocessing}: Implement an automated cleaning pipeline performing lowercasing, regex noise removal, tokenization, stopword elimination, and WordNet morphological lemmatization.
+    \item \textit{Sublinear TF-IDF Vectorization}: Extract unigram and bigram features bounded at 8,000 dimensions with sublinear term frequency scaling, document frequency cutoffs ($\text{min\_df}=2, \text{max\_df}=0.70$), and Euclidean $L_2$ normalization.
+    \item \textit{Calibrated Soft Voting Ensemble}: Train Linear SVM (calibrated via Platt scaling), Logistic Regression, Random Forest, and Multinomial Naive Bayes, synthesizing their predictions using calibrated soft voting weights ($2 \times \text{SVM} + 2 \times \text{LR} + 1 \times \text{RF} + 1 \times \text{MNB}) / 6$.
+    \item \textit{Open-Set Rejection Architecture}: Formulate a decision rule: if the peak ensemble probability $P_{\max} < 0.48$, the document is classified as \textit{``Other''} with status \textit{``Out of Scope / Requires Review''}, displaying nearest candidate specialties for manual triage.
+    \item \textit{Interactive Web Application}: Deploy a production-grade web application featuring in-memory PDF extraction (PyMuPDF), editable clinical dictation areas, interactive TF-IDF feature tables, and multi-model consensus dashboards.
+\end{enumerate}

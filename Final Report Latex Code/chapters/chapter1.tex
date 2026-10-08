@@ -1,59 +1,76 @@
 \section{INTRODUCTION}
 
 \subsection{Background}
-In contemporary healthcare systems, the widespread adoption of Electronic Health Record (EHR) and Electronic Medical Record (EMR) systems has resulted in the generation of massive volumes of clinical documents. Healthcare providers generate extensive unstructured text narratives daily, including admission notes, consultation records, operative reports, discharge summaries, and diagnostic evaluations. Categorizing clinical text into specific medical specialties (e.g., Cardiology, Neurology, Orthopedics, Gastroenterology, Surgery) is a fundamental prerequisite for organizing health databases, routing clinical files, and supporting decision systems.
+In contemporary healthcare institutions, the widespread adoption of Electronic Health Record (EHR) and Electronic Medical Record (EMR) systems has resulted in the continuous generation of massive volumes of clinical narratives. Healthcare practitioners generate extensive unstructured text daily, including admission notes, preoperative consultations, surgical operative summaries, progress notes, and diagnostic evaluations. Accurately categorizing these unstructured clinical notes into specific medical specialties (such as Cardiology, Neurology, Orthopedics, Gastroenterology, Urology, and Ophthalmology) is an indispensable prerequisite for hospital workflow automation, patient file routing, diagnostic database indexing, and clinical decision support.
 
-Traditionally, this categorization relies on manual review by medical coders and health information management staff. As patient volumes increase, manual document indexing becomes increasingly bottlenecked, leading to administrative delays and human classification errors. Natural Language Processing (NLP) and Machine Learning (ML) present viable computational paradigms for automating clinical text categorization, enabling rapid and consistent medical specialty identification.
+Traditionally, document indexing relies on manual review by medical coders and health information management personnel. With escalating patient volumes in modern medical centers, manual categorization has become a severe administrative bottleneck, introducing substantial latency, high labor costs, and inter-annotator classification discrepancies. Natural Language Processing (NLP) paired with Machine Learning (ML) provides an automated computational paradigm capable of rapidly extracting semantic signals from clinical narratives, standardizing specialty categorization, and routing medical documentation in real time.
 
 \subsection{Problem Statement}
-Manual categorization of medical transcription reports into clinical specialties is time-consuming, labor-intensive, and highly prone to inter-annotator variability. Unstructured clinical notes exhibit complex linguistic characteristics, including domain-specific jargon, non-standard medical abbreviations, variable document lengths, and semantic ambiguity. Furthermore, real-world clinical text datasets suffer from severe class imbalance, where dominant medical specialties contain thousands of records, whereas specialized sub-disciplines contain very few. Existing systems lack computationally efficient mechanisms to handle high-dimensional clinical text spaces while remaining lightweight enough for real-time web deployment.
+Manual categorization of medical transcription narratives into appropriate clinical specialties is labor-intensive, time-consuming, and prone to subjective diagnostic interpretation. Unstructured clinical notes present formidable linguistic complexities, including dense domain-specific medical terminology, non-standard abbreviations, variable document lengths, and anatomical lexical overlap across adjacent clinical sub-disciplines.
+
+Furthermore, authentic medical transcription datasets suffer from severe class imbalance and noisy labeling. Datasets such as the Kaggle Medical Transcriptions (MTSamples) corpus initially group notes into broad procedural or administrative categories (such as General Surgery, SOAP Notes, and Consultative Summaries), which overlap heavily with organ-specific departments. A critical limitation of conventional machine learning systems is their closed-set assumption: they assume that every incoming clinical record belongs to one of the pre-defined target classes. In real-world hospital environments, out-of-scope clinical narratives (such as Dermatology, Psychiatry, or Pediatrics) or non-medical text are routinely encountered. Closed-set classifiers mistakenly force-fit these out-of-domain cases into an arbitrary specialty, compromising clinical integrity. Additionally, deep learning transformer models (such as BERT or BioBERT) incur excessive GPU computational overhead, rendering them impractical for lightweight, instantaneous web deployment.
 
 \subsection{Need for the System}
-Automating medical specialty classification yields key operational and clinical benefits:
+Automating medical specialty classification through efficient statistical natural language processing and ensemble machine learning addresses critical clinical needs:
 \begin{itemize}
-    \item \textit{Streamlined Workflow}: Eliminates manual tagging backlogs, allowing clinical reports to be indexed and routed immediately upon dictation.
-    \item \textit{Enhanced Information Retrieval}: Enables clinicians to query specialty-specific diagnostic records rapidly during emergency care.
-    \item \textit{Reduced Administrative Overhead}: Allows medical records staff to focus on quality assurance rather than manual document sorting.
-    \item \textit{Scalable Health Analytics}: Provides standardized metadata necessary for hospital resource allocation and epidemiological research.
-    \item \textit{Real-Time Accessibility}: Proposes an intuitive web interface for healthcare professionals to upload reports and receive specialty predictions.
+    \item \textit{Streamlined Clinical Triage}: Eliminates manual document sorting backlogs, enabling automated indexing and immediate department routing upon clinical dictation.
+    \item \textit{Rapid Emergency Retrieval}: Empowers attending physicians to quickly access historical specialty-specific operative notes during acute patient emergencies.
+    \item \textit{Open-Set Patient Safety}: Implements a confidence-gated rejection mechanism that identifies out-of-scope or ambiguous medical documents, safely routing them to manual clinical review rather than producing hazardous misclassifications.
+    \item \textit{Explainable NLP Representation}: Provides algorithmic transparency through Term Frequency--Inverse Document Frequency (TF-IDF) feature attribution, allowing clinicians to inspect the exact keywords driving model decisions.
+    \item \textit{Computationally Efficient Web Deployment}: Delivers instantaneous inference on standard CPU architectures through lightweight classical estimators, hosted via an accessible web platform with direct PDF report ingestion.
 \end{itemize}
 
 \subsection{Objectives}
-The primary objective of this project is to develop and deploy an automated Medical Specialty Classification system using TF-IDF feature representations and an Ensemble Machine Learning architecture. The specific objectives are:
+The primary objective of this project is to design, develop, and deploy a robust, end-to-end automated Medical Specialty Classification system (\textbf{MedSpecialty AI Platform}) using sublinear TF-IDF vectorization and an Ensemble Machine Learning architecture with open-set rejection capabilities. The specific objectives are:
 \begin{enumerate}
-    \item To conduct Exploratory Data Analysis (EDA) on the Kaggle Medical Transcriptions (MTSamples) dataset.
-    \item To build an NLP preprocessing pipeline incorporating lowercasing, punctuation removal, tokenization, stop-word removal, and lemmatization.
-    \item To extract numerical text features using Term Frequency--Inverse Document Frequency (TF-IDF) vectorization.
-    \item To train and evaluate candidate machine learning models (Logistic Regression, Support Vector Machine, Random Forest, Multinomial Naive Bayes).
-    \item To construct a Voting Ensemble Classifier combining predictions from candidate base models.
-    \item To deploy a real-time, interactive web application using Flask for medical document classification.
+    \item To conduct comprehensive Exploratory Data Analysis (EDA) on the raw MTSamples medical transcriptions corpus (4,999 records across 40 categories) and identify noisy, overlapping, and administrative document classes.
+    \item To curate a clinically sound, mutually exclusive 8-specialty benchmark dataset comprising 1,663 records across core hospital departments.
+    \item To build a modular clinical NLP preprocessing pipeline incorporating lowercasing, medical punctuation handling, tokenization, stopword removal, and morphological lemmatization.
+    \item To extract discriminative unigram and bigram features using an 8,000-dimensional sublinear TF-IDF vectorizer with $L_2$ Euclidean normalization.
+    \item To train and evaluate candidate supervised classifiers with distinct inductive biases: Linear Support Vector Machine (Linear SVM with Platt probability calibration), Logistic Regression, Random Forest, and Multinomial Naive Bayes.
+    \item To construct a Soft Voting Ensemble Classifier utilizing calibrated weights [2:2:1:1] to synthesize probabilistic consensus across candidate models.
+    \item To formulate an Open-Set Confidence Rejection mechanism with a calibrated safety threshold ($\tau = 0.48$) establishing a 9th operational class (\textit{``Other / Requires Review''}) for out-of-scope clinical records.
+    \item To develop and deploy an interactive, production-grade web application using Flask, supporting drag-and-drop PDF text extraction via PyMuPDF, real-time transcription editing, and 7-phase dataflow visualization.
 \end{enumerate}
 
 \subsection{Scope}
 The scope of this project encompasses:
 \begin{itemize}
-    \item \textit{Dataset Scope}: Evaluates 4,999 clinical transcription records across 40 medical specialties from the Kaggle MTSamples dataset.
-    \item \textit{Feature Scope}: Focuses on TF-IDF vectorization derived from the primary narrative column (\texttt{transcription}).
-    \item \textit{Algorithmic Scope}: Evaluates classical ML models (LR, SVM, RF, MNB) and a Voting Ensemble Classifier optimized for CPU deployment.
-    \item \textit{Deployment Scope}: Proposes a lightweight Flask web interface for single-document and batch specialty prediction.
+    \item \textit{Dataset Scope}: Evaluates 4,999 raw clinical transcription records from the Kaggle MTSamples corpus, filtering out non-specialty administrative document formats (SOAP notes, Consults, Discharge Summaries) and overlapping umbrellas (General Surgery) to establish a curated benchmark of 1,663 records across eight core hospital departments:
+    \begin{enumerate}
+        \item Cardiovascular / Pulmonary
+        \item Orthopedic
+        \item Gastroenterology
+        \item Neurology
+        \item Urology
+        \item Obstetrics / Gynecology
+        \item ENT -- Otolaryngology
+        \item Ophthalmology
+    \end{enumerate}
+    \item \textit{Feature Engineering Scope}: Focuses on unigram and bigram TF-IDF representations bounded at 8,000 features, applying logarithmic term frequency dampening ($1 + \log(\text{TF})$) to prevent high-frequency term domination.
+    \item \textit{Algorithmic Scope}: Investigates four classical machine learning models (Linear SVM, Logistic Regression, Random Forest, and Multinomial Naive Bayes), a Soft Voting Ensemble, and a threshold-based open-set rejection gate.
+    \item \textit{Deployment Scope}: Delivers a fully responsive web application (\textbf{MedSpecialty AI Platform}) built with Flask and Vanilla CSS/JavaScript, featuring in-memory PDF parsing (PyMuPDF) and full pipeline explainability without requiring external GPU infrastructure.
 \end{itemize}
 
 \subsection{Project Overview}
 The project follows a structured engineering workflow:
 \begin{enumerate}
-    \item \textit{Data Ingestion \& EDA}: Ingesting raw MTSamples CSV data and analyzing feature distributions.
-    \item \textit{Text Preprocessing}: Removing noise, tokenizing, filtering stop-words, and lemmatizing text.
-    \item \textit{Feature Engineering}: Transforming clean text into sparse numerical vectors via TF-IDF.
-    \item \textit{Model Development}: Training baseline classifiers and hyperparameter tuning.
-    \item \textit{Ensemble Integration}: Combining the outputs of the candidate models using soft voting to generate the final specialty prediction.
-    \item \textit{Web Deployment}: Serializing model artifacts with Joblib and serving via a proposed Flask web application.
+    \item \textit{Data Ingestion \& Exploratory Profiling}: Loading raw MTSamples CSV data, analyzing missing attributes, document length distributions, and category imbalances.
+    \item \textit{Dataset Curation \& Cleaning}: Pruning null records, resolving category ambiguities, and extracting enriched clinical text (combining consultation abstracts and transcription narratives).
+    \item \textit{NLP Preprocessing}: Standardizing text via regex cleaning, lowercasing, punctuation stripping, tokenization, stopword removal, and WordNet morphological lemmatization.
+    \item \textit{Feature Extraction}: Vectorizing preprocessed narratives into an 8,000-dimensional sparse feature space using sublinear TF-IDF scaling.
+    \item \textit{Model Development \& Calibration}: Training candidate estimators on stratified training partitions (80\% train / 20\% test) and applying Platt scaling via \texttt{CalibratedClassifierCV} to Linear SVM.
+    \item \textit{Ensemble Integration}: Aggregating model posteriors using weighted soft voting ($2 \times \text{SVM} + 2 \times \text{LR} + 1 \times \text{RF} + 1 \times \text{MNB}) / 6$.
+    \item \textit{Open-Set Confidence Gating}: Applying decision threshold $\tau = 0.48$ to classify cases into confirmed specialties or route them to \textit{``Other / Requires Review''}.
+    \item \textit{Web Platform Deployment}: Serializing artifacts with Joblib and serving predictions via the MedSpecialty AI Platform with PDF ingestion.
 \end{enumerate}
 
 \subsection{Expected Outcome}
-The expected deliverables include:
+The project delivers the following primary outcomes:
 \begin{itemize}
-    \item A clean, preprocessed clinical text dataset optimized for NLP tasks.
-    \item A proposed Voting Ensemble Classifier targeting robust performance across 40 medical specialties.
-    \item A planned lightweight Flask web application to provide real-time specialty classification.
-    \item Complete technical documentation adhering to MCA departmental standards.
+    \item A curated, high-quality benchmark dataset of 1,663 medical transcriptions across eight clinical specialties.
+    \item An empirical comparative analysis confirming that Linear SVM achieves the highest individual accuracy (88.59\%, Macro F1: 0.8971) and that the Soft Voting Ensemble achieves superior probability calibration (87.99\%, Macro F1: 0.8898).
+    \item A verified open-set rejection mechanism that accurately routes unsupported clinical records (e.g., Dermatology, Psychiatry) to the \textit{``Other''} category.
+    \item A fully functional, production-ready web application providing real-time PDF extraction and clinical NLP explainability.
+    \item Comprehensive academic documentation adhering to MCA departmental standards.
 \end{itemize}
