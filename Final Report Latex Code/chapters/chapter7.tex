@@ -131,11 +131,12 @@ Table \ref{tab:git_commit_log} provides an authentic, chronological extract of t
 \label{tab:git_commit_log}
 \end{table}
 
+\enlargethispage{2\baselineskip}
 \subsection{Repository Metrics and Code Quality Assurance}
 
 To ensure long-term maintainability, the codebase was structured according to modern Python packaging and web development standards:
 \begin{itemize}
-    \item \textbf{Modularity}: Core machine learning training routines (\texttt{02\_train\_and\_balance\_models.py}) are decoupled from production inference services (\texttt{app.py}), ensuring that model training updates do not disrupt production API routing.
+    \item \textbf{Modularity}: Core training routines (\texttt{02\_train\_\allowbreak and\_\allowbreak balance\_\allowbreak models.py}) are decoupled from production inference services (\texttt{app.py}), ensuring that model updates do not disrupt production API routing.
     \item \textbf{Asset Organization}: All front-end assets are strictly segregated into dedicated directories:
     \begin{itemize}
         \item \texttt{static/css/}: Modular CSS stylesheet (\texttt{styles.css}) implementing custom clinical design tokens, responsive media queries, and flexbox layouts.
