@@ -4,7 +4,7 @@
 
 System design translates the analytical requirements and clinical preprocessing pipelines into a robust, deployable machine learning architecture. This section presents the formal design, modular implementation, algorithmic mechanics, and data-partitioning protocols designed to classify unstructured medical transcription narratives into clinical specialties.
 
-\subsection{MODEL(S) BUILDING}
+\subsection{Model(s) Building}
 
 The classification framework employs a multi-model paradigm comprising four distinct supervised learning families: linear margin optimization (Support Vector Machine), probabilistic link modeling (Logistic Regression), non-parametric bagging (Random Forest), and Bayesian conditional independence (Multinomial Naive Bayes). Furthermore, an Ensemble Voting meta-classifier is synthesized to consolidate individual algorithmic strengths into an optimal consensus predictor, augmented with an Open-Set Rejection Gate for out-of-scope medical dictations.
 
