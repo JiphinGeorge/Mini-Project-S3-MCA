@@ -112,6 +112,7 @@ Two primary binary artifacts are loaded once during server initialization:
 \end{enumerate}
 
 During application bootstrap in \texttt{app.py}, the artifacts are verified and mapped into global process memory:
+\begin{footnotesize}
 \begin{verbatim}
 VECTORIZER_PATH = os.path.join(MODEL_DIR, "tfidf_vectorizer_8classes.pkl")
 VOTING_MODEL_PATH = os.path.join(MODEL_DIR, "voting_ensemble_model.pkl")
@@ -121,6 +122,7 @@ ensemble_model = joblib.load(VOTING_MODEL_PATH)
 classes_list = list(ensemble_model.classes_)
 feature_names = vectorizer.get_feature_names_out()
 \end{verbatim}
+\end{footnotesize}
 
 Pre-loading the model artifacts during boot eliminates runtime file read latency, ensuring that all subsequent user requests execute purely in RAM.
 

@@ -23,7 +23,7 @@ The primary technical and scientific achievements realized in this project inclu
     To address the dangerous Closed-World Assumption common in medical AI deployments, an Open-Set Confidence Rejection Gate was engineered with a calibrated threshold ($\tau = 0.48$). When patient narratives from unsupported clinical specialties (such as Dermatology, Psychiatry, or Dentistry) or non-medical text are presented, peak ensemble probability naturally drops below 0.48, successfully intercepting 100\% of tested out-of-scope inputs and routing them to a designated \textit{"Other / Requires Review"} triage state.
 
     \item \textbf{Operationalization into a Production-Ready Web Platform}:
-    The entire machine learning pipeline was operationalized as a responsive web service powered by Flask, Vanilla JavaScript, and an in-memory PyMuPDF document extractor. The platform processes multi-page clinical consultation letters and direct narratives with an average inference latency of \textbf{under 10 milliseconds} on standard commodity CPU hardware, requiring zero expensive GPU infrastructure and consuming less than 150 MB of system RAM.
+    The entire machine learning pipeline was operationalized as a responsive web service powered by Flask, Vanilla JavaScript, and an in-memory PyMuPDF document extractor. The platform processes multi-page clinical letters and narratives with average inference latency of \textbf{under 10 milliseconds} on standard CPU hardware, requiring zero GPU infrastructure and consuming less than 150 MB of RAM.
 \end{enumerate}
 
 \subsection{Significance and Impact on Clinical Workflow}
