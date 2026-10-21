@@ -1,6 +1,6 @@
 \clearpage
 
-\section{SYSTEM ANALYSIS}
+\section{System Analysis}
 
 System analysis establishes the foundational functional requirements, dataset architecture, exploratory statistical properties, preprocessing transformations, algorithmic mechanics, and deployment feasibility for the automated Medical Specialty Classification system.
 
@@ -131,7 +131,7 @@ Obstetrics / Gynecology & 160 & Autopsy & 2 \\
 \label{tab:top_bottom_specialties}
 \end{table}
 
-\paragraph{Clinical Domain Filtering and Benchmark Curation}
+\subsubsection{Insights and conclusions of Exploratory Data Analysis}
 A critical finding from data exploration is that the raw 40 classes do not represent mutually exclusive medical specialties. Instead, the raw dataset mixes anatomical medical specialties with general administrative document formats and procedural umbrellas:
 \begin{enumerate}
     \item \textit{Administrative Document Formats}: Categories such as \texttt{Consult - History and Phy.} (516 records), \texttt{SOAP / Chart / Progress Notes} (166 records), \texttt{Discharge Summary} (108 records), \texttt{Office Notes} (50 records), and \texttt{Emergency Room Reports} (75 records) define documentation templates rather than distinct medical specialties. Reports within these classes span cardiology, neurology, gastroenterology, and orthopedics, introducing severe semantic ambiguity.

@@ -1,22 +1,9 @@
-% -------------------- DECLARATION --------------------
-\thispagestyle{plain}
-\begin{center}
-    \textbf{\Large DECLARATION}
-\end{center}
-\vspace{0.8cm}
-
-I, Jiphin George, student of Master of Computer Applications, Department of Computer Applications, Mar Athanasius College of Engineering, Kothamangalam, hereby declare that this Mini Project Report titled \textbf{``Medical Specialty Classification using TF-IDF and Ensemble Machine Learning''} is a bonafide record of the academic project work carried out by me under the supervision and guidance of \textbf{Prof. Biju Skaria}, Project Guide, Department of Computer Applications, in partial fulfilment of the requirements for the award of the degree of Master of Computer Applications of APJ Abdul Kalam Technological University, Thiruvananthapuram.
-
-I further declare that this report has not been submitted previously, either in part or in full, to any other University or Institution for the award of any degree or diploma.
-
-\vspace{1.5cm}
-
-\noindent Place: Kothamangalam\\
-\noindent Date: 30 October 2026 \hfill \textbf{Jiphin George}
-
-\newpage
-
 % -------------------- ACKNOWLEDGEMENT --------------------
+\clearpage
+\pagenumbering{roman}
+\setcounter{page}{1}
+\phantomsection
+\addcontentsline{toc}{section}{Acknowledgement}
 \thispagestyle{plain}
 \begin{center}
     \textbf{\Large ACKNOWLEDGEMENT}
@@ -40,31 +27,64 @@ Finally, I express my heartfelt gratitude to my parents, family, and peers for t
 \textbf{Jiphin George}
 \end{flushright}
 
-\newpage
+\clearpage
 
 % -------------------- ABSTRACT --------------------
+\phantomsection
+\addcontentsline{toc}{section}{Abstract}
 \thispagestyle{plain}
 \begin{center}
     \textbf{\Large ABSTRACT}
 \end{center}
-\vspace{0.8cm}
+\vspace{0.4cm}
 
-The rapid digitisation of modern healthcare has led to an exponential influx of unstructured clinical text within Electronic Health Record (EHR) systems, including operative summaries, consultation notes, and hospital discharge reports. Manually indexing and triaging these clinical narratives into specialized medical departments is labor-intensive, error-prone, and bottlenecked by severe inter-annotator variability. 
+The rapid digitisation of modern healthcare has led to an exponential influx of unstructured clinical narratives within Electronic Health Record (EHR) systems, including operative reports, consultation summaries, and discharge notes. Manually triaging these clinical texts into medical specialties is labor-intensive, error-prone, and bottlenecked by inter-annotator variability. This project develops and deploys \textbf{MedSpecialty AI}, an automated clinical decision-support platform for medical specialty classification using sublinear Term Frequency--Inverse Document Frequency (TF-IDF) feature engineering paired with an Ensemble Machine Learning architecture.
 
-This project designs, evaluates, and deploys an automated clinical decision-support platform, \textbf{MedSpecialty AI}, for clinical text categorization into medical specialties using high-dimensional Term Frequency--Inverse Document Frequency (TF-IDF) feature engineering and an Ensemble Machine Learning architecture. The investigation utilizes the MTSamples clinical transcription corpus comprising 4,999 raw records across 40 categories. Systematic exploratory data analysis revealed significant label overlap and procedural ambiguity in broad administrative classes (e.g., General Surgery, Consult notes). To construct an academically rigorous and clinically realistic benchmark, a curated dataset of 1,663 records across eight mutually exclusive hospital departments was established: Cardiovascular / Pulmonary, Orthopedic, Gastroenterology, Neurology, Urology, Obstetrics / Gynecology, ENT -- Otolaryngology, and Ophthalmology.
+The system utilizes the MTSamples clinical transcription corpus (4,999 raw records across 40 categories). Systematic exploratory data analysis revealed procedural ambiguity in administrative categories (e.g., General Surgery, Consult notes). A curated benchmark of 1,663 records across eight mutually exclusive hospital departments was established: Cardiovascular / Pulmonary, Orthopedic, Gastroenterology, Neurology, Urology, Obstetrics / Gynecology, ENT -- Otolaryngology, and Ophthalmology. The NLP pipeline performs text cleaning, stopword removal, morphological lemmatization, and sublinear TF-IDF vectorization across an 8,000-dimensional unigram/bigram vocabulary ($L_2$ normalized). Four estimators were evaluated under stratified holdout validation (80\% train / 20\% test): Linear SVM (with Platt calibration, 88.59\% accuracy), Logistic Regression, Random Forest, and Multinomial Naive Bayes. A Soft Voting Ensemble combining all four models [2:2:1:1] achieved 87.99\% accuracy and a Macro F1-score of 0.8898 with calibrated posterior probabilities.
 
-The natural language processing pipeline executes text normalization, medical punctuation handling, tokenization, stopword removal, morphological lemmatization, and sublinear TF-IDF vectorization across an 8,000-dimensional unigram and bigram vocabulary ($L_2$ normalized). Four candidate classifiers with diverse inductive biases were trained on stratified partitions (80\% train / 20\% test, 333 holdout records): Linear Support Vector Machine (Linear SVM with Platt probability calibration), Logistic Regression, Random Forest, and Multinomial Naive Bayes. Empirical evaluation demonstrates that Linear SVM achieved the highest individual classification accuracy of 88.59\% with a Macro F1-score of 0.8971. A Soft Voting Ensemble combining all four models with calibrated weights [2:2:1:1] achieved 87.99\% accuracy and a Macro F1-score of 0.8898, delivering well-calibrated posterior probability spreads.
+To guarantee patient safety in open-world hospital workflows, the platform incorporates an \textbf{Open-Set Confidence Rejection Gate} ($\tau = 0.48$). Dictations with peak ensemble confidence below 48\% are routed to a 9th operational class, \textit{``Other / Requires Review''}, intercepting unsupported clinical specialties (e.g., Dermatology, Psychiatry) and non-medical text without false specialty force-fitting. The platform is operationalized as a responsive web service featuring in-memory PyMuPDF PDF extraction, 7-phase operational dataflow tracking, and sub-10 ms CPU inference latency.
 
-To ensure patient safety in open-world clinical environments, the system incorporates an \textbf{Open-Set Confidence Rejection Gate} ($\tau = 0.48$). Any transcription exhibiting peak ensemble confidence below 48\% is routed to a 9th operational class, \textit{``Other / Requires Review''}, successfully intercepting unsupported clinical specialties (such as Dermatology, Psychiatry, or Dentistry) and non-medical text without false specialty force-fitting. The complete pipeline is operationalized through a responsive web platform featuring in-memory PDF clinical text extraction via PyMuPDF, interactive 7-phase dataflow visualization, TF-IDF feature space inspection, and dynamic multi-model consensus dashboards.
+\clearpage
 
-\newpage
-
-% -------------------- CONTENTS & LISTS --------------------
-\tableofcontents
-\newpage
-
+% -------------------- LIST OF TABLES --------------------
+\phantomsection
+\addcontentsline{toc}{section}{List of Tables}
+\thispagestyle{plain}
+\begingroup
+\renewcommand{\section}[2]{}
+\begin{center}
+    \textbf{\Large LIST OF TABLES}
+\end{center}
+\vspace{0.4cm}
 \listoftables
-\newpage
+\endgroup
 
+\clearpage
+
+% -------------------- LIST OF FIGURES --------------------
+\phantomsection
+\addcontentsline{toc}{section}{List of Figures}
+\thispagestyle{plain}
+\begingroup
+\renewcommand{\section}[2]{}
+\begin{center}
+    \textbf{\Large LIST OF FIGURES}
+\end{center}
+\vspace{0.4cm}
 \listoffigures
-\newpage
+\endgroup
+
+\clearpage
+
+% -------------------- CONTENTS --------------------
+\thispagestyle{empty}
+\begin{center}
+    \textbf{\Large CONTENTS}
+\end{center}
+\vspace{0.4cm}
+\begingroup
+\renewcommand{\section}[2]{}
+\tableofcontents
+\endgroup
+
+\clearpage
