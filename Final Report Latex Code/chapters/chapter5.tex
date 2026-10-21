@@ -151,10 +151,10 @@ An error distribution analysis of the 38 misclassifications on unseen test data 
     \begin{itemize}
         \item 78.4\% of predictions exhibited an ensemble confidence probability exceeding $P \ge 0.85$.
         \item 14.1\% exhibited confidence between $0.65 \le P < 0.85$.
-        \item Only 7.5\% exhibited marginal confidence ($P < 0.65$), predominantly clustered around spinal and neuro-orthopedic edge cases.
+        \item Only 7.5\% exhibited marginal confidence ($P < 0.65$), clustered around neuro-orthopedic edge cases.
     \end{itemize}
     \item \textbf{Open-Set Rejection Verification (9th Operational Category)}:
-    To evaluate real-world hospital deployment safety, out-of-scope clinical records (e.g., dermatology eczema notes, psychiatric depression assessments, and pediatric immunization records) were fed into the model with the rejection threshold set to $\tau = 0.48$. In 100\% of tested out-of-scope samples, maximum ensemble probability fell below 0.48 (typically peaking at $0.20 \le P < 0.41$ dispersed across unrelated classes). Consequently, the engine successfully routed these records to \textbf{"Other / Requires Review"}, entirely preventing erroneous automated routing to incorrect medical specialists.
+    To evaluate deployment safety, out-of-scope clinical records (e.g., dermatology eczema notes, psychiatric evaluations, pediatric immunizations) were evaluated with rejection threshold $\tau = 0.48$. In 100\% of tested out-of-scope samples, maximum ensemble probability fell below 0.48 (typically $0.20 \le P < 0.41$ dispersed across classes). Consequently, the engine successfully routed these records to \textbf{"Other / Requires Review"}, preventing erroneous automated specialty routing.
 \end{enumerate}
 
 \subsection{Discuss Your Findings and Conclusions}
