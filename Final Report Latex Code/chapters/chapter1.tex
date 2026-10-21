@@ -16,7 +16,7 @@ Automating medical specialty classification through efficient statistical natura
     \item \textit{Streamlined Clinical Triage}: Eliminates manual document sorting backlogs, enabling automated indexing and immediate department routing upon clinical dictation.
     \item \textit{Rapid Emergency Retrieval}: Empowers attending physicians to quickly access historical specialty-specific operative notes during acute patient emergencies.
     \item \textit{Open-Set Patient Safety}: Implements a confidence-gated rejection mechanism that identifies out-of-scope or ambiguous medical documents, safely routing them to manual clinical review rather than producing hazardous misclassifications.
-    \item \textit{Explainable NLP Representation}: Provides algorithmic transparency through Term Frequency--Inverse Document Frequency (TF-IDF) feature attribution, allowing clinicians to inspect the exact keywords driving model decisions.
+    \item \textit{Explainable NLP Representation}: Provides algorithmic transparency through Term Frequency--\allowbreak Inverse Document Frequency (TF-IDF) feature attribution, allowing clinicians to inspect the exact keywords driving model decisions.
     \item \textit{Computationally Efficient Web Deployment}: Delivers instantaneous inference on standard CPU architectures through lightweight classical estimators, hosted via an accessible web platform with direct PDF report ingestion.
 \end{itemize}
 
@@ -36,7 +36,7 @@ The primary objective of this project is to design, develop, and deploy a robust
 \subsection{Scope}
 The scope of this project encompasses:
 \begin{itemize}
-    \item \textit{Dataset Scope}: Evaluates 4,999 raw clinical transcription records from the Kaggle MTSamples corpus, filtering out non-specialty administrative document formats (SOAP notes, Consults, Discharge Summaries) and overlapping umbrellas (General Surgery) to establish a curated benchmark of 1,663 records across eight core hospital departments:
+    \item \textit{Dataset Scope}: Evaluates 4,999 raw clinical transcription records from the MTSamples corpus, filtering out administrative notes (SOAP records, consultations, summaries) and overlapping categories (General Surgery) to establish a benchmark of 1,663 records across eight core hospital departments:
     \begin{enumerate}
         \item Cardiovascular / Pulmonary
         \item Orthopedic
@@ -59,7 +59,7 @@ The project follows a structured engineering workflow:
     \item \textit{Dataset Curation \& Cleaning}: Pruning null records, resolving category ambiguities, and extracting enriched clinical text (combining consultation abstracts and transcription narratives).
     \item \textit{NLP Preprocessing}: Standardizing text via regex cleaning, lowercasing, punctuation stripping, tokenization, stopword removal, and WordNet morphological lemmatization.
     \item \textit{Feature Extraction}: Vectorizing preprocessed narratives into an 8,000-dimensional sparse feature space using sublinear TF-IDF scaling.
-    \item \textit{Model Development \& Calibration}: Training candidate estimators on stratified training partitions (80\% train / 20\% test) and applying Platt scaling via \texttt{CalibratedClassifierCV} to Linear SVM.
+    \item \textit{Model Development \& Calibration}: Training candidate estimators on stratified partitions (80\% train / 20\% test) and applying Platt scaling via \texttt{CalibratedClassifierCV} to Linear SVM.
     \item \textit{Ensemble Integration}: Aggregating model posteriors using weighted soft voting ($2 \times \text{SVM} + 2 \times \text{LR} + 1 \times \text{RF} + 1 \times \text{MNB}) / 6$.
     \item \textit{Open-Set Confidence Gating}: Applying decision threshold $\tau = 0.48$ to classify cases into confirmed specialties or route them to \textit{``Other / Requires Review''}.
     \item \textit{Web Platform Deployment}: Serializing artifacts with Joblib and serving predictions via the MedSpecialty AI Platform with PDF ingestion.

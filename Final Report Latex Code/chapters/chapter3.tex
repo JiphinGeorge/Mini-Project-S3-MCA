@@ -15,7 +15,7 @@ The Kaggle Medical Transcriptions dataset is a curated collection of authentic c
 \begin{itemize}
     \item \textbf{Total Raw Records}: 4,999 clinical transcription reports.
     \item \textbf{Total Attributes}: 6 attributes (1 integer identifier, 4 textual features, and 1 categorical target label).
-    \item \textbf{Data Types}: Free-text clinical narratives (\texttt{transcription}), diagnostic abstracts (\texttt{description}), comma-delimited keywords (\texttt{keywords}), procedure titles (\texttt{sample\_name}), and categorical specialty labels (\texttt{medical\_specialty}).
+    \item \textbf{Data Types}: Free-text narratives (\texttt{transcription}), diagnostic abstracts (\texttt{description}), keywords (\texttt{keywords}), procedure titles (\texttt{sample\_name}), and target labels (\texttt{medical\_specialty}).
     \item \textbf{Target Attribute}: \texttt{medical\_specialty}, containing 40 nominal medical department categories in the raw distribution.
 \end{itemize}
 
@@ -339,7 +339,7 @@ subject to:
 \begin{equation}
 y_{i, k}(w_k^T x_i + b_k) \ge 1 - \xi_i, \quad \xi_i \ge 0, \quad \forall i = 1, \dots, N
 \end{equation}
-where $C$ governs margin trade-offs. To enable soft-voting participation, Linear SVM's uncalibrated signed margin distances $f_k(x) = w_k^T x + b_k$ are calibrated using Scikit-learn's \texttt{CalibratedClassifierCV} via Platt scaling:
+where $C$ governs margin trade-offs. To enable soft-voting participation, Linear SVM's uncalibrated signed margin distances $f_k(x) = w_k^T x + b_k$ are calibrated via Platt scaling using Scikit-Learn's \texttt{Calibrated\allowbreak ClassifierCV}:
 \begin{equation}
 P_{\text{SVM}}(y = k \mid x) = \frac{1}{1 + \exp(A \cdot f_k(x) + B)}
 \end{equation}
