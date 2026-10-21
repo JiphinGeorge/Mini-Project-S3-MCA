@@ -1,0 +1,75 @@
+\clearpage
+
+\section{APPENDIX}
+
+This appendix provides exhaustive technical specifications of the minimum and recommended computational environments required to reproduce, train, test, and deploy the \textbf{MedSpecialty AI} platform.
+
+\subsection{Minimum Software Requirements}
+
+The software ecosystem comprises modern open-source scientific computing, machine learning, and web development libraries. The complete software dependencies and runtime specifications are detailed in Table \ref{tab:software_requirements}.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{4.2cm}|>{\raggedright\arraybackslash}p{3.2cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Software Component} & \textbf{Version / Release} & \textbf{Functional Role in Project Architecture} \\
+\hline
+Operating System & Windows 10/11 (64-bit), Ubuntu 20.04+ LTS, or macOS 12+ & Host operating platform supporting POSIX and Win32 process execution. \\
+\hline
+Python Runtime & Python 3.10.x to 3.13.x (64-bit) & Core programming language environment for NLP, ML, and web backend. \\
+\hline
+Scikit-Learn (\texttt{sklearn}) & Version 1.3.0 or higher & Machine learning library providing SVM, Logistic Regression, Random Forest, Multinomial Naive Bayes, VotingClassifier, and metrics. \\
+\hline
+Natural Language Toolkit (\texttt{nltk}) & Version 3.8.1 or higher & Text tokenization, stopword filtering, and WordNet morphological lemmatization. \\
+\hline
+Flask & Version 3.0.0 or higher & Lightweight WSGI micro-framework managing HTTP routing and REST endpoints. \\
+\hline
+PyMuPDF (\texttt{pymupdf / fitz}) & Version 1.23.0 or higher & High-speed in-memory PDF text extraction without disk I/O latency. \\
+\hline
+Joblib & Version 1.3.2 or higher & Binary object serialization and high-compression pipeline model persistence. \\
+\hline
+NumPy & Version 1.24.0 or higher & High-performance n-dimensional array mathematics and vector algebra. \\
+\hline
+Pandas & Version 2.0.0 or higher & Tabular DataFrame manipulation, data ingestion, and dataset curation. \\
+\hline
+Matplotlib / Seaborn & Version 3.7.0 / 0.12.0+ & Generation of confusion matrix heatmaps and exploratory distribution visualizations. \\
+\hline
+Modern Web Browser & Google Chrome 110+, Mozilla Firefox 115+, or Edge 110+ & Client-side HTML5/CSS3 rendering and JavaScript DOM execution. \\
+\hline
+LaTeX Typesetting Engine & Tectonic / TeX Live / MiKTeX 2023+ & Compilation engine for technical reports, mathematical equations, and TikZ graphs. \\
+\hline
+\end{tabularx}
+\caption{Minimum and Standard Software Specifications}
+\label{tab:software_requirements}
+\end{table}
+
+\subsection{Minimum Hardware Requirements}
+
+The architectural design prioritized computational accessibility, ensuring that the system can be trained and operated in clinical environments without requiring expensive, power-hungry Graphics Processing Units (GPUs). Table \ref{tab:hardware_requirements} outlines the minimum and recommended hardware specifications.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{3.8cm}|>{\raggedright\arraybackslash}p{4.0cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Hardware Component} & \textbf{Minimum Specification} & \textbf{Recommended Production Specification} \\
+\hline
+Processor (CPU) & Dual-Core 64-bit Processor \newline (Intel Core i3 or AMD Ryzen 3, \newline Clock speed $\ge 2.0$ GHz) & Quad-Core / Octa-Core Processor \newline (Intel Core i5/i7 or AMD Ryzen 5/7, \newline Clock speed $\ge 3.0$ GHz) \\
+\hline
+System Memory (RAM) & 4 GB DDR4 RAM \newline (Active process takes $< 150$ MB) & 8 GB to 16 GB DDR4/DDR5 RAM \newline (Supports high-concurrency client traffic) \\
+\hline
+Storage (Disk Space) & 2 GB free storage space \newline (Dataset + Models require 25 MB) & 20 GB free Solid-State Drive (SSD) \newline (For application logging and hospital backups) \\
+\hline
+Graphics Processing Unit & \textbf{None Required} \newline (Zero GPU dependency; executes entirely on standard CPU) & Optional dedicated GPU \newline (Only if expanding to future multimodal ViT or Vision models) \\
+\hline
+Network Interface & Standard 10/100 Mbps Ethernet or 802.11n Wi-Fi adapter & Gigabit Ethernet (1000 Mbps) \newline (For enterprise hospital intranet deployment) \\
+\hline
+Display Resolution & $1280 \times 720$ (HD) display resolution & $1920 \times 1080$ (Full HD) or higher \newline (Optimized for side-by-side clinical triage) \\
+\hline
+\end{tabularx}
+\caption{Minimum and Recommended Hardware Specifications}
+\label{tab:hardware_requirements}
+\end{table}
+
+As highlighted in Table \ref{tab:hardware_requirements}, the entire platform functions efficiently on entry-level commercial workstations with minimal resource contention.

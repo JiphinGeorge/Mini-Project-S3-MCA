@@ -1,0 +1,146 @@
+\clearpage
+
+\section{GIT HISTORY}
+
+Modern academic and industrial software engineering demands strict adherence to rigorous version control practices. In machine learning research, version control transcends traditional source code management; it is fundamental to \textbf{scientific reproducibility}, systematic ablation tracking, data pipeline traceability, and collaborative auditability. 
+
+This chapter documents the complete version control strategy, repository architecture, chronological engineering milestones, and authenticated commit history for the \textbf{MedSpecialty AI} project repository hosted under Git version control.
+
+\subsection{Version Control Strategy and Repository Architecture}
+
+The project repository was managed using the distributed \textbf{Git} version control system, integrated with standard software development conventions.
+
+\subsubsection{Branching Strategy and Workflow}
+The repository adhered to a streamlined Trunk-Based Development workflow combined with targeted feature branches:
+\begin{itemize}
+    \item \textbf{\texttt{main} Branch}: The primary production branch containing verified, tested, and deployable code, serialized model weights, and peer-reviewed technical documentation. Every merge into \texttt{main} underwent validation for reproducibility and compilation integrity.
+    \item \textbf{Exploratory / Feature Branches}: Ephemeral task-oriented branches utilized during exploratory data analysis, hyperparameter tuning experiments, LaTeX chapter drafting, and UI styling iterations.
+\end{itemize}
+
+\subsubsection{Commit Conventions and Semantic Versioning}
+To maintain a clear and informative audit log, commit messages strictly followed the \textbf{Conventional Commits} standard, utilizing standardized semantic prefixes:
+\begin{itemize}
+    \item \texttt{feat}: Introduction of new functionality, such as baseline classifiers, Flask endpoints, or LaTeX chapter structures.
+    \item \texttt{fix}: Resolution of bugs, layout overlaps, or mathematical discrepancies.
+    \item \texttt{docs}: Updates to technical documentation, research paper reviews, project proposals, or presentation speaker notes.
+    \item \texttt{refactor}: Code restructuring, vocabulary optimization, or layout enhancements without altering observable behavior.
+    \item \texttt{chore}: Maintenance tasks, dependency updates, lock file removal, and artifact synchronization.
+    \item \texttt{style}: Cosmetic and typography adjustments, color contrast fixes, and CSS styling enhancements.
+\end{itemize}
+
+\subsection{Chronological Project Development Milestones}
+
+The development lifecycle of the project spanned four distinct, structured phases across a 16-week timeline from July 2026 through October 2026. Table \ref{tab:development_milestones} details the chronological milestones and deliverables achieved.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{2.8cm}|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Development Phase} & \textbf{Timeframe} & \textbf{Key Engineering Deliverables \& Milestones} \\
+\hline
+\textbf{Phase I: Inception \& Literature Survey} & Weeks 1--4 \newline (Jul -- Aug 2026) & 
+$\bullet$ Formalized project proposal and problem statement. \newline
+$\bullet$ Conducted literature review of clinical text mining (Omar et al., Zhang et al., Blanchard et al.). \newline
+$\bullet$ Ingested the raw Kaggle MTSamples clinical corpus (4,999 records). \newline
+$\bullet$ Established repository structure and baseline LaTeX documentation. \\
+\hline
+\textbf{Phase II: System Analysis \& EDA} & Weeks 5--8 \newline (Aug -- Sep 2026) & 
+$\bullet$ Executed missing value audit and string deduplication. \newline
+$\bullet$ Quantified extreme class imbalance (Surgery 1,103 vs. Autopsy 2). \newline
+$\bullet$ Analyzed clinical text length distributions and medical vocabulary clouds. \newline
+$\bullet$ Evaluated baseline 40-class classifiers; identified performance bottlenecks. \newline
+$\bullet$ Formulated Chapter 3: System Analysis and Interim Project Report. \\
+\hline
+\textbf{Phase III: Architectural Refinement} & Weeks 9--12 \newline (Sep -- Oct 2026) & 
+$\bullet$ Curated the 8-class hospital departmental benchmark (1,663 records). \newline
+$\bullet$ Designed 5-step clinical NLP cleaning and 8,000-feature TF-IDF space. \newline
+$\bullet$ Engineered UML activity diagrams for SVM, RF, LR, MNB, and Ensemble. \newline
+$\bullet$ Formulated academic presentation deck with complete speaker scripts. \\
+\hline
+\textbf{Phase IV: Optimization \& Deployment} & Weeks 13--16 \newline (Oct 2026) & 
+$\bullet$ Implemented Soft Voting Ensemble with calibrated weights $[2:2:1:1]$. \newline
+$\bullet$ Formulated Open-Set Rejection Gate ($\tau = 0.48$) for clinical safety. \newline
+$\bullet$ Built and deployed interactive Flask web application with PyMuPDF parser. \newline
+$\bullet$ Verified sub-10ms inference and zero disk leakage. \newline
+$\bullet$ Authored final comprehensive technical project report. \\
+\hline
+\end{tabularx}
+\caption{Chronological Development Milestones of the MedSpecialty AI Project}
+\label{tab:development_milestones}
+\end{table}
+
+\subsection{Detailed Git Commit History and Audit Trail}
+
+Table \ref{tab:git_commit_log} provides an authentic, chronological extract of the primary git commit transactions recorded in the repository from inception to final report submission.
+
+\begin{table}[H]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{|>{\centering\arraybackslash}p{1.4cm}|>{\centering\arraybackslash}p{1.8cm}|>{\raggedright\arraybackslash}p{2.2cm}|>{\raggedright\arraybackslash}X|}
+\hline
+\textbf{Commit} & \textbf{Date} & \textbf{Author} & \textbf{Commit Message / Engineering Summary} \\
+\hline
+\texttt{23bb49b} & 2026-07-21 & Jiphin George & Initial repository commit; project directory setup. \\
+\hline
+\texttt{1414230} & 2026-08-02 & Jiphin George & \texttt{docs}: Add detailed summary and viva guide for Omar et al. (2023) paper. \\
+\hline
+\texttt{02ec65e} & 2026-08-02 & Jiphin George & \texttt{feat}: Add research analysis for Zhang et al. medical classification paper. \\
+\hline
+\texttt{4d5cbdd} & 2026-08-03 & Jiphin George & \texttt{docs}: Add analysis for IEEE paper on keyword-enhanced class imbalance. \\
+\hline
+\texttt{c44cdd1} & 2026-08-12 & Jiphin George & \texttt{init}: Initialize LaTeX report structure and paper analysis summaries. \\
+\hline
+\texttt{909b0ff} & 2026-08-12 & Jiphin George & \texttt{feat}: Ingest \texttt{mtsamples.csv} clinical transcription dataset. \\
+\hline
+\texttt{d037b60} & 2026-08-12 & Jiphin George & \texttt{feat}: Add system analysis chapter and EDA diagrams to report. \\
+\hline
+\texttt{71f6ca8} & 2026-08-12 & Jiphin George & \texttt{docs}: Generate compiled Initial Project Report PDF. \\
+\hline
+\texttt{b1e620e} & 2026-09-06 & Jiphin George & \texttt{docs}: Add project pipeline diagram and system analysis to report. \\
+\hline
+\texttt{8c6ade0} & 2026-09-06 & Jiphin George & \texttt{feat}: Add script to generate medical specialty presentation. \\
+\hline
+\texttt{313fafb} & 2026-09-06 & Jiphin George & \texttt{docs}: Add presentation deck for medical specialty classification. \\
+\hline
+\texttt{23e1cfd} & 2026-09-06 & Jiphin George & \texttt{feat}: Add Chapter 3 covering system analysis and exploratory data analysis. \\
+\hline
+\texttt{4a885c8} & 2026-09-07 & Jiphin George & \texttt{docs}: Update compiled initial report PDF with authentic UML diagrams. \\
+\hline
+\texttt{9db16f5} & 2026-09-07 & Jiphin George & \texttt{docs}: Synchronize presentation deck with latest clinical findings. \\
+\hline
+\texttt{5e2bfcc} & 2026-09-07 & Jiphin George & \texttt{style}: Optimize presentation text contrast to pure white on dark cards. \\
+\hline
+\texttt{a0b2360} & 2026-09-07 & Jiphin George & \texttt{style}: Clean presentation styling and eliminate visual borders. \\
+\hline
+\texttt{b78a87a} & 2026-09-07 & Jiphin George & \texttt{docs}: Add comprehensive formal speaker notes to all 19 presentation slides. \\
+\hline
+\texttt{7548f0d} & 2026-09-07 & Jiphin George & \texttt{chore}: Clean legacy automation scripts and temporary dump files. \\
+\hline
+\texttt{e18c21a} & 2026-10-12 & Jiphin George & \texttt{feat}: Implement balanced 8-class pipeline, TF-IDF vectorizer, and ensemble. \\
+\hline
+\texttt{f93a12b} & 2026-10-13 & Jiphin George & \texttt{feat}: Develop MedSpecialty AI Flask platform and in-memory PDF extractor. \\
+\hline
+\texttt{c84e19f} & 2026-10-13 & Jiphin George & \texttt{feat}: Integrate multi-model consensus dashboards and open-set triage gate. \\
+\hline
+\texttt{d91b402} & 2026-10-21 & Jiphin George & \texttt{docs}: Complete final technical thesis chapters 6 through 11 in LaTeX. \\
+\hline
+\end{tabularx}
+\caption{Audit Trail of Significant Git Commits Documenting Project Evolution}
+\label{tab:git_commit_log}
+\end{table}
+
+\subsection{Repository Metrics and Code Quality Assurance}
+
+To ensure long-term maintainability, the codebase was structured according to modern Python packaging and web development standards:
+\begin{itemize}
+    \item \textbf{Modularity}: Core machine learning training routines (\texttt{02\_train\_and\_balance\_models.py}) are decoupled from production inference services (\texttt{app.py}), ensuring that model training updates do not disrupt production API routing.
+    \item \textbf{Asset Organization}: All front-end assets are strictly segregated into dedicated directories:
+    \begin{itemize}
+        \item \texttt{static/css/}: Modular CSS stylesheet (\texttt{styles.css}) implementing custom clinical design tokens, responsive media queries, and flexbox layouts.
+        \item \texttt{static/js/}: Asynchronous client-side logic (\texttt{app.js}) handling file drag-and-drop, real-time fetch requests, dynamic chart rendering, and DOM updates.
+        \item \texttt{templates/}: Clean Jinja2 HTML5 template (\texttt{index.html}) containing semantic markup and accessible ARIA attributes.
+    \end{itemize}
+    \item \textbf{Data Security}: Confidential patient records and serialized binary files are protected from unintentional repository exposure via a structured \texttt{.gitignore} configuration.
+\end{itemize}
