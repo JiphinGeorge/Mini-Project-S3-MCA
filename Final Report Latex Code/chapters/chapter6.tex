@@ -1,6 +1,7 @@
 \clearpage
 
 \section{Model Deployment}
+\enlargethispage{\baselineskip}
 
 Model deployment transitions the evaluated machine learning pipeline from an experimental research artifact into an operational, production-grade clinical decision-support application. In medical informatics, deploying predictive models requires addressing stringent non-functional requirements, including sub-second inference latency, deterministic execution, data privacy, intuitive user experience (UX) to reduce clinician cognitive fatigue, and robust out-of-distribution (OOD) failure safeguards.
 
@@ -18,18 +19,46 @@ The core operational characteristics of the deployment architecture include:
 \begin{itemize}
     \item \textbf{Single-Process Memory Footprint}: The entire Flask runtime, including loaded vectorizer matrices and Scikit-Learn model weights, occupies less than \textbf{145 MB of RAM}, allowing seamless execution on legacy hospital workstations or embedded edge diagnostic devices.
     \item \textbf{Thread-Safe Parallel Inference}: Because Scikit-Learn estimators execute purely deterministic array mathematical routines during prediction without mutating internal state, the service effortlessly supports concurrent client consultations.
-    \item \textbf{Zero Disk Pollution}: Ingested multi-page PDF documents are processed entirely in-memory using byte buffers, preventing patient data remnants from persisting on unencrypted disk drives.
+    \item \textbf{Zero Disk Pollution}: Ingested multi-page PDF documents are processed entirely in-memory using byte buffers, preventing patient data from persisting on unencrypted disk.
+\end{itemize}
+
+To ensure interoperability with electronic health record (EHR) platforms and clinical web clients, the Flask service exposes four core RESTful endpoints as outlined in Table \ref{tab:api_endpoints}.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\linewidth}{|l|l|X|}
+\hline
+\textbf{Endpoint} & \textbf{HTTP Method} & \textbf{Operational Function and Payload} \\
+\hline
+\texttt{/} & \texttt{GET} & Delivers the client-side single-page clinical dashboard interface \\
+\hline
+\texttt{/predict} & \texttt{POST} & Ingests clinical text or multipart PDF; returns primary specialty, calibrated confidence, top-3 differentials, and explainability keywords \\
+\hline
+\texttt{/features} & \texttt{GET} & Exposes TF-IDF vocabulary term frequencies and discriminative department n-gram weights \\
+\hline
+\texttt{/health} & \texttt{GET} & System telemetry probe reporting model load status, memory footprint, and uptime \\
+\hline
+\end{tabularx}
+\caption{RESTful API Endpoint Specifications for the Deployed Service}
+\label{tab:api_endpoints}
+\end{table}
+
+The inference request-response lifecycle enforces rigorous validation constraints:
+\begin{itemize}
+    \item \textbf{Payload Sanitization}: Submissions are audited for non-empty text buffers or supported MIME types (\texttt{.pdf}, \texttt{.txt}), returning HTTP 400 Bad Request with actionable error payloads upon invalid input.
+    \item \textbf{Security and Decoupling}: The REST service maintains zero server-side session state, guaranteeing that consecutive client transactions remain decoupled and horizontally scalable.
 \end{itemize}
 
 \subsubsection{In-Memory Clinical PDF and Document Text Parsing}
 
 In clinical workflows, physicians and administrative staff frequently handle digital patient consultations as scanned or exported Portable Document Format (PDF) files. To provide seamless clinical utility without requiring manual text copy-pasting, the system integrates a high-throughput, in-memory PDF extraction engine powered by \textbf{PyMuPDF} (\texttt{fitz}).
 
-Algorithm \ref{alg:pdf_extraction} presents the formal in-memory document parsing procedure.
+Table \ref{alg:pdf_extraction} presents the formal in-memory document parsing and normalization procedure.
 
 \begin{table}[H]
 \centering
-\small
+\footnotesize
 \begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}X|}
 \hline
 \textbf{Algorithm 1: In-Memory Clinical Document Ingestion and Normalization} \\
