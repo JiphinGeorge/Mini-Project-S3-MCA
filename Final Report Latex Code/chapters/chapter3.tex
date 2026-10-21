@@ -186,6 +186,70 @@ Following null removal and domain filtering, the finalized curated clinical data
 \label{tab:curated_8classes}
 \end{table}
 
+\subsection{Data Visualization}
+
+Exploratory data visualization reveals structural, lexical, and distributional patterns across the clinical transcription corpus.
+
+\paragraph{Missing Value Distribution}
+Figure \ref{fig:eda_missing} displays the missing record counts across attributes. While \texttt{medical\_specialty} contains zero missing entries and \texttt{transcription} has only 33 nulls (0.66\%), the auxiliary \texttt{keywords} field exhibits 1,068 missing records (21.36\%), confirming that keywords cannot serve as a reliable primary classification attribute.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth,height=6.0cm,keepaspectratio]{EDA_Diagrams/01_missing_values.png}
+\caption{Missing Values by Dataset Attribute}
+\label{fig:eda_missing}
+\end{figure}
+
+\paragraph{Top 10 Medical Categories}
+Figure \ref{fig:eda_top10} illustrates transcription frequencies for the top 10 categories in the raw dataset. Surgery dominates with 1,103 records, followed by Consult - History and Phy. (516 records), Cardiovascular / Pulmonary (372 records), and Orthopedic (355 records).
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth,height=6.5cm,keepaspectratio]{EDA_Diagrams/02_top10_medical_specialties.png}
+\caption{Top 10 Medical Specialties by Number of Transcriptions}
+\label{fig:eda_top10}
+\end{figure}
+
+\paragraph{Complete Class Distribution (40 Categories)}
+Figure \ref{fig:eda_complete_specialty} illustrates the severe class imbalance across all 40 raw categories, underscoring why filtering to 8 mutually exclusive specialties was essential for academic validity.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth,height=7.0cm,keepaspectratio]{EDA_Diagrams/03_complete_specialty_distribution.png}
+\caption{Distribution of All 40 Categories in Raw MTSamples Corpus}
+\label{fig:eda_complete_specialty}
+\end{figure}
+
+\paragraph{Clinical Narrative Length Distribution}
+Figure \ref{fig:eda_length_dist} displays the word count distribution for clinical narratives, fitted with a Kernel Density Estimate (KDE) curve. The distribution is right-skewed; most transcriptions contain between 200 and 600 words, with comprehensive operative notes extending beyond 2,500 words.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth,height=6.0cm,keepaspectratio]{EDA_Diagrams/04_transcription_length_distribution.png}
+\caption{Distribution of Clinical Transcription Word Length}
+\label{fig:eda_length_dist}
+\end{figure}
+
+\paragraph{Document Length Variations Across Specialties}
+Figure \ref{fig:eda_length_by_specialty} presents box plots comparing narrative word count distributions across specialties. Consultations and diagnostic notes (e.g., Radiology) feature shorter median lengths (~200 words), whereas Orthopedic and Cardiovascular operative summaries are substantially longer (~600 words), emphasizing the need for $L_2$ length normalization.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth,height=6.5cm,keepaspectratio]{EDA_Diagrams/05_transcription_length_by_specialty.png}
+\caption{Transcription Length Distribution Across Top Medical Specialties}
+\label{fig:eda_length_by_specialty}
+\end{figure}
+
+\paragraph{Clinical Word Cloud Visualization}
+Figure \ref{fig:eda_wordcloud} displays a lexical word cloud of high-frequency clinical terms across the corpus, including ``incision'', ``procedure'', ``patient'', ``normal'', ``placed'', ``artery'', and ``postoperative'', highlighting the medical domain vocabulary.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.82\textwidth,height=6.0cm,keepaspectratio]{EDA_Diagrams/06_medical_transcription_wordcloud.png}
+\caption{Common Lexical Terms in Medical Transcriptions}
+\label{fig:eda_wordcloud}
+\end{figure}
+
 \subsection{Data Preprocessing}
 
 Data preprocessing transforms unstructured clinical narratives into structured numerical representations suitable for machine learning. The pipeline addresses text irregularities, removes noise, normalizes morphological variations, and extracts informative n-grams.
@@ -259,70 +323,6 @@ c^*, & \text{if } \max_{k} P_{\text{ensemble}}(y = k \mid x) \ge \tau \\
 \end{cases}
 \end{equation}
 where $\tau = 0.48$ is the calibrated decision threshold, $c^* = \arg\max_k P_{\text{ensemble}}(y = k \mid x)$, and $\text{nnz}(x)$ represents non-zero matched clinical vocabulary features. This architecture ensures patient safety by routing out-of-scope or ambiguous clinical dictations to human clinicians for manual triage.
-
-\subsection{Data Visualization}
-
-Exploratory data visualization reveals structural, lexical, and distributional patterns across the clinical transcription corpus.
-
-\paragraph{Missing Value Distribution}
-Figure \ref{fig:eda_missing} displays the missing record counts across attributes. While \texttt{medical\_specialty} contains zero missing entries and \texttt{transcription} has only 33 nulls (0.66\%), the auxiliary \texttt{keywords} field exhibits 1,068 missing records (21.36\%), confirming that keywords cannot serve as a reliable primary classification attribute.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.82\textwidth,height=6.0cm,keepaspectratio]{EDA_Diagrams/01_missing_values.png}
-\caption{Missing Values by Dataset Attribute}
-\label{fig:eda_missing}
-\end{figure}
-
-\paragraph{Top 10 Medical Categories}
-Figure \ref{fig:eda_top10} illustrates transcription frequencies for the top 10 categories in the raw dataset. Surgery dominates with 1,103 records, followed by Consult - History and Phy. (516 records), Cardiovascular / Pulmonary (372 records), and Orthopedic (355 records).
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.82\textwidth,height=6.5cm,keepaspectratio]{EDA_Diagrams/02_top10_medical_specialties.png}
-\caption{Top 10 Medical Specialties by Number of Transcriptions}
-\label{fig:eda_top10}
-\end{figure}
-
-\paragraph{Complete Class Distribution (40 Categories)}
-Figure \ref{fig:eda_complete_specialty} illustrates the severe class imbalance across all 40 raw categories, underscoring why filtering to 8 mutually exclusive specialties was essential for academic validity.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.82\textwidth,height=7.0cm,keepaspectratio]{EDA_Diagrams/03_complete_specialty_distribution.png}
-\caption{Distribution of All 40 Categories in Raw MTSamples Corpus}
-\label{fig:eda_complete_specialty}
-\end{figure}
-
-\paragraph{Clinical Narrative Length Distribution}
-Figure \ref{fig:eda_length_dist} displays the word count distribution for clinical narratives, fitted with a Kernel Density Estimate (KDE) curve. The distribution is right-skewed; most transcriptions contain between 200 and 600 words, with comprehensive operative notes extending beyond 2,500 words.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.82\textwidth,height=6.0cm,keepaspectratio]{EDA_Diagrams/04_transcription_length_distribution.png}
-\caption{Distribution of Clinical Transcription Word Length}
-\label{fig:eda_length_dist}
-\end{figure}
-
-\paragraph{Document Length Variations Across Specialties}
-Figure \ref{fig:eda_length_by_specialty} presents box plots comparing narrative word count distributions across specialties. Consultations and diagnostic notes (e.g., Radiology) feature shorter median lengths (~200 words), whereas Orthopedic and Cardiovascular operative summaries are substantially longer (~600 words), emphasizing the need for $L_2$ length normalization.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.82\textwidth,height=6.5cm,keepaspectratio]{EDA_Diagrams/05_transcription_length_by_specialty.png}
-\caption{Transcription Length Distribution Across Top Medical Specialties}
-\label{fig:eda_length_by_specialty}
-\end{figure}
-
-\paragraph{Clinical Word Cloud Visualization}
-Figure \ref{fig:eda_wordcloud} displays a lexical word cloud of high-frequency clinical terms across the corpus, including ``incision'', ``procedure'', ``patient'', ``normal'', ``placed'', ``artery'', and ``postoperative'', highlighting the medical domain vocabulary.
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.82\textwidth,height=6.0cm,keepaspectratio]{EDA_Diagrams/06_medical_transcription_wordcloud.png}
-\caption{Common Lexical Terms in Medical Transcriptions}
-\label{fig:eda_wordcloud}
-\end{figure}
 
 \subsection{Analysis of Architecture and Algorithms}
 
