@@ -264,7 +264,7 @@ During the training phase, the four candidate classifiers and the meta-voting en
         \begin{equation}
             \hat{y}_{\text{hard}} = \operatorname{argmax}_k \sum_{m=1}^{M} w_m \cdot \mathbb{I}(\hat{y}_m = k)
         \end{equation}
-        \item \textbf{Soft Voting}: Averages the posterior probability distributions across models weighted by empirical confidence:
+        \item \textbf{Soft Voting}: Computes weighted averages of posterior class probability distributions across estimators:
         \begin{equation}
             \hat{y}_{\text{soft}} = \operatorname{argmax}_k \sum_{m=1}^{M} w_m \cdot P_m(y = k \mid \mathbf{x})
         \end{equation}

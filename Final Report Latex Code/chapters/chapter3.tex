@@ -15,7 +15,7 @@ The Kaggle Medical Transcriptions dataset is a curated collection of authentic c
 \begin{itemize}
     \item \textbf{Total Raw Records}: 4,999 clinical transcription reports.
     \item \textbf{Total Attributes}: 6 attributes (1 integer identifier, 4 textual features, and 1 categorical target label).
-    \item \textbf{Data Types}: Free-text narratives (\texttt{transcription}), diagnostic abstracts (\texttt{description}), keywords (\texttt{keywords}), procedure titles (\texttt{sample\_name}), and target labels (\texttt{medical\_specialty}).
+    \item \textbf{Data Types}: Five text attributes: clinical narratives (\texttt{transcription}), diagnostic synopses (\texttt{description}), keywords (\texttt{keywords}), procedure titles (\texttt{sample\_name}), and specialty labels (\texttt{medical\_specialty}).
     \item \textbf{Target Attribute}: \texttt{medical\_specialty}, containing 40 nominal medical department categories in the raw distribution.
 \end{itemize}
 
@@ -72,7 +72,8 @@ Exploratory data profiling was conducted using Python data analysis frameworks (
 \centering
 \small
 \setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\linewidth}{|l|l|X|r|r|}
+\noindent\resizebox{\linewidth}{!}{%
+\begin{tabular}{|l|l|l|r|r|}
 \hline
 \textbf{Attribute Name} & \textbf{Data Type} & \textbf{Clinical Description} & \textbf{Null Count} & \textbf{Null \%} \\
 \hline
@@ -88,7 +89,8 @@ Exploratory data profiling was conducted using Python data analysis frameworks (
 \hline
 \texttt{keywords} & Text & Extracted clinical terms & 1,068 & 21.36\% \\
 \hline
-\end{tabularx}
+\end{tabular}%
+}
 \caption{Dataset Attribute Specifications and Missing Value Audit}
 \label{tab:column_description}
 \end{table}
@@ -134,8 +136,8 @@ Obstetrics / Gynecology & 160 & Autopsy & 2 \\
 \subsubsection{Insights and conclusions of Exploratory Data Analysis}
 A critical finding from data exploration is that the raw 40 classes do not represent mutually exclusive medical specialties. Instead, the raw dataset mixes anatomical medical specialties with general administrative document formats and procedural umbrellas:
 \begin{enumerate}
-    \item \textit{Administrative Document Formats}: Categories such as \texttt{Consult - History and Phy.} (516 records), \texttt{SOAP / Chart / Progress Notes} (166 records), \texttt{Discharge Summary} (108 records), \texttt{Office Notes} (50 records), and \texttt{Emergency Room Reports} (75 records) define documentation templates rather than distinct medical specialties. Reports within these classes span cardiology, neurology, gastroenterology, and orthopedics, introducing severe semantic ambiguity.
-    \item \textit{Procedural Umbrella Overlap}: The largest category, \texttt{Surgery} (1,103 records), functions as an overarching procedural umbrella. An appendectomy in \texttt{Surgery} shares identical clinical terminology with \texttt{Gastroenterology}; a total knee replacement in \texttt{Surgery} overlaps with \texttt{Orthopedic}; and a coronary artery bypass graft in \texttt{Surgery} overlaps with \texttt{Cardiovascular / Pulmonary}. Retaining \texttt{Surgery} forces classifiers to learn artificial distinctions between surgical and clinical records of the same organ system.
+    \item \textit{Administrative Document Formats}: Categories such as \texttt{Consult - History and Phy.} (516 records), \texttt{SOAP\,/\allowbreak\,Chart\,/\allowbreak\,Progress Notes} (166 records), \texttt{Discharge Summary} (108 records), \texttt{Office Notes} (50 records), and \texttt{Emergency Room Reports} (75 records) define documentation templates rather than distinct medical specialties. Reports within these classes span cardiology, neurology, gastroenterology, and orthopedics, introducing severe semantic ambiguity.
+    \item \textit{Procedural Umbrella Overlap}: The largest category, \texttt{Surgery} (1,103 records), functions as an overarching procedural umbrella. An appendectomy in \texttt{Surgery} shares identical clinical terminology with \texttt{Gastroenterology}; a total knee replacement in \texttt{Surgery} overlaps with \texttt{Orthopedic}; and a coronary artery bypass graft in \texttt{Surgery} overlaps with \texttt{Cardiovascular\,/\allowbreak\,Pulmonary}. Retaining \texttt{Surgery} forces classifiers to learn artificial distinctions between surgical and clinical records of the same organ system.
     \item \textit{Severe Minority Sparsity}: Several specialized classes contain fewer than 10 records (e.g., \texttt{Allergy / Immunology}: 7, \texttt{Hospice - Palliative Care}: 6, \texttt{Autopsy}: 2), making statistically sound train-test splitting impossible.
 \end{enumerate}
 

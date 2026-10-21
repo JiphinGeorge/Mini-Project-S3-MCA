@@ -34,8 +34,10 @@ The development lifecycle of the project spanned four distinct, structured phase
 
 \begin{table}[H]
 \centering
-\small
-\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{2.8cm}|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}X|}
+\footnotesize
+\renewcommand{\arraystretch}{0.95}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\linewidth}{|>{\raggedright\arraybackslash}p{2.6cm}|>{\raggedright\arraybackslash}p{2.4cm}|>{\raggedright\arraybackslash}X|}
 \hline
 \textbf{Development Phase} & \textbf{Timeframe} & \textbf{Key Engineering Deliverables \& Milestones} \\
 \hline
@@ -130,8 +132,7 @@ Table \ref{tab:git_commit_log} provides an authentic, chronological extract of t
 \caption{Audit Trail of Significant Git Commits Documenting Project Evolution}
 \label{tab:git_commit_log}
 \end{table}
-
-\enlargethispage{2\baselineskip}
+\clearpage
 \subsection{Repository Metrics and Code Quality Assurance}
 
 To ensure long-term maintainability, the codebase was structured according to modern Python packaging and web development standards:
