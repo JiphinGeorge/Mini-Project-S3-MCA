@@ -12,44 +12,7 @@ This chapter details the architectural implementation of the deployed platform, 
 
 The deployment architecture is structured around a lightweight, asynchronous client-server paradigm utilizing the Python \textbf{Flask} web micro-framework. Flask was selected over heavier enterprise frameworks (such as Django) due to its minimal runtime overhead, stateless request handling, and seamless interoperability with NumPy and Scikit-Learn data structures. 
 
-The application runs as a self-contained service executing on a local or intranet hospital network host. Figure \ref{fig:deployment_architecture} illustrates the architectural layers of the deployed system.
-
-\begin{figure}[H]
-\centering
-\resizebox{\linewidth}{!}{%
-\begin{tikzpicture}[
-    node distance=1.1cm and 1.2cm,
-    box/.style={rectangle, draw=black!70, rounded corners=3pt, fill=blue!5, thick, minimum width=3.0cm, minimum height=1.0cm, align=center, font=\small\bfseries},
-    client/.style={rectangle, draw=black!70, rounded corners=3pt, fill=green!10, thick, minimum width=3.0cm, minimum height=1.0cm, align=center, font=\small\bfseries},
-    core/.style={rectangle, draw=black!70, rounded corners=3pt, fill=orange!10, thick, minimum width=3.0cm, minimum height=1.0cm, align=center, font=\small\bfseries},
-    storage/.style={cylinder, draw=black!70, shape border rotate=90, aspect=0.25, fill=purple!10, thick, minimum width=2.6cm, minimum height=1.2cm, align=center, font=\small\bfseries},
-    arrow/.style={thick, ->, >=stealth}
-]
-
-% Nodes
-\node (browser) [client] {Clinician Web Client\\(HTML5 / CSS3 / Vanilla JS)};
-\node (gateway) [box, right=of browser] {Flask REST Gateway\\(\texttt{app.py} / Port 5000)};
-\node (extractor) [core, above right=0.3cm and 1.0cm of gateway] {PyMuPDF Parser\\(In-Memory Stream)};
-\node (vectorizer) [core, right=of gateway] {TF-IDF Vectorizer\\(8,000 Dimensions)};
-\node (ensemble) [core, below right=0.3cm and 1.0cm of gateway] {Soft Voting Ensemble\\(SVM, LR, RF, MNB)};
-\node (models) [storage, right=of vectorizer] {Serialized Models\\(\texttt{.pkl} Artifacts)};
-
-% Connections
-\draw [arrow] (browser.east) -- node[above, font=\scriptsize] {HTTP POST / JSON} (gateway.west);
-\draw [arrow] (gateway.north east) -- node[above left, font=\scriptsize] {PDF Upload} (extractor.west);
-\draw [arrow] (extractor.south) -- node[right, font=\scriptsize] {Raw Text} (vectorizer.north);
-\draw [arrow] (gateway.east) -- node[above, font=\scriptsize] {Text Input} (vectorizer.west);
-\draw [arrow] (vectorizer.south) -- node[right, font=\scriptsize] {Sparse Vector} (ensemble.north);
-\draw [arrow] (models.west) -- node[above, font=\scriptsize] {Joblib Load} (vectorizer.east);
-\draw [arrow] (models.south west) -- node[below, font=\scriptsize] {Weights} (ensemble.east);
-\draw [arrow] (ensemble.west) -| node[below right, font=\scriptsize] {Triage Response} (gateway.south);
-\draw [arrow] (gateway.south west) to[bend left=20] node[below, font=\scriptsize] {JSON Response ($<10$ ms)} (browser.south);
-
-\end{tikzpicture}%
-}
-\caption{Architectural Blueprint of the Deployed MedSpecialty AI Platform}
-\label{fig:deployment_architecture}
-\end{figure}
+The application runs as a self-contained service executing on a local or intranet hospital network host.
 
 The core operational characteristics of the deployment architecture include:
 \begin{itemize}
