@@ -140,15 +140,15 @@ This is the primary computational interface. It accepts either a raw text payloa
     \end{itemize}
     \item \textbf{Response Payload Structure}:
     \begin{itemize}
-        \item \texttt{predicted\_specialty}: The winning clinical department string (or \textit{"Other"} if rejected).
-        \item \texttt{confidence}: Peak ensemble consensus probability $\hat{P}_{\text{max}} \in [0.0, 1.0]$.
-        \item \texttt{confidence\_percent}: Human-readable formatted percentage string (e.g., \texttt{"94.2\%"}).
-        \item \texttt{triage\_status}: Categorical clinical action status (\texttt{"Definitive Routing"}, \texttt{"Review Recommended"}, or \texttt{"Out of Scope / Requires Review"}).
+        \item \texttt{predicted\_specialty}: Predicted department name (or \textit{"Other"} if rejected).
+        \item \texttt{confidence}: Peak ensemble probability $\hat{P}_{\text{max}} \in [0.0, 1.0]$.
+        \item \texttt{confidence\_percent}: Formatted percentage string (e.g., \texttt{"94.2\%"}).
+        \item \texttt{triage\_status}: Clinical action status (\textit{Definitive Routing}, \textit{Review Recommended}, or \textit{Out of Scope}).
         \item \texttt{explanation}: Clinically contextualized text explaining the triage outcome.
-        \item \texttt{probability\_distribution}: Full dictionary mapping all 8 departments to their consensus probability.
-        \item \texttt{nearest\_candidates}: Top-3 ranked departments with individual probability scores.
-        \item \texttt{models\_breakdown}: Granular per-algorithm probability predictions across SVM, Logistic Regression, Random Forest, and Naive Bayes.
-        \item \texttt{vocabulary\_matches}: Top matched diagnostic TF-IDF tokens found within the patient narrative, including frequency and feature importance.
+        \item \texttt{probability\_distribution}: Dictionary mapping departments to consensus probabilities.
+        \item \texttt{nearest\_candidates}: Top-3 ranked departments with individual confidence scores.
+        \item \texttt{models\_breakdown}: Granular probability predictions across SVM, LR, RF, and MNB.
+        \item \texttt{vocabulary\_matches}: Top matched diagnostic TF-IDF tokens with feature weights.
         \item \texttt{inference\_time\_ms}: Total server-side execution latency in milliseconds.
     \end{itemize}
 \end{itemize}
