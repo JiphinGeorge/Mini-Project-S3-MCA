@@ -12,21 +12,22 @@
 
 I express my deepest praise, gratitude, and devotion to God Almighty for His boundless grace, wisdom, and blessings that guided me throughout the conceptualization, execution, and successful completion of this mini project.
 
-I express my profound gratitude to \textbf{Dr. Bos Mathew Jos}, Principal of Mar Athanasius College of Engineering, Kothamangalam, for providing the state-of-the-art academic environment, technical infrastructure, and facilities essential for pursuing this project work.
+I express my profound gratitude to Dr. Bos Mathew Jos, Principal of Mar Athanasius College of Engineering, Kothamangalam, for providing the state-of-the-art academic environment, technical infrastructure, and facilities essential for pursuing this project work.
 
-I place on record my sincere thanks and respectful gratitude to \textbf{Dr. Sonia Abraham}, Professor and Head of the Department of Computer Applications, for her constant support, valuable encouragement, academic counsel, and for ensuring access to all necessary computing and software resources.
+I place on record my sincere thanks and respectful gratitude to Dr. Sonia Abraham, Professor and Head of the Department of Computer Applications, for her constant support, valuable encouragement, academic counsel, and for ensuring access to all necessary computing and software resources.
 
-I am immensely indebted to my esteemed faculty guide, \textbf{Prof. Biju Skaria}, Associate Professor in the Department of Computer Applications, whose insightful guidance, rigorous technical feedback, continuous encouragement, and detailed supervision were vital to every stage of this research. His constructive suggestions during data preparation, feature leakage auditing, and model benchmarking contributed immeasurably to the success of this study.
+I am immensely indebted to my esteemed faculty guide, Prof. Biju Skaria, Associate Professor in the Department of Computer Applications, whose insightful guidance, rigorous technical feedback, continuous encouragement, and detailed supervision were vital to every stage of this research. His constructive suggestions during data preparation, feature leakage auditing, and model benchmarking contributed immeasurably to the success of this study.
 
-I also extend my heartfelt thanks to the \textbf{Project Coordinators} and all the faculty and non-teaching members of the Department of Computer Applications for their timely support, co-operation, and assistance throughout the semester.
+I also extend my heartfelt thanks to the Project Coordinators, Dr. Manu John and Prof. Minu Maria Joseph, and all the faculty and non-teaching members of the Department of Computer Applications for their timely support, co-operation, and assistance throughout the semester.
 
 Finally, I convey my deepest appreciation to my beloved parents, family members, and friends for their enduring patience, unconditional love, moral support, and motivation, which served as a constant pillar of strength throughout this project.
 
-\vspace{0.8cm}
+\vspace{1.0cm}
 
-\noindent
-\textbf{Jiphin George} \\
+\begin{flushright}
+Jiphin George \\
 Register Number: MAC25MCA-2033
+\end{flushright}
 
 \clearpage
 
@@ -39,11 +40,11 @@ Register Number: MAC25MCA-2033
 \end{center}
 \vspace{0.4cm}
 
-The rapid digitisation of modern healthcare has led to an exponential influx of unstructured clinical narratives within Electronic Health Record (EHR) systems, including operative reports, consultation summaries, and discharge notes. Manually triaging these clinical texts into medical specialties is labor-intensive, error-prone, and bottlenecked by inter-annotator variability. This project develops and deploys \textbf{MedSpecialty AI}, an automated clinical decision-support platform for medical specialty classification using sublinear Term Frequency--Inverse Document Frequency (TF-IDF) feature engineering paired with an Ensemble Machine Learning architecture.
+The rapid digitisation of modern healthcare has led to an exponential influx of unstructured clinical narratives within Electronic Health Record (EHR) systems, including operative reports, consultation summaries, and discharge notes. Manually triaging these clinical texts into medical specialties is labor-intensive, error-prone, and bottlenecked by inter-annotator variability. This project develops and deploys MedSpecialty AI, an automated clinical decision-support platform for medical specialty classification using sublinear Term Frequency--Inverse Document Frequency (TF-IDF) feature engineering paired with an Ensemble Machine Learning architecture.
 
 The system utilizes the MTSamples clinical transcription corpus (4,999 raw records across 40 categories). Systematic exploratory data analysis revealed procedural ambiguity in administrative categories (e.g., General Surgery, Consult notes). A curated benchmark of 1,663 records across eight mutually exclusive hospital departments was established: Cardiovascular / Pulmonary, Orthopedic, Gastroenterology, Neurology, Urology, Obstetrics / Gynecology, ENT -- Otolaryngology, and Ophthalmology. The NLP pipeline performs text cleaning, stopword removal, morphological lemmatization, and sublinear TF-IDF vectorization across an 8,000-dimensional unigram/bigram vocabulary ($L_2$ normalized). Four estimators were evaluated under stratified holdout validation (80\% train / 20\% test): Linear SVM (with Platt calibration, 88.59\% accuracy), Logistic Regression, Random Forest, and Multinomial Naive Bayes. A Soft Voting Ensemble combining all four models [2:2:1:1] achieved 87.99\% accuracy and a Macro F1-score of 0.8898 with calibrated posterior probabilities.
 
-To guarantee patient safety in open-world hospital workflows, the platform incorporates an \textbf{Open-Set Confidence Rejection Gate} ($\tau = 0.48$). Dictations with peak ensemble confidence below 48\% are routed to a 9th operational class, \textit{``Other / Requires Review''}, intercepting unsupported clinical specialties (e.g., Dermatology, Psychiatry) and non-medical text without false specialty force-fitting. The platform is operationalized as a responsive web service featuring in-memory PyMuPDF PDF extraction, 7-phase operational dataflow tracking, and sub-10 ms CPU inference latency.
+To guarantee patient safety in open-world hospital workflows, the platform incorporates an Open-Set Confidence Rejection Gate ($\tau = 0.48$). Dictations with peak ensemble confidence below 48\% are routed to a 9th operational class, \textit{``Other / Requires Review''}, intercepting unsupported clinical specialties (e.g., Dermatology, Psychiatry) and non-medical text without false specialty force-fitting. The platform is operationalized as a responsive web service featuring in-memory PyMuPDF PDF extraction, 7-phase operational dataflow tracking, and sub-10 ms CPU inference latency.
 
 \clearpage
 
@@ -78,7 +79,8 @@ To guarantee patient safety in open-world hospital workflows, the platform incor
 \clearpage
 
 % -------------------- CONTENTS --------------------
-\thispagestyle{empty}
+\clearpage
+\pagestyle{empty}
 \begin{center}
     \textbf{\Large CONTENTS}
 \end{center}
