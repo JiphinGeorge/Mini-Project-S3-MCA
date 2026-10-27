@@ -1,7 +1,6 @@
 \clearpage
 
 \section{Model Deployment}
-\enlargethispage{\baselineskip}
 
 Model deployment transitions the evaluated machine learning pipeline from an experimental research artifact into an operational, production-grade clinical decision-support application. In medical informatics, deploying predictive models requires addressing stringent non-functional requirements, including sub-second inference latency, deterministic execution, data privacy, intuitive user experience (UX) to reduce clinician cognitive fatigue, and robust out-of-distribution (OOD) failure safeguards.
 
@@ -11,11 +10,7 @@ This chapter details the architectural implementation of the deployed platform, 
 
 \subsubsection{Web Service Architecture and Framework Selection}
 
-The deployment architecture is structured around a lightweight, asynchronous client-server paradigm utilizing the Python \textbf{Flask} web micro-framework. Flask was selected over heavier enterprise frameworks (such as Django) due to its minimal runtime overhead, stateless request handling, and seamless interoperability with NumPy and Scikit-Learn data structures. 
-
-The application runs as a self-contained service executing on a local or intranet hospital network host.
-
-The core operational characteristics of the deployment architecture include:
+The deployment architecture is structured around a lightweight, asynchronous client-server paradigm utilizing the Python \textbf{Flask} web micro-framework, executing as a self-contained service on a local or intranet hospital network host. Flask was selected over heavier enterprise frameworks (such as Django) due to its minimal runtime overhead, stateless request handling, and seamless interoperability with NumPy and Scikit-Learn data structures. The core operational characteristics of the deployment architecture include:
 \begin{itemize}
     \item \textbf{Single-Process Memory Footprint}: The entire Flask runtime, including loaded vectorizer matrices and Scikit-Learn model weights, occupies less than \textbf{145 MB of RAM}, allowing seamless execution on legacy hospital workstations or embedded edge diagnostic devices.
     \item \textbf{Thread-Safe Parallel Inference}: Because Scikit-Learn estimators execute purely deterministic array mathematical routines during prediction without mutating internal state, the service effortlessly supports concurrent client consultations.
